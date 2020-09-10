@@ -19,10 +19,6 @@ abstract class AppRoomDatabase : RoomDatabase() {
     abstract fun recordDao(): RecordDao?
     abstract fun locationDao(): LocationDao?
 
-    /**
-     * Populate the database in the background.
-     * If you want to start with more words, just add them.
-     */
     private class PopulateDbAsync internal constructor(db: AppRoomDatabase?) :
         AsyncTask<Void?, Void?, Void?>() {
         private val mRecordDao: RecordDao? = db!!.recordDao()

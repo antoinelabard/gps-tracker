@@ -24,6 +24,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.simplegpstracker.R
+import com.example.simplegpstracker.model.db.Constants
 import com.example.simplegpstracker.model.db.location.LocationEntity
 import com.example.simplegpstracker.model.db.record.RecordEntity
 import com.google.android.gms.location.*
@@ -41,8 +42,6 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 import java.util.concurrent.TimeUnit
 
 class TrackerActivity : AppCompatActivity() {
-
-    private val REQUEST_CODE = 1
 
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private lateinit var locationCallback: LocationCallback
@@ -81,16 +80,16 @@ class TrackerActivity : AppCompatActivity() {
 
         when {
             ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.ACCESS_FINE_LOCATION) -> {
-                ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), REQUEST_CODE)
+                ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), Constants.Permission().REQUEST_CODE)
             }
             ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) -> {
-                ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE), REQUEST_CODE)
+                ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE), Constants.Permission().REQUEST_CODE)
             }
             ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.INTERNET) -> {
-                ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.INTERNET), REQUEST_CODE)
+                ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.INTERNET), Constants.Permission().REQUEST_CODE)
             }
             ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.ACCESS_NETWORK_STATE) -> {
-                ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_NETWORK_STATE), REQUEST_CODE)
+                ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_NETWORK_STATE), Constants.Permission().REQUEST_CODE)
             }
             else -> {
                 buildLocationRequest()
@@ -101,12 +100,15 @@ class TrackerActivity : AppCompatActivity() {
 
         activity_tracker_pause_resume_button.setOnClickListener {
             if (!checkPermissionsGranted()) return@setOnClickListener
+
             if (mTrackerActivityViewModel.isRecording) {
                 stopService(Intent(applicationContext, TrackerService::class.java))
                 fusedLocationProviderClient.removeLocationUpdates(locationCallback)
                 activity_tracker_pause_resume_button.setImageResource(R.drawable.ic_action_gps_active)
             } else {
-                Intent(this, TrackerService::class.java).also { intent -> startService(intent) }
+                Intent(this, TrackerService::class.java)
+                    .putExtra("isRecording", true)
+                    .also { intent -> startService(intent) }
                 fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper())
                 activity_tracker_pause_resume_button.setImageResource(R.drawable.ic_action_gps_inactive)
             }
@@ -176,7 +178,7 @@ class TrackerActivity : AppCompatActivity() {
             ActivityCompat.requestPermissions(
                 this,
                 permissionsToRequest.toArray(arrayOf<String>()),
-                REQUEST_CODE
+                Constants.Permission().REQUEST_CODE
             )
         }
     }
@@ -201,7 +203,7 @@ class TrackerActivity : AppCompatActivity() {
     private fun checkPermissionsGranted(): Boolean {
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
             && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), REQUEST_CODE)
+            ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), Constants.Permission().REQUEST_CODE)
             return false
         }
         return true
