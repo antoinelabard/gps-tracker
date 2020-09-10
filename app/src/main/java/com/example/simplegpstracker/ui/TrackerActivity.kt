@@ -1,9 +1,15 @@
 package com.example.simplegpstracker.ui
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.Service
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import android.os.IBinder
 import android.os.Looper
 import android.view.Menu
 import android.view.MenuInflater
@@ -13,6 +19,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -95,9 +102,11 @@ class TrackerActivity : AppCompatActivity() {
         activity_tracker_pause_resume_button.setOnClickListener {
             if (!checkPermissionsGranted()) return@setOnClickListener
             if (mTrackerActivityViewModel.isRecording) {
+                stopService(Intent(applicationContext, TrackerService::class.java))
                 fusedLocationProviderClient.removeLocationUpdates(locationCallback)
                 activity_tracker_pause_resume_button.setImageResource(R.drawable.ic_action_gps_active)
             } else {
+                Intent(this, TrackerService::class.java).also { intent -> startService(intent) }
                 fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper())
                 activity_tracker_pause_resume_button.setImageResource(R.drawable.ic_action_gps_inactive)
             }
@@ -177,7 +186,7 @@ class TrackerActivity : AppCompatActivity() {
             override fun onLocationResult(locationResult: LocationResult?) {
                 mTrackerActivityViewModel.insertLocation(locationResult!!.lastLocation, mTrackerActivityViewModel.recordId)
             }
-        }/home/antoine
+        }
     }
 
     private fun buildLocationRequest() {
