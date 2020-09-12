@@ -24,6 +24,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.simplegpstracker.R
+import com.example.simplegpstracker.model.GpsService
 import com.example.simplegpstracker.model.db.Constants
 import com.example.simplegpstracker.model.db.location.LocationEntity
 import com.example.simplegpstracker.model.db.record.RecordEntity
@@ -97,13 +98,24 @@ class TrackerActivity : AppCompatActivity() {
                 fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
             }
         }
+        try {
+            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(
+                    this, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+                    Constants.Permission().REQUEST_CODE
+                )
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        val intent = Intent(applicationContext, GpsService::class.java)
+            .putExtra("recordId", mTrackerActivityViewModel.recordId)
 
         activity_tracker_pause_resume_button.setOnClickListener {
-            if (!checkPermissionsGranted()) return@setOnClickListener
-
             if (mTrackerActivityViewModel.isRecording) {
-                stopService(Intent(applicationContext, TrackerService::class.java))
-                fusedLocationProviderClient.removeLocationUpdates(locationCallback)
+                stopService(intent)
                 activity_tracker_pause_resume_button.setImageResource(R.drawable.ic_action_gps_active)
             } else {
                 Intent(this, TrackerService::class.java)
