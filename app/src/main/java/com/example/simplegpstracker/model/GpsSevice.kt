@@ -14,9 +14,9 @@ import android.os.Bundle
 import android.os.IBinder
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
-import com.example.simplegpstracker.R
 import com.example.simplegpstracker.ui.TrackerActivity
 import android.Manifest
+import com.example.simplegpstracker.R
 import com.example.simplegpstracker.model.db.AppRepository
 import com.example.simplegpstracker.model.db.location.LocationEntity
 
@@ -69,7 +69,7 @@ class GpsService: Service(), LocationListener {
                     applicationContext, 0, Intent(
                         applicationContext,
                         TrackerActivity::class.java
-                    ), 0
+                    ).putExtra("recordId", rid), 0
                 )
             )
             .setAutoCancel(true)

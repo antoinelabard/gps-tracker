@@ -19,7 +19,7 @@ import com.example.simplegpstracker.model.db.record.RecordEntity
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
-fun toast(context: Context, text: String) = Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
+//fun toast(context: Context, text: String) = Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
 
 open class MainActivity : AppCompatActivity() {
 
