@@ -16,41 +16,17 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import com.example.simplegpstracker.ui.TrackerActivity
 import android.Manifest
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.simplegpstracker.R
-import com.example.simplegpstracker.model.db.AppRepository
-import com.example.simplegpstracker.model.db.location.LocationEntity
 
 class GpsService: Service(), LocationListener {
 
-    lateinit var locationManager: LocationManager
-    var locationProvider: String? = null
-    lateinit var notification: Notification
-    val mAppRepository = AppRepository(application)
+    private lateinit var locationManager: LocationManager
+    private var locationProvider: String? = null
+    private lateinit var notification: Notification
 
-    var rid: Int = 0
-    var location: Location? = null
-
-    override fun onLocationChanged(location: Location?) {
-        if (location != null) {
-            mAppRepository.insertLocation(
-                LocationEntity(
-                    0,
-                    rid,
-                    location.latitude,
-                    location.longitude,
-                    location.speed
-                )
-            )
-        }
-    }
-
-    override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
-    override fun onProviderEnabled(provider: String?) {}
-    override fun onProviderDisabled(provider: String?) {}
-
-    override fun onBind(intent: Intent?): IBinder? {
-        return null
-    }
+    private var recordId: Int = 0
+    private var location: Location? = null
 
     override fun onCreate() {
         super.onCreate()
@@ -69,16 +45,35 @@ class GpsService: Service(), LocationListener {
                     applicationContext, 0, Intent(
                         applicationContext,
                         TrackerActivity::class.java
-                    ).putExtra("recordId", rid), 0
+                    ).putExtra("recordId", recordId), 0
                 )
             )
             .setAutoCancel(true)
             .build()
     }
 
+    override fun onLocationChanged(location: Location?) {
+        if (location != null) {
+            val intent = Intent(Constants.Service().LOCATION_BROADCAST)
+                .putExtra("latitude", location.latitude)
+                .putExtra("longitude", location.longitude)
+                .putExtra("speed", location.speed)
+
+            LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
+        }
+    }
+
+    override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
+    override fun onProviderEnabled(provider: String?) {}
+    override fun onProviderDisabled(provider: String?) {}
+
+    override fun onBind(intent: Intent?): IBinder? {
+        return null
+    }
+
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
-        rid = intent?.getIntExtra("recordId", 0)!!
+        recordId = intent?.getIntExtra("recordId", 0)!!
 
         this.startForeground(1, notification)
 

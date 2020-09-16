@@ -1,16 +1,10 @@
 package com.example.simplegpstracker.ui
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.Service
-import android.content.Context
-import android.content.DialogInterface
-import android.content.Intent
+import android.content.*
 import android.content.pm.PackageManager
-import android.os.Build
+import android.location.Location
 import android.os.Bundle
-import android.os.IBinder
-import android.os.Looper
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -19,16 +13,15 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.simplegpstracker.R
 import com.example.simplegpstracker.model.GpsService
-import com.example.simplegpstracker.model.db.Constants
+import com.example.simplegpstracker.model.Constants
 import com.example.simplegpstracker.model.db.location.LocationEntity
 import com.example.simplegpstracker.model.db.record.RecordEntity
-import com.google.android.gms.location.*
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_tracker.*
 import org.osmdroid.api.IMapController
@@ -40,15 +33,12 @@ import org.osmdroid.views.overlay.compass.CompassOverlay
 import org.osmdroid.views.overlay.compass.InternalCompassOrientationProvider
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
-import java.util.concurrent.TimeUnit
 
 class TrackerActivity : AppCompatActivity() {
 
-    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
-    private lateinit var locationCallback: LocationCallback
-    private lateinit var locationRequest: LocationRequest
     private lateinit var mTrackerActivityViewModel: TrackerActivityViewModel
     private lateinit var mapController: IMapController
+    private lateinit var localBroadcastManager: LocalBroadcastManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,6 +46,8 @@ class TrackerActivity : AppCompatActivity() {
         setSupportActionBar(findViewById(R.id.activity_tracker_toolbar))
         mTrackerActivityViewModel = ViewModelProvider(this).get(TrackerActivityViewModel::class.java)
         mTrackerActivityViewModel.recordId = intent.getIntExtra("record_id", 0)
+        localBroadcastManager =  LocalBroadcastManager.getInstance(applicationContext)
+//        locationBroadcastReceiver = localBroadcastManager.registerReceiver(LocationBroadcastReceiver, )
 
         Configuration.getInstance().load(applicationContext, getPreferences(Context.MODE_PRIVATE))
         buildMapView()
@@ -79,25 +71,6 @@ class TrackerActivity : AppCompatActivity() {
                 }
             )
 
-//        when {
-//            ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.ACCESS_FINE_LOCATION) -> {
-//                ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), Constants.Permission().REQUEST_CODE)
-//            }
-//            ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) -> {
-//                ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE), Constants.Permission().REQUEST_CODE)
-//            }
-//            ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.INTERNET) -> {
-//                ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.INTERNET), Constants.Permission().REQUEST_CODE)
-//            }
-//            ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.ACCESS_NETWORK_STATE) -> {
-//                ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.ACCESS_NETWORK_STATE), Constants.Permission().REQUEST_CODE)
-//            }
-//            else -> {
-//                buildLocationRequest()
-//                buildLocationCallBack()
-//                fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
-//            }
-//        }
         try {
             if (
                 ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
@@ -131,6 +104,11 @@ class TrackerActivity : AppCompatActivity() {
             }
             mTrackerActivityViewModel.isRecording = !mTrackerActivityViewModel.isRecording
         }
+
+        LocalBroadcastManager.getInstance(this).registerReceiver(
+            LocationBroadcastReceiver,
+            IntentFilter(Constants.Service().LOCATION_BROADCAST)
+        )
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -200,6 +178,17 @@ class TrackerActivity : AppCompatActivity() {
         }
     }
 
+    private val LocationBroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent){
+            val location = Location("").apply {
+                latitude = intent.getDoubleExtra("latitude", 0.0)
+                longitude = intent.getDoubleExtra("longitude", 0.0)
+                speed = intent.getFloatExtra("speed", 0.0f)
+            }
+            mTrackerActivityViewModel.insertLocation(location, mTrackerActivityViewModel.recordId)
+        }
+    }
+
     private fun buildMapView() {
         requestPermissionsIfNecessary(arrayOf(
             android.Manifest.permission.ACCESS_FINE_LOCATION,
@@ -231,5 +220,20 @@ class TrackerActivity : AppCompatActivity() {
             add(mLocationOverlay)
             add(mCompassOverlay)
         }
+    }
+
+    override fun onPause() {
+        super.onStop()
+        activity_tracker_mapview.onPause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        activity_tracker_mapview.onResume()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(LocationBroadcastReceiver)
     }
 }

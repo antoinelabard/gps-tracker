@@ -3,12 +3,10 @@ package com.example.simplegpstracker.ui
 import android.app.PendingIntent
 import android.app.Service
 import android.content.Intent
-import android.os.Build
 import android.os.IBinder
-import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import com.example.simplegpstracker.R
-import com.example.simplegpstracker.model.db.Constants
+import com.example.simplegpstracker.model.Constants
 
 
 class TrackerService: Service() {

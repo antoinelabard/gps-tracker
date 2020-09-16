@@ -1,4 +1,4 @@
-package com.example.simplegpstracker.model.db
+package com.example.simplegpstracker.model
 
 class Constants {
     class Notification {
@@ -9,5 +9,8 @@ class Constants {
     class Permission {
         val REQUEST_CODE = 21
 
+    }
+    class Service {
+        val LOCATION_BROADCAST = "31"
     }
 }
