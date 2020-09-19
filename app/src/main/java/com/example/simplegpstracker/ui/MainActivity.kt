@@ -20,7 +20,7 @@ import com.example.simplegpstracker.model.db.record.RecordEntity
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
-open class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity() {
 
     private lateinit var mMainActivityViewModel: MainActivityViewModel
 
