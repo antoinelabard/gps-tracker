@@ -16,6 +16,8 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import com.example.simplegpstracker.ui.TrackerActivity
 import android.Manifest
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.simplegpstracker.R
 
@@ -23,8 +25,6 @@ class GpsService: Service(), LocationListener {
 
     private lateinit var locationManager: LocationManager
     private var locationProvider: String? = null
-    private lateinit var notification: Notification
-
     private var recordId: Int = 0
 
     override fun onCreate() {
@@ -32,8 +32,40 @@ class GpsService: Service(), LocationListener {
 
         locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         locationProvider = locationManager.getBestProvider(Criteria(), false)
+    }
 
-        notification = NotificationCompat.Builder(this, "1")
+    override fun onLocationChanged(location: Location?) {
+        if (location != null) {
+            val intent = Intent(Constants.LocationService.LOCATION_BROADCAST)
+                .putExtra(Constants.Intent.LATITUDE_EXTRA, location.latitude)
+                .putExtra(Constants.Intent.LONGITUDE_EXTRA, location.longitude)
+                .putExtra(Constants.Intent.SPEED_EXTRA, location.speed)
+
+            LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
+        }
+    }
+    override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
+    override fun onProviderEnabled(provider: String?) {}
+    override fun onProviderDisabled(provider: String?) {}
+
+    override fun onBind(intent: Intent?): IBinder? {
+        return null
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+
+        recordId = intent?.getIntExtra(Constants.Intent.RECORD_ID_EXTRA, 0)!!
+
+
+        val playIntent = Intent(this, GpsService::class.java)
+            .setAction(if (intent.action == "pause") "play" else "pause")
+        val playPendingIntent = PendingIntent.getForegroundService(this, 1, playIntent, 0)
+        val stopIntent = Intent(this, GpsService::class.java)
+            .setAction("stop")
+        val stopPendingIntent = PendingIntent.getForegroundService(this, 1, stopIntent, 0)
+
+        val notification = NotificationCompat.Builder(this, "1")
             .setContentTitle("Recording")
             .setContentText("Tap for more info")
             .setSmallIcon(R.drawable.ic_launcher_foreground)
@@ -48,34 +80,21 @@ class GpsService: Service(), LocationListener {
                 )
             )
             .setAutoCancel(true)
-            .build()
-        Constants.Notification.CHANNEL_ID
-    }
+            .addAction(R.drawable.ic_baseline_play_arrow_24, "play", stopPendingIntent)
 
-    override fun onLocationChanged(location: Location?) {
-        if (location != null) {
-            val intent = Intent(Constants.LocationService.LOCATION_BROADCAST)
-                .putExtra(Constants.Intent.LATITUDE_EXTRA, location.latitude)
-                .putExtra(Constants.Intent.LONGITUDE_EXTRA, location.longitude)
-                .putExtra(Constants.Intent.SPEED_EXTRA, location.speed)
+        when (intent.action) {
+            "stop" -> stopSelf()
+            "pause" -> {
+                notification.addAction(R.drawable.ic_baseline_play_arrow_24, "play", playPendingIntent)
 
-            LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
+            }
+            else -> {
+                notification.addAction(R.drawable.ic_baseline_pause_24, "pause", playPendingIntent)
+
+            }
         }
-    }
 
-    override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
-    override fun onProviderEnabled(provider: String?) {}
-    override fun onProviderDisabled(provider: String?) {}
-
-    override fun onBind(intent: Intent?): IBinder? {
-        return null
-    }
-
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-
-        recordId = intent?.getIntExtra(Constants.Intent.RECORD_ID_EXTRA, 0)!!
-
-        this.startForeground(1, notification)
+        startForeground(1, notification.build())
 
         if (ActivityCompat.checkSelfPermission(
                 this,
