@@ -15,11 +15,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.simplegpstracker.R
+import com.example.simplegpstracker.model.Constants
 import com.example.simplegpstracker.model.db.record.RecordEntity
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
-
-//fun toast(context: Context, text: String) = Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
 
 open class MainActivity : AppCompatActivity() {
 
@@ -54,14 +53,13 @@ open class MainActivity : AppCompatActivity() {
             mMainActivityViewModel.insertRecord(RecordEntity(newId, "Record $currentDate", currentDate, currentDate))
             adapter.notifyDataSetChanged()
             val intent = Intent(this@MainActivity, TrackerActivity::class.java)
-            intent.putExtra("record_id", newId)
+            intent.putExtra(Constants.Intent.RECORD_ID_EXTRA, newId)
             startActivity(intent)
         }
 
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_main, menu)
         return true
     }
@@ -74,13 +72,11 @@ open class MainActivity : AppCompatActivity() {
     }
 
     private fun createNotificationChannel() {
-        val CHANNEL_ID = "1"
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val importance = NotificationManager.IMPORTANCE_DEFAULT
-            val channel = NotificationChannel(CHANNEL_ID, "channel_name", importance).apply {
-                description = "channel_description"
-            }
+            val channel = NotificationChannel(
+                Constants.Notification.CHANNEL_ID,
+                R.string.app_name.toString(), importance)
             val notificationManager: NotificationManager =
                 getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)

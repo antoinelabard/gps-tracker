@@ -26,7 +26,6 @@ class GpsService: Service(), LocationListener {
     private lateinit var notification: Notification
 
     private var recordId: Int = 0
-    private var location: Location? = null
 
     override fun onCreate() {
         super.onCreate()
@@ -50,14 +49,15 @@ class GpsService: Service(), LocationListener {
             )
             .setAutoCancel(true)
             .build()
+        Constants.Notification.CHANNEL_ID
     }
 
     override fun onLocationChanged(location: Location?) {
         if (location != null) {
-            val intent = Intent(Constants.Service().LOCATION_BROADCAST)
-                .putExtra("latitude", location.latitude)
-                .putExtra("longitude", location.longitude)
-                .putExtra("speed", location.speed)
+            val intent = Intent(Constants.LocationService.LOCATION_BROADCAST)
+                .putExtra(Constants.Intent.LATITUDE_EXTRA, location.latitude)
+                .putExtra(Constants.Intent.LONGITUDE_EXTRA, location.longitude)
+                .putExtra(Constants.Intent.SPEED_EXTRA, location.speed)
 
             LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
         }
@@ -73,7 +73,7 @@ class GpsService: Service(), LocationListener {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
-        recordId = intent?.getIntExtra("recordId", 0)!!
+        recordId = intent?.getIntExtra(Constants.Intent.RECORD_ID_EXTRA, 0)!!
 
         this.startForeground(1, notification)
 
@@ -87,7 +87,7 @@ class GpsService: Service(), LocationListener {
         ) {
             stopSelf()
         }
-        locationManager.requestLocationUpdates(locationProvider!!, 400, 1.0f, this)
+        locationManager.requestLocationUpdates(locationProvider!!, Constants.LocationService.MIN_TIME_REFRESH, Constants.LocationService.MIN_DISTANCE_REFRESH, this)
         return START_STICKY
     }
 }

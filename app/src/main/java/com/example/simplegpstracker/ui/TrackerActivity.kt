@@ -4,7 +4,6 @@ import android.content.*
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -39,15 +38,15 @@ class TrackerActivity : AppCompatActivity() {
     private lateinit var mTrackerActivityViewModel: TrackerActivityViewModel
     private lateinit var mapController: IMapController
     private lateinit var localBroadcastManager: LocalBroadcastManager
+    lateinit var locationServiceIntent: Intent
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tracker)
         setSupportActionBar(findViewById(R.id.activity_tracker_toolbar))
         mTrackerActivityViewModel = ViewModelProvider(this).get(TrackerActivityViewModel::class.java)
-        mTrackerActivityViewModel.recordId = intent.getIntExtra("record_id", 0)
+        mTrackerActivityViewModel.recordId = intent.getIntExtra(Constants.Intent.RECORD_ID_EXTRA, 0)
         localBroadcastManager =  LocalBroadcastManager.getInstance(applicationContext)
-//        locationBroadcastReceiver = localBroadcastManager.registerReceiver(LocationBroadcastReceiver, )
 
         Configuration.getInstance().load(applicationContext, getPreferences(Context.MODE_PRIVATE))
         buildMapView()
@@ -84,22 +83,22 @@ class TrackerActivity : AppCompatActivity() {
                         android.Manifest.permission.ACCESS_COARSE_LOCATION,
                         android.Manifest.permission.INTERNET,
                         android.Manifest.permission.ACCESS_NETWORK_STATE
-                    ), Constants.Permission().REQUEST_CODE
+                    ), Constants.Permission.REQUEST_CODE
                 )
             }
         } catch (e: Exception) {
             e.printStackTrace()
         }
 
-        val intent = Intent(applicationContext, GpsService::class.java)
+        locationServiceIntent = Intent(applicationContext, GpsService::class.java)
             .putExtra("recordId", mTrackerActivityViewModel.recordId)
 
         activity_tracker_pause_resume_button.setOnClickListener {
             if (mTrackerActivityViewModel.isRecording) {
-                stopService(intent)
+                stopService(locationServiceIntent)
                 activity_tracker_pause_resume_button.setImageResource(R.drawable.ic_action_gps_active)
             } else {
-                startService(intent)
+                startService(locationServiceIntent)
                 activity_tracker_pause_resume_button.setImageResource(R.drawable.ic_action_gps_inactive)
             }
             mTrackerActivityViewModel.isRecording = !mTrackerActivityViewModel.isRecording
@@ -107,7 +106,7 @@ class TrackerActivity : AppCompatActivity() {
 
         LocalBroadcastManager.getInstance(this).registerReceiver(
             LocationBroadcastReceiver,
-            IntentFilter(Constants.Service().LOCATION_BROADCAST)
+            IntentFilter(Constants.LocationService.LOCATION_BROADCAST)
         )
     }
 
@@ -173,17 +172,17 @@ class TrackerActivity : AppCompatActivity() {
             ActivityCompat.requestPermissions(
                 this,
                 permissionsToRequest.toArray(arrayOf<String>()),
-                Constants.Permission().REQUEST_CODE
+                Constants.Permission.REQUEST_CODE
             )
         }
     }
 
     private val LocationBroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent){
-            val location = Location("").apply {
-                latitude = intent.getDoubleExtra("latitude", 0.0)
-                longitude = intent.getDoubleExtra("longitude", 0.0)
-                speed = intent.getFloatExtra("speed", 0.0f)
+            val location = Location(Constants.LocationService.LOCATION_PROVIDER).apply {
+                latitude = intent.getDoubleExtra(Constants.Intent.LATITUDE_EXTRA, 0.0)
+                longitude = intent.getDoubleExtra(Constants.Intent.LONGITUDE_EXTRA, 0.0)
+                speed = intent.getFloatExtra(Constants.Intent.SPEED_EXTRA, 0.0f)
             }
             mTrackerActivityViewModel.insertLocation(location, mTrackerActivityViewModel.recordId)
         }
@@ -235,5 +234,6 @@ class TrackerActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         LocalBroadcastManager.getInstance(this).unregisterReceiver(LocationBroadcastReceiver)
+        stopService(locationServiceIntent)
     }
 }

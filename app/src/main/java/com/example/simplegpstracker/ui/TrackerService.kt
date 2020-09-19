@@ -15,12 +15,9 @@ class TrackerService: Service() {
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
 
-        isRecording = intent.getBooleanExtra("isRecording", false)
+        isRecording = intent.getBooleanExtra(Constants.Intent.IS_RECORDING_EXTRA, false)
 
-//        if (intent.getAction()?.equals(Constants.Notification().ACTION_PLAY_PAUSE)!!) {
-//            if(isRecording)
-//        }
-        val notification = NotificationCompat.Builder(this, Constants.Notification().CHANNEL_ID)
+        val notification = NotificationCompat.Builder(this, Constants.Notification.CHANNEL_ID)
             .setContentTitle(getString(R.string.recording_notification_title))
             .setContentText(getString(R.string.recording_notification_content_text))
             .setSmallIcon(R.drawable.ic_launcher_foreground)
@@ -35,7 +32,6 @@ class TrackerService: Service() {
                 )
             )
             .setAutoCancel(true)
-//            .addAction(R.drawable.ic_baseline_play_arrow_24, "Play")
             .build()
         startForeground(1, notification)
         return START_STICKY
