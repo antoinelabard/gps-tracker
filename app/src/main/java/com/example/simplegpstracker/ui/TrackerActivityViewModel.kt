@@ -26,11 +26,11 @@ class TrackerActivityViewModel(application: Application?) : AndroidViewModel(app
 
     fun deleteRecord(recordId: Int) = mAppRepository.deleteRecord(recordId)
 
-    fun insertLocation(location: Location, rid: Int) {
+    fun insertLocation(location: Location) {
         mAppRepository.insertLocation(
             LocationEntity(
                 0,
-                rid,
+                recordId,
                 location.latitude,
                 location.longitude,
                 location.speed

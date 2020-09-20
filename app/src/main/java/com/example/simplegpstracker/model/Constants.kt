@@ -28,6 +28,9 @@ class Constants {
             const val SPEED_EXTRA = "speed"
             const val RECORD_ID_EXTRA = "recordId"
             const val IS_RECORDING_EXTRA = "isRecording"
+            const val ACTION_PAUSE = "pause"
+            const val ACTION_RECORD = "record"
+            const val ACTION_STOP = "stop"
         }
     }
 }

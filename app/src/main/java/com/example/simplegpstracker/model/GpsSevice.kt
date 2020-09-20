@@ -1,6 +1,6 @@
 package com.example.simplegpstracker.model
 
-import android.app.Notification
+import android.Manifest
 import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
@@ -10,16 +10,15 @@ import android.location.Criteria
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
+import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
+import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
-import com.example.simplegpstracker.ui.TrackerActivity
-import android.Manifest
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.simplegpstracker.R
+import com.example.simplegpstracker.ui.TrackerActivity
 
 class GpsService: Service(), LocationListener {
 
@@ -59,15 +58,15 @@ class GpsService: Service(), LocationListener {
 
 
         val playIntent = Intent(this, GpsService::class.java)
-            .setAction(if (intent.action == "pause") "play" else "pause")
+            .setAction(if (intent.action == Constants.Intent.ACTION_PAUSE) Constants.Intent.ACTION_RECORD else Constants.Intent.ACTION_PAUSE)
         val playPendingIntent = PendingIntent.getForegroundService(this, 1, playIntent, 0)
         val stopIntent = Intent(this, GpsService::class.java)
-            .setAction("stop")
+            .setAction(Constants.Intent.ACTION_STOP)
         val stopPendingIntent = PendingIntent.getForegroundService(this, 1, stopIntent, 0)
 
-        val notification = NotificationCompat.Builder(this, "1")
-            .setContentTitle("Recording")
-            .setContentText("Tap for more info")
+        val notification = NotificationCompat.Builder(this, Constants.Notification.CHANNEL_ID)
+            .setContentTitle("Recording location...")
+            .setContentText("Tap to open the app")
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setOngoing(true)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
@@ -76,26 +75,29 @@ class GpsService: Service(), LocationListener {
                     applicationContext, 0, Intent(
                         applicationContext,
                         TrackerActivity::class.java
-                    ).putExtra("recordId", recordId), 0
+                    ).putExtra(Constants.Intent.RECORD_ID_EXTRA, recordId), 0
                 )
             )
             .setAutoCancel(true)
-            .addAction(R.drawable.ic_baseline_play_arrow_24, "play", stopPendingIntent)
+            .addAction(R.drawable.ic_baseline_stop_24, "stop", stopPendingIntent)
 
         when (intent.action) {
-            "stop" -> stopSelf()
-            "pause" -> {
+            Constants.Intent.ACTION_STOP -> stopSelf()
+            Constants.Intent.ACTION_PAUSE -> {
                 notification.addAction(R.drawable.ic_baseline_play_arrow_24, "play", playPendingIntent)
-
+                disableLocationUpdates()
             }
-            else -> {
+            Constants.Intent.ACTION_RECORD -> {
                 notification.addAction(R.drawable.ic_baseline_pause_24, "pause", playPendingIntent)
-
+                enableLocationUpdates()
             }
         }
 
         startForeground(1, notification.build())
+        return START_STICKY
+    }
 
+    private fun enableLocationUpdates() {
         if (ActivityCompat.checkSelfPermission(
                 this,
                 Manifest.permission.ACCESS_FINE_LOCATION
@@ -106,7 +108,19 @@ class GpsService: Service(), LocationListener {
         ) {
             stopSelf()
         }
-        locationManager.requestLocationUpdates(locationProvider!!, Constants.LocationService.MIN_TIME_REFRESH, Constants.LocationService.MIN_DISTANCE_REFRESH, this)
-        return START_STICKY
+
+        locationManager.requestLocationUpdates(
+            locationProvider!!,
+            Constants.LocationService.MIN_TIME_REFRESH,
+            Constants.LocationService.MIN_DISTANCE_REFRESH,
+            this
+        )
+    }
+
+    private fun disableLocationUpdates() = locationManager.removeUpdates(this)
+
+    override fun onDestroy() {
+        super.onDestroy()
+        disableLocationUpdates()
     }
 }
