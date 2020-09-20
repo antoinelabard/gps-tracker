@@ -53,29 +53,36 @@ class TrackerActivity : AppCompatActivity() {
 
         mTrackerActivityViewModel.allRecords
             .observe(this, Observer<List<RecordEntity?>?> {
-                activity_tracker_toolbar.title = mTrackerActivityViewModel.getRecordById(mTrackerActivityViewModel.recordId)?.name
-                activity_tracker_toolbar.subtitle = mTrackerActivityViewModel.getLocationsByRecordId(mTrackerActivityViewModel.recordId)?.count().toString()
+                activity_tracker_toolbar.title = mTrackerActivityViewModel
+                    .getRecordById(mTrackerActivityViewModel.recordId).name
             })
         mTrackerActivityViewModel.allLocations
             .observe(this,
                 Observer<List<LocationEntity?>?> {
+                    activity_tracker_toolbar.subtitle = (mTrackerActivityViewModel
+                        .getLocationsByRecordId(mTrackerActivityViewModel.recordId).count().toString())
                     val line = Polyline()
-                    var parcours = mTrackerActivityViewModel.getLocationsByRecordId(mTrackerActivityViewModel.recordId)?.map {
+                    var parcours = mTrackerActivityViewModel
+                        .getLocationsByRecordId(mTrackerActivityViewModel.recordId).map {
                         GeoPoint(it.latitude, it.longitude)
                     }
-                    if (parcours?.size == 0) parcours = mutableListOf(GeoPoint(0.0, 0.0))
+                    if (parcours.isEmpty()) parcours = mutableListOf(GeoPoint(0.0, 0.0))
                     line.setPoints(parcours)
                     activity_tracker_mapview.overlayManager.add(line)
-                    mapController.setCenter(parcours?.last())
+                    mapController.setCenter(parcours.last())
                 }
             )
 
         try {
             if (
-                ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(this, android.Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_NETWORK_STATE) != PackageManager.PERMISSION_GRANTED
+                ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED
+                || ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED
+                || ActivityCompat.checkSelfPermission(this, android.Manifest.permission.INTERNET)
+                != PackageManager.PERMISSION_GRANTED
+                || ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_NETWORK_STATE)
+                != PackageManager.PERMISSION_GRANTED
             ) {
                 ActivityCompat.requestPermissions(
                     this, arrayOf(
@@ -91,7 +98,7 @@ class TrackerActivity : AppCompatActivity() {
         }
 
         locationServiceIntent = Intent(applicationContext, GpsService::class.java)
-            .putExtra("recordId", mTrackerActivityViewModel.recordId)
+            .putExtra(Constants.Intent.RECORD_ID_EXTRA, mTrackerActivityViewModel.recordId)
             .setAction(Constants.Intent.ACTION_RECORD)
 
         activity_tracker_pause_resume_button.setOnClickListener {
@@ -133,7 +140,6 @@ class TrackerActivity : AppCompatActivity() {
                             Toast.makeText(this, R.string.empty_name_error, Toast.LENGTH_LONG).show()
                         } else {
                             mTrackerActivityViewModel.renameRecord(mTrackerActivityViewModel.recordId, name)
-//                            textview.text = mTrackerActivityViewModel.getRecords()?.filter { it.id == mTrackerActivityViewModel.recordId }.toString()
                         }
                     }
                     .setNegativeButton(R.string.cancel) { _: DialogInterface, _: Int ->
@@ -149,7 +155,8 @@ class TrackerActivity : AppCompatActivity() {
                     .setIcon(R.drawable.ic_action_delete)
                     .setPositiveButton(R.string.yes) { _: DialogInterface, _: Int ->
                         mTrackerActivityViewModel.deleteRecord(mTrackerActivityViewModel.recordId)
-                        Snackbar.make(activity_tracker_layout, R.string.deletion_complete,Snackbar.LENGTH_LONG).show()
+                        Toast.makeText(this, R.string.deletion_complete, Toast.LENGTH_LONG)
+
                         finish()
                     }
                     .setNegativeButton(R.string.no) { _: DialogInterface, _: Int ->
@@ -230,6 +237,10 @@ class TrackerActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         activity_tracker_mapview.onResume()
+    }
+
+    private fun shutdownActivity() {
+
     }
 
     override fun onDestroy() {

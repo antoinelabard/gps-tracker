@@ -1,6 +1,5 @@
 package com.example.simplegpstracker.model.db.location
 
-import android.location.Location
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
@@ -33,12 +32,4 @@ data class LocationEntity (
     @ColumnInfo(name = "speed")
     var speed: Float
 
-    ) {
-    fun toLocation() : Location {
-        return Location("").apply {
-            latitude =latitude
-            longitude = longitude
-            speed = speed
-        }
-    }
-}
+    )

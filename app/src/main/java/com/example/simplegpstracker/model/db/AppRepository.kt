@@ -26,7 +26,7 @@ class AppRepository internal constructor(application: Application?) {
     fun deleteRecord(recordId: Int) = deleteRecordAsyncTask(mRecordDao).execute(recordId)
     fun insertLocation(locationEntity: LocationEntity?) = insertLocationAsyncTask(mLocationDao).execute(locationEntity)
 
-    private class insertRecordAsyncTask internal constructor(private val mDao: RecordDao?) :
+    private class insertRecordAsyncTask constructor(private val mDao: RecordDao?) :
         AsyncTask<RecordEntity?, Void?, Void?>() {
         override fun doInBackground(vararg params: RecordEntity?): Void? {
             params[0]?.let { mDao!!.insert(it) }
@@ -34,7 +34,7 @@ class AppRepository internal constructor(application: Application?) {
         }
     }
 
-    private class deleteRecordAsyncTask internal constructor(private val mDao: RecordDao?) :
+    private class deleteRecordAsyncTask constructor(private val mDao: RecordDao?) :
         AsyncTask<Int?, Void?, Void?>() {
         override fun doInBackground(vararg params: Int?): Void? {
             params[0]?.let { mDao!!.deleteById(it) }
@@ -43,7 +43,7 @@ class AppRepository internal constructor(application: Application?) {
 
     }
 
-    private class insertLocationAsyncTask internal constructor(private val mDao: LocationDao?) :
+    private class insertLocationAsyncTask constructor(private val mDao: LocationDao?) :
         AsyncTask<LocationEntity?, Void?, Void?>() {
         override fun doInBackground(vararg params: LocationEntity?): Void? {
             params[0]?.let { mDao!!.insert(it) }
