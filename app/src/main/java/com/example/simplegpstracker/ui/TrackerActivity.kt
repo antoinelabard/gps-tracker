@@ -139,7 +139,7 @@ class TrackerActivity : AppCompatActivity() {
                         if (name.isEmpty()) {
                             Toast.makeText(this, R.string.empty_name_error, Toast.LENGTH_LONG).show()
                         } else {
-                            mTrackerActivityViewModel.renameRecord(mTrackerActivityViewModel.recordId, name)
+                            mTrackerActivityViewModel.renameRecord(name)
                         }
                     }
                     .setNegativeButton(R.string.cancel) { _: DialogInterface, _: Int ->

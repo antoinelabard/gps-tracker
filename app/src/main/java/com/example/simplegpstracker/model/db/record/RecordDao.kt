@@ -18,6 +18,9 @@ interface RecordDao {
     @Query("DELETE FROM record_table WHERE id = :id")
     fun deleteById(id: Int)
 
+    @Query("UPDATE record_table SET name = :name WHERE id = :id")
+    fun updateName(id: Int, name: String)
+
     @Query("DELETE FROM record_table")
     fun deleteAll()
 }
