@@ -21,7 +21,6 @@ import com.example.simplegpstracker.model.GpsService
 import com.example.simplegpstracker.model.Constants
 import com.example.simplegpstracker.model.db.location.LocationEntity
 import com.example.simplegpstracker.model.db.record.RecordEntity
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_tracker.*
 import org.osmdroid.api.IMapController
 import org.osmdroid.config.Configuration
@@ -139,7 +138,7 @@ class TrackerActivity : AppCompatActivity() {
                         if (name.isEmpty()) {
                             Toast.makeText(this, R.string.empty_name_error, Toast.LENGTH_LONG).show()
                         } else {
-                            mTrackerActivityViewModel.renameRecord(name)
+                            mTrackerActivityViewModel.updateRecordName(name)
                         }
                     }
                     .setNegativeButton(R.string.cancel) { _: DialogInterface, _: Int ->

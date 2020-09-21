@@ -5,6 +5,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import java.util.*
 
 @Dao
 interface RecordDao {
@@ -12,7 +13,7 @@ interface RecordDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(r: RecordEntity)
 
-    @Query("SELECT * FROM record_table ORDER BY updated_date desc")
+    @Query("SELECT * FROM record_table ORDER BY last_modification desc")
     fun getAll(): LiveData<List<RecordEntity>>
 
     @Query("DELETE FROM record_table WHERE id = :id")
@@ -20,6 +21,9 @@ interface RecordDao {
 
     @Query("UPDATE record_table SET name = :name WHERE id = :id")
     fun updateName(id: Int, name: String)
+
+    @Query("UPDATE record_table SET last_modification = :date WHERE id = :id")
+    fun updateLastRecordModification(id: Int, date: Date)
 
     @Query("DELETE FROM record_table")
     fun deleteAll()

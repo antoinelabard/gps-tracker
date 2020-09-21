@@ -7,6 +7,7 @@ import com.example.simplegpstracker.model.db.location.LocationDao
 import com.example.simplegpstracker.model.db.location.LocationEntity
 import com.example.simplegpstracker.model.db.record.RecordDao
 import com.example.simplegpstracker.model.db.record.RecordEntity
+import java.util.*
 
 class AppRepository internal constructor(application: Application?) {
     private val mRecordDao: RecordDao?
@@ -24,6 +25,7 @@ class AppRepository internal constructor(application: Application?) {
 
     fun insertRecord(recordEntity: RecordEntity?) = insertRecordAsyncTask(mRecordDao).execute(recordEntity)
     fun updateRecordName(id: Int, name: String) = updateNameRecordAsyncTask(mRecordDao).execute(mapOf(id to name))
+    fun updateLastRecordModification(id: Int) = updateLastRecordModificationAsyncTask(mRecordDao).execute(id)
     fun deleteRecord(recordId: Int) = deleteRecordAsyncTask(mRecordDao).execute(recordId)
     fun insertLocation(locationEntity: LocationEntity?) = insertLocationAsyncTask(mLocationDao).execute(locationEntity)
 
@@ -35,14 +37,21 @@ class AppRepository internal constructor(application: Application?) {
         }
     }
     private class updateNameRecordAsyncTask constructor(private val mDao: RecordDao?) :
-            AsyncTask<Map<Int, String>, Void?, Void?>() {
-            override fun doInBackground(vararg params: Map<Int, String>): Void? {
-                params[0]?.let {
-                    for ((id, name) in it) mDao?.updateName(id, name)
-                }
-                return null
+        AsyncTask<Map<Int, String>, Void?, Void?>() {
+        override fun doInBackground(vararg params: Map<Int, String>): Void? {
+            params[0].let {
+                for ((id, name) in it) mDao?.updateName(id, name)
             }
+            return null
         }
+    }
+    private class updateLastRecordModificationAsyncTask constructor(private val mDao: RecordDao?) :
+        AsyncTask<Int, Void?, Void?>() {
+        override fun doInBackground(vararg params: Int?): Void? {
+            params[0]?.let { mDao?.updateLastRecordModification(it, Date()) }
+            return null
+        }
+    }
 
     private class deleteRecordAsyncTask constructor(private val mDao: RecordDao?) :
         AsyncTask<Int?, Void?, Void?>() {

@@ -15,8 +15,8 @@ data class RecordEntity (
     var name: String,
 
     @ColumnInfo(name = "creation_date")
-    var creationDate: Date, // TODO: Replace the type of the variable by Date
+    var creationDate: Date,
 
-    @ColumnInfo(name = "updated_date")
-    var updatedDate: Date
-) { fun clone(): RecordEntity = RecordEntity(id, name, creationDate, updatedDate) }
+    @ColumnInfo(name = "last_modification")
+    var lastModification: Date
+) { fun clone(): RecordEntity = RecordEntity(id, name, creationDate, lastModification) }

@@ -24,9 +24,13 @@ class TrackerActivityViewModel(application: Application?) : AndroidViewModel(app
         return records.first()
     }
 
-    fun renameRecord(name: String) {
-        val recordEntity = allRecords.value?.find { it.id == recordId }!!
+    fun updateRecordName(name: String) {
         mAppRepository.updateRecordName(recordId, name)
+        updateLastRecordModification()
+    }
+
+    fun updateLastRecordModification() {
+        mAppRepository.updateLastRecordModification(recordId)
     }
 
     fun deleteRecord(recordId: Int) = mAppRepository.deleteRecord(recordId)
