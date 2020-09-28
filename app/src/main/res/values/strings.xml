@@ -8,11 +8,18 @@
     <string name="delete_message">Are you sure to delete this record ?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="deletion_complete">Deletion complete</string>
     <string name="deletion_canceled">Deletion canceled</string>
     <string name="empty_name_error">The name must be at least one character long</string>
     <string name="recording_notification_title">Recording location</string>
     <string name="recording_notification_content_text">Tap for more details</string>
+    <string name="no_record">No record</string>
+    <string name="gpstracker_notification_title">Recording location...</string>
+    <string name="gpstracker_notification_content">Tap to open the app</string>
+    <string name="stop">Stop</string>
+    <string name="play">Play</string>
+    <string name="pause">Pause</string>
+    <string name="canceled">Canceled</string>
 </resources>

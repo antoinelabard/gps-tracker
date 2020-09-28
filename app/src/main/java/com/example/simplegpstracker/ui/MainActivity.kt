@@ -18,6 +18,7 @@ import com.example.simplegpstracker.R
 import com.example.simplegpstracker.model.Constants
 import com.example.simplegpstracker.model.db.record.RecordEntity
 import kotlinx.android.synthetic.main.activity_main.*
+import java.text.SimpleDateFormat
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -50,7 +51,12 @@ class MainActivity : AppCompatActivity() {
                 ++newId
             }
             val currentDate = Date()
-            mMainActivityViewModel.insertRecord(RecordEntity(newId, "Record $currentDate", currentDate, currentDate))
+            mMainActivityViewModel.insertRecord(RecordEntity(
+                newId,
+                "Record ${SimpleDateFormat("yyyy/mm/dd").format(currentDate)}",
+                currentDate,
+                currentDate
+            ))
             adapter.notifyDataSetChanged()
             val intent = Intent(this@MainActivity, TrackerActivity::class.java)
             intent.putExtra(Constants.Intent.RECORD_ID_EXTRA, newId)

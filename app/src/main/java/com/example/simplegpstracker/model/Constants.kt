@@ -33,4 +33,22 @@ class Constants {
             const val ACTION_STOP = "stop"
         }
     }
+    class Databalse {
+        companion object {
+            const val DATABASE_NAME = "app_database"
+            const val RECORD_TABLE = "record_table"
+            const val LOCATION_TABLE = "location_table"
+
+            const val RECORD_ENTITY_ID = "id"
+            const val RECORD_ENTITY_NAME = "name"
+            const val RECORD_ENTITY_CREATION_DATE = "creation_date"
+            const val RECORD_LAST_MODIFICATION = "last_modification"
+
+            const val LOCATION_ENTITY_ID = "id"
+            const val LOCATION_ENTITY_RECORD_ID = "record_id"
+            const val LOCATION_ENTITY_LATITUDE = "latitude"
+            const val LOCATION_ENTITY_LONGITUDE = "longitude"
+            const val LOCATION_ENTITY_SPEED = "speed"
+        }
+    }
 }

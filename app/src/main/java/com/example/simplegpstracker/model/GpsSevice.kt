@@ -65,8 +65,8 @@ class GpsService: Service(), LocationListener {
         val stopPendingIntent = PendingIntent.getForegroundService(this, 1, stopIntent, 0)
 
         val notification = NotificationCompat.Builder(this, Constants.Notification.CHANNEL_ID)
-            .setContentTitle("Recording location...")
-            .setContentText("Tap to open the app")
+            .setContentTitle(getString(R.string.gpstracker_notification_title))
+            .setContentText(getString(R.string.gpstracker_notification_content))
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setOngoing(true)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
@@ -79,16 +79,16 @@ class GpsService: Service(), LocationListener {
                 )
             )
             .setAutoCancel(true)
-            .addAction(R.drawable.ic_baseline_stop_24, "stop", stopPendingIntent)
+            .addAction(R.drawable.ic_baseline_stop_24, getString(R.string.stop), stopPendingIntent)
 
         when (intent.action) {
             Constants.Intent.ACTION_STOP -> stopSelf()
             Constants.Intent.ACTION_PAUSE -> {
-                notification.addAction(R.drawable.ic_baseline_play_arrow_24, "play", playPendingIntent)
+                notification.addAction(R.drawable.ic_baseline_play_arrow_24, getString(R.string.play), playPendingIntent)
                 disableLocationUpdates()
             }
             Constants.Intent.ACTION_RECORD -> {
-                notification.addAction(R.drawable.ic_baseline_pause_24, "pause", playPendingIntent)
+                notification.addAction(R.drawable.ic_baseline_pause_24, getString(R.string.pause), playPendingIntent)
                 enableLocationUpdates()
             }
         }

@@ -142,7 +142,7 @@ class TrackerActivity : AppCompatActivity() {
                         }
                     }
                     .setNegativeButton(R.string.cancel) { _: DialogInterface, _: Int ->
-                        Toast.makeText(this, "canceled", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this, getString(R.string.canceled), Toast.LENGTH_LONG).show()
                     }
                     .show()
                 true
@@ -236,10 +236,6 @@ class TrackerActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         activity_tracker_mapview.onResume()
-    }
-
-    private fun shutdownActivity() {
-
     }
 
     override fun onDestroy() {

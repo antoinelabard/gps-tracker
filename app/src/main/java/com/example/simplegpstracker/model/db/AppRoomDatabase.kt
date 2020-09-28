@@ -7,6 +7,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.example.simplegpstracker.model.Constants
 import com.example.simplegpstracker.model.db.location.LocationDao
 import com.example.simplegpstracker.model.db.location.LocationEntity
 import com.example.simplegpstracker.model.db.record.RecordDao
@@ -57,7 +58,7 @@ abstract class AppRoomDatabase : RoomDatabase() {
                     if (INSTANCE == null) {
                         INSTANCE = Room.databaseBuilder(
                             context.applicationContext,
-                            AppRoomDatabase::class.java, "app_database"
+                            AppRoomDatabase::class.java, Constants.Databalse.DATABASE_NAME
                         )
                             .fallbackToDestructiveMigration()
                             .addCallback(sRoomDatabaseCallback)
@@ -68,17 +69,10 @@ abstract class AppRoomDatabase : RoomDatabase() {
             return INSTANCE
         }
 
-        /**
-         * Override the onOpen method to populate the database.
-         * For this sample, we clear the database every time it is created or opened.
-         */
         private val sRoomDatabaseCallback: Callback = object : Callback() {
             override fun onOpen(db: SupportSQLiteDatabase) {
                 super.onOpen(db)
-//                PopulateDbAsync(
-//                    INSTANCE
-//                )
-//                    .execute()
+//                PopulateDbAsync(INSTANCE).execute()
             }
         }
     }
