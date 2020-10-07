@@ -27,7 +27,7 @@ class AppRepository internal constructor(application: Application?) {
     fun updateRecordName(id: Int, name: String) = UpdateNameRecordAsyncTask(mRecordDao).execute(mapOf(id to name))
     fun updateLastRecordModification(id: Int) = UpdateLastRecordModificationAsyncTask(mRecordDao).execute(id)
     fun deleteRecord(recordId: Int) = DeleteRecordAsyncTask(mRecordDao).execute(recordId)
-    fun insertLocation(locationEntity: LocationEntity?) = insertLocationAsyncTask(mLocationDao).execute(locationEntity)
+    fun insertLocation(locationEntity: LocationEntity?) = InsertLocationAsyncTask(mLocationDao).execute(locationEntity)
 
     private class InsertRecordAsyncTask constructor(private val mDao: RecordDao?) :
         AsyncTask<RecordEntity?, Void?, Void?>() {
@@ -62,7 +62,7 @@ class AppRepository internal constructor(application: Application?) {
 
     }
 
-    private class insertLocationAsyncTask constructor(private val mDao: LocationDao?) :
+    private class InsertLocationAsyncTask constructor(private val mDao: LocationDao?) :
         AsyncTask<LocationEntity?, Void?, Void?>() {
         override fun doInBackground(vararg params: LocationEntity?): Void? {
             params[0]?.let { mDao!!.insert(it) }
