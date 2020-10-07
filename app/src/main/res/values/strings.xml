@@ -16,7 +16,7 @@
     <string name="recording_notification_title">Recording location</string>
     <string name="recording_notification_content_text">Tap for more details</string>
     <string name="no_record">No record</string>
-    <string name="gpstracker_notification_title">Recording location...</string>
+    <string name="gpstracker_notification_title">Recording location…</string>
     <string name="gpstracker_notification_content">Tap to open the app</string>
     <string name="stop">Stop</string>
     <string name="play">Play</string>
