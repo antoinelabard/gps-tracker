@@ -3,7 +3,7 @@ package com.example.simplegpstracker.model
 import android.location.Location
 import kotlin.math.*
 
-class RecordOps {
+class LocationOps {
     fun getTotalDistance(locations: List<Location>) {
         TODO()
     }

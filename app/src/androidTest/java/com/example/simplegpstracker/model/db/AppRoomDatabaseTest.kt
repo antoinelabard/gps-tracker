@@ -28,15 +28,15 @@ class AppRoomDatabaseTest : TestCase() {
     private lateinit var locationDao: LocationDao
     private lateinit var db: AppRoomDatabase
 
-    val uId = 1000 // Default Id which belongs to no record nor location to test bad assignment behavior
+    private val unassignedId = 1000 // Default Id which belongs to no record nor location to test bad assignment behavior
 
-    val r = RecordEntity(0, "r", Date(), Date()) // Default record
-    val r1 = RecordEntity(1, "r1", Date(), Date()) // Second record
-    val rConflict = RecordEntity(r.id, "rConflict", Date(), Date()) // Has the same id as r
+    private val r = RecordEntity(0, "r", Date(), Date()) // Default record
+    private val r1 = RecordEntity(1, "r1", Date(), Date()) // Second record
+    private val rConflict = RecordEntity(r.id, "rConflict", Date(), Date()) // Has the same id as r
 
-    val l = LocationEntity(0, 0, 1.0, 0.0, 0.0f) // Default location
-    val l1 = LocationEntity(0, 0, 2.0, 0.0, 0.0f) // Second location
-    val lUnassigned = LocationEntity(2, uId, 4.0, 0.0, 0.0f) // Here the recordId belongs to no record intentionally
+    private val l = LocationEntity(0, 0, 1.0, 0.0, 0.0f) // Default location
+    private val l1 = LocationEntity(0, 0, 2.0, 0.0, 0.0f) // Second location
+    private val lUnassigned = LocationEntity(2, unassignedId, 4.0, 0.0, 0.0f) // Here the recordId belongs to no record intentionally
 
     @JvmField @Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -103,7 +103,7 @@ class AppRoomDatabaseTest : TestCase() {
     fun deleteRecordByIdWithUnassignedIdDoNothing() {
         recordDao.insert(r)
         recordDao.insert(r1)
-        recordDao.deleteById(uId)
+        recordDao.deleteById(unassignedId)
         val result = recordDao.getAll()
         result.observeForever{}
         assertThat(result.value, equalTo(listOf(r, r1)))
@@ -134,7 +134,7 @@ class AppRoomDatabaseTest : TestCase() {
     @Throws(Exception::class)
     fun updateRecordNameWithUnassignedIdDoNothing() {
         recordDao.insert(r)
-        recordDao.updateName(uId, "new")
+        recordDao.updateName(unassignedId, "new")
         val result = recordDao.getAll()
         result.observeForever{}
         assertThat(result.value?.get(0)?.name, equalTo(r.name))
@@ -158,7 +158,7 @@ class AppRoomDatabaseTest : TestCase() {
         recordDao.insert(r)
         Thread.sleep(10)
         val d = Date()
-        recordDao.updateLastRecordModification(uId, d)
+        recordDao.updateLastRecordModification(unassignedId, d)
         val result = recordDao.getAll()
         result.observeForever{}
         assertThat(result.value?.get(0)?.lastModification, equalTo(r.lastModification))
