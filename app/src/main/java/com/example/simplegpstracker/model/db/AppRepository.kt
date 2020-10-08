@@ -2,6 +2,7 @@ package com.example.simplegpstracker.model.db
 
 import android.app.Application
 import android.os.AsyncTask
+import android.util.Log
 import androidx.lifecycle.LiveData
 import com.example.simplegpstracker.model.db.location.LocationDao
 import com.example.simplegpstracker.model.db.location.LocationEntity
@@ -65,7 +66,11 @@ class AppRepository internal constructor(application: Application?) {
     private class InsertLocationAsyncTask constructor(private val mDao: LocationDao?) :
         AsyncTask<LocationEntity?, Void?, Void?>() {
         override fun doInBackground(vararg params: LocationEntity?): Void? {
-            params[0]?.let { mDao!!.insert(it) }
+            try {
+                params[0]?.let { mDao!!.insert(it) }
+            } catch (e: Exception) {
+                Log.e("OrphanLocationException","Exception: This location belongs to no record.")
+            }
             return null
         }
 

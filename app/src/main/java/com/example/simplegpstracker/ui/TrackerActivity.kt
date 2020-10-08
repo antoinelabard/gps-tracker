@@ -51,13 +51,15 @@ class TrackerActivity : AppCompatActivity() {
         buildMapView()
 
         mTrackerActivityViewModel.allRecords
-            .observe(this, Observer<List<RecordEntity?>?> {
+            .observe(this,
+                {
                 activity_tracker_toolbar.title = mTrackerActivityViewModel
                     .getRecordById(mTrackerActivityViewModel.recordId).name
-            })
+                }
+            )
         mTrackerActivityViewModel.allLocations
             .observe(this,
-                Observer<List<LocationEntity?>?> {
+                {
                     activity_tracker_toolbar.subtitle = (mTrackerActivityViewModel
                         .getLocationsByRecordId(mTrackerActivityViewModel.recordId).count().toString())
                     val line = Polyline()

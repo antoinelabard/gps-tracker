@@ -39,8 +39,8 @@ class MainActivity : AppCompatActivity() {
         mMainActivityViewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
         mMainActivityViewModel.allRecords
             .observe(this,
-                Observer<List<RecordEntity?>?> { records ->
-                    adapter.setRecords(records as List<RecordEntity>?)
+                { records ->
+                    adapter.setRecords(records)
                 })
 
         activity_new_record_button.setOnClickListener {
