@@ -6,10 +6,15 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.matcher.ViewMatchers.assertThat
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.example.simplegpstracker.Data.Companion.lUnassigned
+import com.example.simplegpstracker.Data.Companion.le1
+import com.example.simplegpstracker.Data.Companion.le2
+import com.example.simplegpstracker.Data.Companion.r1
+import com.example.simplegpstracker.Data.Companion.r2
+import com.example.simplegpstracker.Data.Companion.rConflict
+import com.example.simplegpstracker.Data.Companion.unassignedId
 import com.example.simplegpstracker.model.db.location.LocationDao
-import com.example.simplegpstracker.model.db.location.LocationEntity
 import com.example.simplegpstracker.model.db.record.RecordDao
-import com.example.simplegpstracker.model.db.record.RecordEntity
 import junit.framework.TestCase
 import org.hamcrest.CoreMatchers.equalTo
 import org.junit.After
@@ -28,17 +33,8 @@ class AppRoomDatabaseTest : TestCase() {
     private lateinit var locationDao: LocationDao
     private lateinit var db: AppRoomDatabase
 
-    private val unassignedId = 1000 // Default Id which belongs to no record nor location to test bad assignment behavior
-
-    private val r = RecordEntity(0, "r", Date(), Date()) // Default record
-    private val r1 = RecordEntity(1, "r1", Date(), Date()) // Second record
-    private val rConflict = RecordEntity(r.id, "rConflict", Date(), Date()) // Has the same id as r
-
-    private val l = LocationEntity(0, 0, 1.0, 0.0, 0.0f) // Default location
-    private val l1 = LocationEntity(0, 0, 2.0, 0.0, 0.0f) // Second location
-    private val lUnassigned = LocationEntity(2, unassignedId, 4.0, 0.0, 0.0f) // Here the recordId belongs to no record intentionally
-
-    @JvmField @Rule
+    @JvmField
+    @Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @Before
@@ -70,17 +66,17 @@ class AppRoomDatabaseTest : TestCase() {
     @Test
     @Throws(Exception::class)
     fun insertAndGetAllRecords() {
-        recordDao.insert(r)
         recordDao.insert(r1)
+        recordDao.insert(r2)
         val result = recordDao.getAll()
         result.observeForever{}
-        assertThat(result.value?.toSet(), equalTo(setOf(r, r1)))
+        assertThat(result.value?.toSet(), equalTo(setOf(r1, r2)))
     }
 
     @Test
     @Throws(Exception::class)
     fun insertRecordReplaceOnIdConflict() {
-        recordDao.insert(r)
+        recordDao.insert(r1)
         recordDao.insert(rConflict)
         val result = recordDao.getAll()
         result.observeForever{}
@@ -90,30 +86,30 @@ class AppRoomDatabaseTest : TestCase() {
     @Test
     @Throws(Exception::class)
     fun deleteRecordById() {
-        recordDao.insert(r)
         recordDao.insert(r1)
-        recordDao.deleteById(r1.id)
+        recordDao.insert(r2)
+        recordDao.deleteById(r2.id)
         val result = recordDao.getAll()
         result.observeForever{}
-        assertThat(result.value, equalTo(listOf(r)))
+        assertThat(result.value, equalTo(listOf(r1)))
     }
 
     @Test
     @Throws(Exception::class)
     fun deleteRecordByIdWithUnassignedIdDoNothing() {
-        recordDao.insert(r)
         recordDao.insert(r1)
+        recordDao.insert(r2)
         recordDao.deleteById(unassignedId)
         val result = recordDao.getAll()
         result.observeForever{}
-        assertThat(result.value, equalTo(listOf(r, r1)))
+        assertThat(result.value, equalTo(listOf(r1, r2)))
     }
 
     @Test
     @Throws(Exception::class)
     fun deleteAllRecords() {
-        recordDao.insert(r)
         recordDao.insert(r1)
+        recordDao.insert(r2)
         recordDao.deleteAll()
         val result = recordDao.getAll()
         result.observeForever{}
@@ -123,8 +119,8 @@ class AppRoomDatabaseTest : TestCase() {
     @Test
     @Throws(Exception::class)
     fun updateRecordName() {
-        recordDao.insert(r)
-        recordDao.updateName(r.id, "new")
+        recordDao.insert(r1)
+        recordDao.updateName(r1.id, "new")
         val result = recordDao.getAll()
         result.observeForever{}
         assertThat(result.value?.get(0)?.name, equalTo("new"))
@@ -133,20 +129,20 @@ class AppRoomDatabaseTest : TestCase() {
     @Test
     @Throws(Exception::class)
     fun updateRecordNameWithUnassignedIdDoNothing() {
-        recordDao.insert(r)
+        recordDao.insert(r1)
         recordDao.updateName(unassignedId, "new")
         val result = recordDao.getAll()
         result.observeForever{}
-        assertThat(result.value?.get(0)?.name, equalTo(r.name))
+        assertThat(result.value?.get(0)?.name, equalTo(r1.name))
     }
 
     @Test
     @Throws(Exception::class)
     fun updateLastRecordModification() {
-        recordDao.insert(r)
+        recordDao.insert(r1)
         Thread.sleep(10)
         val d = Date()
-        recordDao.updateLastRecordModification(r.id, d)
+        recordDao.updateLastRecordModification(r1.id, d)
         val result = recordDao.getAll()
         result.observeForever{}
         assertThat(result.value?.get(0)?.lastModification, equalTo(d))
@@ -155,25 +151,25 @@ class AppRoomDatabaseTest : TestCase() {
     @Test
     @Throws(Exception::class)
     fun updateLastRecordModificationWithUnassignedIdDoNothing() {
-        recordDao.insert(r)
+        recordDao.insert(r1)
         Thread.sleep(10)
         val d = Date()
         recordDao.updateLastRecordModification(unassignedId, d)
         val result = recordDao.getAll()
         result.observeForever{}
-        assertThat(result.value?.get(0)?.lastModification, equalTo(r.lastModification))
+        assertThat(result.value?.get(0)?.lastModification, equalTo(r1.lastModification))
     }
 
     @Test
     @Throws(Exception::class)
     fun insertAndGetAllLocations() {
         val expect = setOf(
-            l.copy().apply { id = 1 }, // the location id autoincrements and we must consider it
-            l1.copy().apply { id = 2 }
+            le1.copy().apply { id = 1 }, // the location id autoincrements and we must consider it
+            le2.copy().apply { id = 2 }
         )
-        recordDao.insert(r)
-        locationDao.insert(l)
-        locationDao.insert(l1)
+        recordDao.insert(r1)
+        locationDao.insert(le1)
+        locationDao.insert(le2)
         val result = locationDao.getAll()
         result.observeForever{}
         assertThat(result.value?.toSet(), equalTo(expect))
@@ -187,9 +183,9 @@ class AppRoomDatabaseTest : TestCase() {
     @Test
     @Throws(Exception::class)
     fun deleteAllLocations() {
-        recordDao.insert(r)
-        locationDao.insert(l)
-        locationDao.insert(l1)
+        recordDao.insert(r1)
+        locationDao.insert(le1)
+        locationDao.insert(le1)
         locationDao.deleteAll()
         val result = locationDao.getAll()
         result.observeForever{}

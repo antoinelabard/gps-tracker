@@ -1,47 +1,24 @@
 package com.example.simplegpstracker.model
 
-import android.location.Location
+import com.example.simplegpstracker.Data.Companion.PRECISION
+import com.example.simplegpstracker.Data.Companion.dl12
+import com.example.simplegpstracker.Data.Companion.dl123
+import com.example.simplegpstracker.Data.Companion.dl1234
+import com.example.simplegpstracker.Data.Companion.l1
+import com.example.simplegpstracker.Data.Companion.l2
+import com.example.simplegpstracker.Data.Companion.l3
+import com.example.simplegpstracker.Data.Companion.tl12
+import com.example.simplegpstracker.Data.Companion.tl13
+import com.example.simplegpstracker.Data.Companion.tl14
 import junit.framework.TestCase
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import kotlin.math.pow
 
 @RunWith(JUnit4::class)
 class LocationOpsTest : TestCase() {
 
-    private val PRECISION = 10.0.pow(-2)
-
     private val locationOps = LocationOps()
-
-    private val l1 = Location("").apply {
-        latitude = 0.0
-        longitude = 0.0
-        time = 944006400000 // 01/01/2000 00:00:00 in ms
-    }
-    private val l2 = Location("").apply {
-        latitude = 1.0
-        longitude = 1.0
-        time = 944006405000 // 01/01/2000 00:00:05 in ms
-    }
-    private val l3 = Location("").apply {
-        latitude = -1.0
-        longitude = 0.0
-        time = 944006415000 // 01/01/2000 00:00:15 in ms
-    }
-    private val l4 = Location("").apply {
-        latitude = -2.0
-        longitude = 0.0
-        time = 944006430000 // 01/01/2000 00:00:30 in ms
-    }
-
-    val dl12 = l1.distanceTo(l2)
-    val dl123 = l1.distanceTo(l2) + l2.distanceTo(l3)
-    val dl1234 = l1.distanceTo(l2) + l2.distanceTo(l3) + l3.distanceTo(l4)
-    val tl12: Float = l2.time - l1.time * 1000f
-    val tl13: Float = l3.time - l1.time * 1000f
-    val tl14: Float = l4.time - l1.time * 1000f
-
 
     @Test
     fun getTotalDistance() {

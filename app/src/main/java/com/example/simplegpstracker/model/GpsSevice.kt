@@ -43,15 +43,13 @@ class GpsService: Service(), LocationListener {
             LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
         }
     }
+
     override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
     override fun onProviderEnabled(provider: String?) {}
     override fun onProviderDisabled(provider: String?) {}
+    override fun onBind(intent: Intent?): IBinder? = null
 
-    override fun onBind(intent: Intent?): IBinder? {
-        return null
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
+//    @RequiresApi(Build.VERSION_CODES.O)
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
         recordId = intent?.getIntExtra(Constants.Intent.RECORD_ID_EXTRA, 0)!!

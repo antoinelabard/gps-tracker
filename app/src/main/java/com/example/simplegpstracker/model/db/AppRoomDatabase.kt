@@ -30,12 +30,12 @@ abstract class AppRoomDatabase : RoomDatabase() {
             RecordEntity(2, "Record 3", Date(1514764800000), Date(1527811200000))
         )
         var locations = arrayOf(
-            LocationEntity(0, 0, 1.0, 2.0, 0.0f),
-            LocationEntity(0, 1, 2.0, 3.0, 0.0f),
-            LocationEntity(0, 1, 3.0, 4.0, 0.0f),
-            LocationEntity(0, 2, 4.0, 5.0, 0.0f),
-            LocationEntity(0, 2, 5.0, 6.0, 0.0f),
-            LocationEntity(0, 2, 6.0, 7.0, 0.0f)
+            LocationEntity(0, 0, 944006400000, 1.0, 2.0, 0.0f),
+            LocationEntity(0, 1, 944006405000, 2.0, 3.0, 0.0f),
+            LocationEntity(0, 1, 944006410000, 3.0, 4.0, 0.0f),
+            LocationEntity(0, 2, 944006415000, 4.0, 5.0, 0.0f),
+            LocationEntity(0, 2, 944006420000, 5.0, 6.0, 0.0f),
+            LocationEntity(0, 2, 944006425000, 6.0, 7.0, 0.0f)
         )
         override fun doInBackground(vararg params: Void?): Void? {
             mRecordDao!!.deleteAll()
