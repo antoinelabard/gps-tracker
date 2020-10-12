@@ -33,7 +33,7 @@ class Constants {
             const val ACTION_STOP = "stop"
         }
     }
-    class Databalse {
+    class Database {
         companion object {
             const val DATABASE_NAME = "app_database"
             const val RECORD_TABLE = "record_table"
@@ -46,6 +46,7 @@ class Constants {
 
             const val LOCATION_ENTITY_ID = "id"
             const val LOCATION_ENTITY_RECORD_ID = "record_id"
+            const val LOCATION_ENTITY_TIME = "time"
             const val LOCATION_ENTITY_LATITUDE = "latitude"
             const val LOCATION_ENTITY_LONGITUDE = "longitude"
             const val LOCATION_ENTITY_SPEED = "speed"

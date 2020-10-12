@@ -1,13 +1,10 @@
-package com.example.simplegpstracker.model.db
+package com.example.simplegpstracker.model
 
 import android.location.Location
-import androidx.test.espresso.matcher.ViewMatchers.assertThat
-import com.example.simplegpstracker.model.LocationOps
 import junit.framework.TestCase
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import java.lang.Math.pow
 import kotlin.math.pow
 
 @RunWith(JUnit4::class)

@@ -58,7 +58,7 @@ abstract class AppRoomDatabase : RoomDatabase() {
                     if (INSTANCE == null) {
                         INSTANCE = Room.databaseBuilder(
                             context.applicationContext,
-                            AppRoomDatabase::class.java, Constants.Databalse.DATABASE_NAME
+                            AppRoomDatabase::class.java, Constants.Database.DATABASE_NAME
                         )
                             .fallbackToDestructiveMigration()
                             .addCallback(sRoomDatabaseCallback)

@@ -40,6 +40,7 @@ class TrackerActivityViewModel(application: Application?) : AndroidViewModel(app
             LocationEntity(
                 0,
                 recordId,
+                location.time,
                 location.latitude,
                 location.longitude,
                 location.speed

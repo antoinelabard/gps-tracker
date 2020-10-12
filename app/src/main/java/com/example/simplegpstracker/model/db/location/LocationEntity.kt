@@ -8,29 +8,32 @@ import com.example.simplegpstracker.model.Constants
 import com.example.simplegpstracker.model.db.record.RecordEntity
 
 @Entity(
-    tableName = Constants.Databalse.LOCATION_TABLE,
+    tableName = Constants.Database.LOCATION_TABLE,
     foreignKeys = [ForeignKey(
         entity = RecordEntity::class,
-        parentColumns = [Constants.Databalse.RECORD_ENTITY_ID],
-        childColumns = [Constants.Databalse.LOCATION_ENTITY_RECORD_ID],
+        parentColumns = [Constants.Database.RECORD_ENTITY_ID],
+        childColumns = [Constants.Database.LOCATION_ENTITY_RECORD_ID],
         onDelete = ForeignKey.CASCADE
     )]
 )
 data class LocationEntity (
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = Constants.Databalse.LOCATION_ENTITY_ID)
+    @ColumnInfo(name = Constants.Database.LOCATION_ENTITY_ID)
     var id: Int,
 
-    @ColumnInfo(name = Constants.Databalse.LOCATION_ENTITY_RECORD_ID)
+    @ColumnInfo(name = Constants.Database.LOCATION_ENTITY_RECORD_ID)
     var recordId: Int,
 
-    @ColumnInfo(name = Constants.Databalse.LOCATION_ENTITY_LATITUDE)
-    var latitude: Double,
+    @ColumnInfo(name = Constants.Database.LOCATION_ENTITY_TIME)
+    var time: Long, // timestamp in milliseconds
 
-    @ColumnInfo(name = Constants.Databalse.LOCATION_ENTITY_LONGITUDE)
-    var longitude: Double,
+    @ColumnInfo(name = Constants.Database.LOCATION_ENTITY_LATITUDE)
+    var latitude: Double, // in degrees
 
-    @ColumnInfo(name = Constants.Databalse.LOCATION_ENTITY_SPEED)
-    var speed: Float
+    @ColumnInfo(name = Constants.Database.LOCATION_ENTITY_LONGITUDE)
+    var longitude: Double, // in degrees
+
+    @ColumnInfo(name = Constants.Database.LOCATION_ENTITY_SPEED)
+    var speed: Float // in meters per seconds
 
     )
