@@ -12,11 +12,12 @@ import com.example.simplegpstracker.Data.Companion.tl13
 import com.example.simplegpstracker.Data.Companion.tl14
 import junit.framework.TestCase
 import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 
-@RunWith(JUnit4::class)
-class LocationOpsTest : TestCase() {
+class LocationOpsTest {
 
     private val locationOps = LocationOps()
 
@@ -77,6 +78,4 @@ class LocationOpsTest : TestCase() {
         val result = locationOps.getTimeElapsed(listOf(l1, l2))
         assertEquals(expected, result)
     }
-
-
 }

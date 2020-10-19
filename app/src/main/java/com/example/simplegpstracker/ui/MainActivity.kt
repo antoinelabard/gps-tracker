@@ -8,9 +8,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -43,23 +41,11 @@ class MainActivity : AppCompatActivity() {
                     adapter.setRecords(records)
                 })
 
-        activity_new_record_button.setOnClickListener {
-            var newId = 0
-            val allRecordIds = mMainActivityViewModel.getRecordsIds()
-            while (true) {
-                if (allRecordIds.find { it == newId } == null) break
-                ++newId
-            }
-            val currentDate = Date()
-            mMainActivityViewModel.insertRecord(RecordEntity(
-                newId,
-                "Record ${SimpleDateFormat("yyyy/mm/dd").format(currentDate)}",
-                currentDate,
-                currentDate
-            ))
+        activity_main_new_record_button.setOnClickListener {
+            mMainActivityViewModel.insertNewRecord()
             adapter.notifyDataSetChanged()
             val intent = Intent(this@MainActivity, TrackerActivity::class.java)
-            intent.putExtra(Constants.Intent.RECORD_ID_EXTRA, newId)
+            intent.putExtra(Constants.Intent.RECORD_ID_EXTRA, mMainActivityViewModel.newId)
             startActivity(intent)
         }
 

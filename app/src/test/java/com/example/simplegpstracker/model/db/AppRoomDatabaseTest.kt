@@ -15,6 +15,7 @@ import com.example.simplegpstracker.Data.Companion.rConflict
 import com.example.simplegpstracker.Data.Companion.unassignedId
 import com.example.simplegpstracker.model.db.location.LocationDao
 import com.example.simplegpstracker.model.db.record.RecordDao
+import junit.framework.Assert.assertNotNull
 import junit.framework.TestCase
 import org.hamcrest.CoreMatchers.equalTo
 import org.junit.After
@@ -27,7 +28,7 @@ import java.util.*
 
 
 @RunWith(AndroidJUnit4::class)
-class AppRoomDatabaseTest : TestCase() {
+class AppRoomDatabaseTest {
 
     private lateinit var recordDao: RecordDao
     private lateinit var locationDao: LocationDao
