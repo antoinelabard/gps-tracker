@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.espresso.matcher.ViewMatchers.assertThat
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import fr.labard.simplegpstracker.Data.Companion.lUnassigned
 import fr.labard.simplegpstracker.Data.Companion.le1
@@ -17,6 +16,7 @@ import fr.labard.simplegpstracker.model.db.location.LocationDao
 import fr.labard.simplegpstracker.model.db.record.RecordDao
 import junit.framework.Assert.assertNotNull
 import org.hamcrest.CoreMatchers.equalTo
+import org.hamcrest.MatcherAssert.assertThat
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule

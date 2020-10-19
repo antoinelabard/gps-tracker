@@ -1,5 +1,6 @@
 package fr.labard.simplegpstracker.model
 
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import fr.labard.simplegpstracker.Data.Companion.PRECISION
 import fr.labard.simplegpstracker.Data.Companion.dl12
 import fr.labard.simplegpstracker.Data.Companion.dl123
@@ -13,7 +14,9 @@ import fr.labard.simplegpstracker.Data.Companion.tl14
 import org.junit.Test
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.runner.RunWith
 
+@RunWith(AndroidJUnit4::class)
 class LocationOpsTest {
 
     private val locationOps = LocationOps()
