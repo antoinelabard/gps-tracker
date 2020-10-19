@@ -1,15 +1,15 @@
 package fr.labard.simplegpstracker.model
 
-import com.example.simplegpstracker.Data.Companion.PRECISION
-import com.example.simplegpstracker.Data.Companion.dl12
-import com.example.simplegpstracker.Data.Companion.dl123
-import com.example.simplegpstracker.Data.Companion.dl1234
-import com.example.simplegpstracker.Data.Companion.l1
-import com.example.simplegpstracker.Data.Companion.l2
-import com.example.simplegpstracker.Data.Companion.l3
-import com.example.simplegpstracker.Data.Companion.tl12
-import com.example.simplegpstracker.Data.Companion.tl13
-import com.example.simplegpstracker.Data.Companion.tl14
+import fr.labard.simplegpstracker.Data.Companion.PRECISION
+import fr.labard.simplegpstracker.Data.Companion.dl12
+import fr.labard.simplegpstracker.Data.Companion.dl123
+import fr.labard.simplegpstracker.Data.Companion.dl1234
+import fr.labard.simplegpstracker.Data.Companion.l1
+import fr.labard.simplegpstracker.Data.Companion.l2
+import fr.labard.simplegpstracker.Data.Companion.l3
+import fr.labard.simplegpstracker.Data.Companion.tl12
+import fr.labard.simplegpstracker.Data.Companion.tl13
+import fr.labard.simplegpstracker.Data.Companion.tl14
 import org.junit.Test
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue

@@ -15,10 +15,11 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import com.example.simplegpstracker.R
-import com.example.simplegpstracker.model.GpsService
-import com.example.simplegpstracker.model.db.location.LocationEntity
-import com.example.simplegpstracker.model.db.record.RecordEntity
+import fr.labard.simplegpstracker.R
+import fr.labard.simplegpstracker.model.Constants
+import fr.labard.simplegpstracker.model.GpsService
+import fr.labard.simplegpstracker.model.db.location.LocationEntity
+import fr.labard.simplegpstracker.model.db.record.RecordEntity
 import kotlinx.android.synthetic.main.activity_tracker.*
 import org.osmdroid.api.IMapController
 import org.osmdroid.config.Configuration
@@ -42,7 +43,7 @@ class TrackerActivity : AppCompatActivity() {
         setContentView(R.layout.activity_tracker)
         setSupportActionBar(findViewById(R.id.activity_tracker_toolbar))
         mTrackerActivityViewModel = ViewModelProvider(this).get(TrackerActivityViewModel::class.java)
-        mTrackerActivityViewModel.recordId = intent.getIntExtra(_root_ide_package_.fr.labard.simplegpstracker.model.Constants.Intent.RECORD_ID_EXTRA, 0)
+        mTrackerActivityViewModel.recordId = intent.getIntExtra(Constants.Intent.RECORD_ID_EXTRA, 0)
         localBroadcastManager = LocalBroadcastManager.getInstance(applicationContext)
 
         Configuration.getInstance().load(applicationContext, getPreferences(Context.MODE_PRIVATE))
@@ -89,7 +90,7 @@ class TrackerActivity : AppCompatActivity() {
                         android.Manifest.permission.ACCESS_COARSE_LOCATION,
                         android.Manifest.permission.INTERNET,
                         android.Manifest.permission.ACCESS_NETWORK_STATE
-                    ), _root_ide_package_.fr.labard.simplegpstracker.model.Constants.Permission.REQUEST_CODE
+                    ), Constants.Permission.REQUEST_CODE
                 )
             }
         } catch (e: Exception) {
@@ -97,8 +98,8 @@ class TrackerActivity : AppCompatActivity() {
         }
 
         locationServiceIntent = Intent(applicationContext, GpsService::class.java)
-            .putExtra(_root_ide_package_.fr.labard.simplegpstracker.model.Constants.Intent.RECORD_ID_EXTRA, mTrackerActivityViewModel.recordId)
-            .setAction(_root_ide_package_.fr.labard.simplegpstracker.model.Constants.Intent.ACTION_RECORD)
+            .putExtra(Constants.Intent.RECORD_ID_EXTRA, mTrackerActivityViewModel.recordId)
+            .setAction(Constants.Intent.ACTION_RECORD)
 
         activity_tracker_pause_resume_button.setOnClickListener {
             if (mTrackerActivityViewModel.isRecording) {
@@ -113,7 +114,7 @@ class TrackerActivity : AppCompatActivity() {
 
         LocalBroadcastManager.getInstance(this).registerReceiver(
             LocationBroadcastReceiver,
-            IntentFilter(_root_ide_package_.fr.labard.simplegpstracker.model.Constants.LocationService.LOCATION_BROADCAST)
+            IntentFilter(Constants.LocationService.LOCATION_BROADCAST)
         )
     }
 
@@ -179,17 +180,17 @@ class TrackerActivity : AppCompatActivity() {
             ActivityCompat.requestPermissions(
                 this,
                 permissionsToRequest.toArray(arrayOf<String>()),
-                _root_ide_package_.fr.labard.simplegpstracker.model.Constants.Permission.REQUEST_CODE
+                Constants.Permission.REQUEST_CODE
             )
         }
     }
 
     private val LocationBroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent){
-            val location = Location(_root_ide_package_.fr.labard.simplegpstracker.model.Constants.LocationService.LOCATION_PROVIDER).apply {
-                latitude = intent.getDoubleExtra(_root_ide_package_.fr.labard.simplegpstracker.model.Constants.Intent.LATITUDE_EXTRA, 0.0)
-                longitude = intent.getDoubleExtra(_root_ide_package_.fr.labard.simplegpstracker.model.Constants.Intent.LONGITUDE_EXTRA, 0.0)
-                speed = intent.getFloatExtra(_root_ide_package_.fr.labard.simplegpstracker.model.Constants.Intent.SPEED_EXTRA, 0.0f)
+            val location = Location(Constants.LocationService.LOCATION_PROVIDER).apply {
+                latitude = intent.getDoubleExtra(Constants.Intent.LATITUDE_EXTRA, 0.0)
+                longitude = intent.getDoubleExtra(Constants.Intent.LONGITUDE_EXTRA, 0.0)
+                speed = intent.getFloatExtra(Constants.Intent.SPEED_EXTRA, 0.0f)
             }
             mTrackerActivityViewModel.insertLocation(location)
         }

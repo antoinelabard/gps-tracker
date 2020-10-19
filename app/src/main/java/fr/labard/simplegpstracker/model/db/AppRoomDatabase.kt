@@ -7,10 +7,11 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.example.simplegpstracker.model.db.location.LocationDao
-import com.example.simplegpstracker.model.db.location.LocationEntity
-import com.example.simplegpstracker.model.db.record.RecordDao
-import com.example.simplegpstracker.model.db.record.RecordEntity
+import fr.labard.simplegpstracker.model.Constants
+import fr.labard.simplegpstracker.model.db.location.LocationDao
+import fr.labard.simplegpstracker.model.db.location.LocationEntity
+import fr.labard.simplegpstracker.model.db.record.RecordDao
+import fr.labard.simplegpstracker.model.db.record.RecordEntity
 import java.util.*
 
 @Database(entities = [RecordEntity::class, LocationEntity::class], version = 1, exportSchema = false)
@@ -57,7 +58,7 @@ abstract class AppRoomDatabase : RoomDatabase() {
                     if (INSTANCE == null) {
                         INSTANCE = Room.databaseBuilder(
                             context.applicationContext,
-                            AppRoomDatabase::class.java, _root_ide_package_.fr.labard.simplegpstracker.model.Constants.Database.DATABASE_NAME
+                            AppRoomDatabase::class.java, Constants.Database.DATABASE_NAME
                         )
                             .fallbackToDestructiveMigration()
                             .addCallback(sRoomDatabaseCallback)

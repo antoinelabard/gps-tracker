@@ -12,8 +12,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.simplegpstracker.R
-import com.example.simplegpstracker.model.db.record.RecordEntity
+import fr.labard.simplegpstracker.R
+import fr.labard.simplegpstracker.model.Constants
+import fr.labard.simplegpstracker.model.db.record.RecordEntity
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -42,7 +43,7 @@ class MainActivity : AppCompatActivity() {
             mMainActivityViewModel.insertNewRecord()
             adapter.notifyDataSetChanged()
             val intent = Intent(this@MainActivity, TrackerActivity::class.java)
-            intent.putExtra(_root_ide_package_.fr.labard.simplegpstracker.model.Constants.Intent.RECORD_ID_EXTRA, mMainActivityViewModel.newId)
+            intent.putExtra(Constants.Intent.RECORD_ID_EXTRA, mMainActivityViewModel.newId)
             startActivity(intent)
         }
 
@@ -64,7 +65,7 @@ class MainActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val importance = NotificationManager.IMPORTANCE_DEFAULT
             val channel = NotificationChannel(
-                _root_ide_package_.fr.labard.simplegpstracker.model.Constants.Notification.CHANNEL_ID,
+                Constants.Notification.CHANNEL_ID,
                 R.string.app_name.toString(), importance)
             val notificationManager: NotificationManager =
                 getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager

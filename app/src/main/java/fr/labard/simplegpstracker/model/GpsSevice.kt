@@ -15,8 +15,8 @@ import android.os.IBinder
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import com.example.simplegpstracker.R
-import com.example.simplegpstracker.ui.TrackerActivity
+import fr.labard.simplegpstracker.R
+import fr.labard.simplegpstracker.ui.TrackerActivity
 
 class GpsService: Service(), LocationListener {
 
@@ -33,10 +33,10 @@ class GpsService: Service(), LocationListener {
 
     override fun onLocationChanged(location: Location?) {
         if (location != null) {
-            val intent = Intent(_root_ide_package_.fr.labard.simplegpstracker.model.Constants.LocationService.LOCATION_BROADCAST)
-                .putExtra(_root_ide_package_.fr.labard.simplegpstracker.model.Constants.Intent.LATITUDE_EXTRA, location.latitude)
-                .putExtra(_root_ide_package_.fr.labard.simplegpstracker.model.Constants.Intent.LONGITUDE_EXTRA, location.longitude)
-                .putExtra(_root_ide_package_.fr.labard.simplegpstracker.model.Constants.Intent.SPEED_EXTRA, location.speed)
+            val intent = Intent(Constants.LocationService.LOCATION_BROADCAST)
+                .putExtra(Constants.Intent.LATITUDE_EXTRA, location.latitude)
+                .putExtra(Constants.Intent.LONGITUDE_EXTRA, location.longitude)
+                .putExtra(Constants.Intent.SPEED_EXTRA, location.speed)
 
             LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
         }
@@ -50,17 +50,17 @@ class GpsService: Service(), LocationListener {
 //    @RequiresApi(Build.VERSION_CODES.O)
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
-        recordId = intent?.getIntExtra(_root_ide_package_.fr.labard.simplegpstracker.model.Constants.Intent.RECORD_ID_EXTRA, 0)!!
+        recordId = intent?.getIntExtra(Constants.Intent.RECORD_ID_EXTRA, 0)!!
 
 
         val playIntent = Intent(this, GpsService::class.java)
-            .setAction(if (intent.action == _root_ide_package_.fr.labard.simplegpstracker.model.Constants.Intent.ACTION_PAUSE) _root_ide_package_.fr.labard.simplegpstracker.model.Constants.Intent.ACTION_RECORD else _root_ide_package_.fr.labard.simplegpstracker.model.Constants.Intent.ACTION_PAUSE)
+            .setAction(if (intent.action == Constants.Intent.ACTION_PAUSE) Constants.Intent.ACTION_RECORD else Constants.Intent.ACTION_PAUSE)
         val playPendingIntent = PendingIntent.getForegroundService(this, 1, playIntent, 0)
         val stopIntent = Intent(this, GpsService::class.java)
-            .setAction(_root_ide_package_.fr.labard.simplegpstracker.model.Constants.Intent.ACTION_STOP)
+            .setAction(Constants.Intent.ACTION_STOP)
         val stopPendingIntent = PendingIntent.getForegroundService(this, 1, stopIntent, 0)
 
-        val notification = NotificationCompat.Builder(this, _root_ide_package_.fr.labard.simplegpstracker.model.Constants.Notification.CHANNEL_ID)
+        val notification = NotificationCompat.Builder(this, Constants.Notification.CHANNEL_ID)
             .setContentTitle(getString(R.string.gpstracker_notification_title))
             .setContentText(getString(R.string.gpstracker_notification_content))
             .setSmallIcon(R.drawable.ic_launcher_foreground)
@@ -71,19 +71,19 @@ class GpsService: Service(), LocationListener {
                     applicationContext, 0, Intent(
                         applicationContext,
                         TrackerActivity::class.java
-                    ).putExtra(_root_ide_package_.fr.labard.simplegpstracker.model.Constants.Intent.RECORD_ID_EXTRA, recordId), 0
+                    ).putExtra(Constants.Intent.RECORD_ID_EXTRA, recordId), 0
                 )
             )
             .setAutoCancel(true)
             .addAction(R.drawable.ic_baseline_stop_24, getString(R.string.stop), stopPendingIntent)
 
         when (intent.action) {
-            _root_ide_package_.fr.labard.simplegpstracker.model.Constants.Intent.ACTION_STOP -> stopSelf()
-            _root_ide_package_.fr.labard.simplegpstracker.model.Constants.Intent.ACTION_PAUSE -> {
+            Constants.Intent.ACTION_STOP -> stopSelf()
+            Constants.Intent.ACTION_PAUSE -> {
                 notification.addAction(R.drawable.ic_baseline_play_arrow_24, getString(R.string.play), playPendingIntent)
                 disableLocationUpdates()
             }
-            _root_ide_package_.fr.labard.simplegpstracker.model.Constants.Intent.ACTION_RECORD -> {
+            Constants.Intent.ACTION_RECORD -> {
                 notification.addAction(R.drawable.ic_baseline_pause_24, getString(R.string.pause), playPendingIntent)
                 enableLocationUpdates()
             }
@@ -107,8 +107,8 @@ class GpsService: Service(), LocationListener {
 
         locationManager.requestLocationUpdates(
             locationProvider!!,
-            _root_ide_package_.fr.labard.simplegpstracker.model.Constants.LocationService.MIN_TIME_REFRESH,
-            _root_ide_package_.fr.labard.simplegpstracker.model.Constants.LocationService.MIN_DISTANCE_REFRESH,
+            Constants.LocationService.MIN_TIME_REFRESH,
+            Constants.LocationService.MIN_DISTANCE_REFRESH,
             this
         )
     }

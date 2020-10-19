@@ -2,8 +2,8 @@ package fr.labard.simplegpstracker.ui
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import com.example.simplegpstracker.model.db.AppRepository
-import com.example.simplegpstracker.model.db.record.RecordEntity
+import fr.labard.simplegpstracker.model.db.AppRepository
+import fr.labard.simplegpstracker.model.db.record.RecordEntity
 import java.text.SimpleDateFormat
 import java.util.*
 

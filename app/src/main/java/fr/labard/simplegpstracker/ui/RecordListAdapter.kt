@@ -7,8 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.simplegpstracker.R
-import com.example.simplegpstracker.model.db.record.RecordEntity
+import fr.labard.simplegpstracker.R
+import fr.labard.simplegpstracker.model.Constants
+import fr.labard.simplegpstracker.model.db.record.RecordEntity
 
 
 class RecordListAdapter (val context: Context?) :
@@ -32,7 +33,7 @@ class RecordListAdapter (val context: Context?) :
             holder.recordItemView.text = record.name
             holder.recordItemView.setOnClickListener {
                 val intent = Intent(context, TrackerActivity::class.java)
-                intent.putExtra(_root_ide_package_.fr.labard.simplegpstracker.model.Constants.Intent.RECORD_ID_EXTRA, record.id)
+                intent.putExtra(Constants.Intent.RECORD_ID_EXTRA, record.id)
                 context?.startActivity(intent)
             }
         } else {

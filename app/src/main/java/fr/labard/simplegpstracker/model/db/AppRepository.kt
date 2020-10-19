@@ -4,10 +4,10 @@ import android.app.Application
 import android.os.AsyncTask
 import android.util.Log
 import androidx.lifecycle.LiveData
-import com.example.simplegpstracker.model.db.location.LocationDao
-import com.example.simplegpstracker.model.db.location.LocationEntity
-import com.example.simplegpstracker.model.db.record.RecordDao
-import com.example.simplegpstracker.model.db.record.RecordEntity
+import fr.labard.simplegpstracker.model.db.location.LocationDao
+import fr.labard.simplegpstracker.model.db.location.LocationEntity
+import fr.labard.simplegpstracker.model.db.record.RecordDao
+import fr.labard.simplegpstracker.model.db.record.RecordEntity
 import java.util.*
 
 class AppRepository internal constructor(application: Application?) {
