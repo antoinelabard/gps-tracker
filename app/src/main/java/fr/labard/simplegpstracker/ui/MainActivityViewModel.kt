@@ -26,7 +26,7 @@ class MainActivityViewModel(application: Application?) : AndroidViewModel(applic
         val date = Date()
         insertRecord(RecordEntity(
             recordId,
-            "Record $date",
+            "Record: $date",
             date,
             date
         ))
