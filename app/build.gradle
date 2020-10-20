@@ -35,6 +35,11 @@ android {
 
     useLibrary 'android.test.base'
     useLibrary 'android.test.mock'
+
+    testOptions.unitTests {
+        includeAndroidResources = true
+    }
+
 }
 
 dependencies {
