@@ -1,15 +1,14 @@
 package fr.labard.simplegpstracker.ui
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import fr.labard.simplegpstracker.model.db.AppRepository
+import androidx.lifecycle.ViewModel
+import fr.labard.simplegpstracker.model.db.IRepository
 import fr.labard.simplegpstracker.model.db.record.RecordEntity
-import java.text.SimpleDateFormat
 import java.util.*
 
-class MainActivityViewModel(application: Application?) : AndroidViewModel(application!!) {
-    private val mAppRepository = AppRepository(application)
-    val allRecords = mAppRepository.allRecords
+class MainActivityViewModel(
+    private val appRepository: IRepository
+) : ViewModel() {
+    val allRecords = appRepository.getRecords()
 
     fun generateNewId(): Int {
         var newId = 0
@@ -22,7 +21,6 @@ class MainActivityViewModel(application: Application?) : AndroidViewModel(applic
     }
 
     fun insertNewRecord(recordId: Int) {
-
         val date = Date()
         insertRecord(RecordEntity(
             recordId,
@@ -32,7 +30,7 @@ class MainActivityViewModel(application: Application?) : AndroidViewModel(applic
         ))
     }
 
-    fun insertRecord(recordEntity: RecordEntity?) = mAppRepository.insertRecord(recordEntity)
+    fun insertRecord(recordEntity: RecordEntity?) = appRepository.insertRecord(recordEntity)
 
     fun getRecordsIds() = allRecords.value!!.map {it.id}
 }

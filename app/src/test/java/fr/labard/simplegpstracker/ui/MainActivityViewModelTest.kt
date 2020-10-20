@@ -8,9 +8,9 @@ import fr.labard.simplegpstracker.Data.Companion.r3
 import fr.labard.simplegpstracker.FakeTestRepository
 import fr.labard.simplegpstracker.MainCoroutineRule
 import fr.labard.simplegpstracker.getOrAwaitValue
-import fr.labard.simplegpstracker.model.db.record.RecordEntity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.Matchers.`is`
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -26,29 +26,27 @@ class MainActivityViewModelTest {
     @get:Rule
     var mainCoroutineRule = MainCoroutineRule()
 
-    private lateinit var repository: FakeTestRepository
+    private lateinit var fakeTestRepository: FakeTestRepository
 
     private lateinit var viewModel: MainActivityViewModel
 
     @Before
     fun setupViewModel() {
-        // We initialise the tasks to 3, with one active and two completed
-        repository = FakeTestRepository()
-        repository.insertRecord(r1)
-        repository.insertRecord(r2)
-        repository.insertRecord(r3)
+        fakeTestRepository = FakeTestRepository()
+        fakeTestRepository.insertRecord(r1)
+        fakeTestRepository.insertRecord(r2)
 
-        viewModel = MainActivityViewModel(repository)
+        viewModel = MainActivityViewModel(fakeTestRepository)
     }
 
     @Test
     fun insertRecord() {
         //When
-        viewModel.insertRecord(r1)
+        viewModel.insertRecord(r3)
 
         //Then
         val result = viewModel.allRecords.getOrAwaitValue()
-        assertThat(result, listOf<RecordEntity>())
+        assertThat(result, `is`(listOf(r1, r2, r3)))
 
     }
 }
