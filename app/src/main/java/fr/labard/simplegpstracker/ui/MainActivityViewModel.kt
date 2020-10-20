@@ -10,19 +10,23 @@ import java.util.*
 class MainActivityViewModel(application: Application?) : AndroidViewModel(application!!) {
     private val mAppRepository = AppRepository(application)
     val allRecords = mAppRepository.allRecords
-    var newId = 0
 
-    fun insertNewRecord() {
-        newId = 0
+    fun generateNewId(): Int {
+        var newId = 0
         val recordIds = getRecordsIds()
         while (true) {
             if (recordIds.find { it == newId } == null) break
             ++newId
         }
+        return newId
+    }
+
+    fun insertNewRecord(recordId: Int) {
+
         val date = Date()
         insertRecord(RecordEntity(
-            newId,
-            "Record ${SimpleDateFormat("yyyy/mm/dd").format(date)}",
+            recordId,
+            "Record $date",
             date,
             date
         ))

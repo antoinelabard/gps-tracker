@@ -40,10 +40,11 @@ class MainActivity : AppCompatActivity() {
                 })
 
         activity_main_new_record_button.setOnClickListener {
-            mMainActivityViewModel.insertNewRecord()
+            val newId = mMainActivityViewModel.generateNewId()
+            mMainActivityViewModel.insertNewRecord(newId)
             adapter.notifyDataSetChanged()
             val intent = Intent(this@MainActivity, TrackerActivity::class.java)
-            intent.putExtra(Constants.Intent.RECORD_ID_EXTRA, mMainActivityViewModel.newId)
+            intent.putExtra(Constants.Intent.RECORD_ID_EXTRA, newId)
             startActivity(intent)
         }
 
