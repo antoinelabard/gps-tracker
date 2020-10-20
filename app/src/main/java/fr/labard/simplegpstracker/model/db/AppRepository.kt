@@ -10,11 +10,11 @@ import fr.labard.simplegpstracker.model.db.record.RecordDao
 import fr.labard.simplegpstracker.model.db.record.RecordEntity
 import java.util.*
 
-class AppRepository internal constructor(application: Application?) {
+class AppRepository internal constructor(application: Application?) : IRepository {
     private val mRecordDao: RecordDao?
     private val mLocationDao: LocationDao?
-    val allRecords: LiveData<List<RecordEntity>>
-    val allLocations: LiveData<List<LocationEntity>>
+    override val allRecords: LiveData<List<RecordEntity>>
+    override val allLocations: LiveData<List<LocationEntity>>
 
     init {
         val db = AppRoomDatabase.getDatabase(application!!)
@@ -24,11 +24,11 @@ class AppRepository internal constructor(application: Application?) {
         allLocations = mLocationDao!!.getAll()
     }
 
-    fun insertRecord(recordEntity: RecordEntity?) = InsertRecordAsyncTask(mRecordDao).execute(recordEntity)
-    fun updateRecordName(id: Int, name: String) = UpdateNameRecordAsyncTask(mRecordDao).execute(mapOf(id to name))
-    fun updateLastRecordModification(id: Int) = UpdateLastRecordModificationAsyncTask(mRecordDao).execute(id)
-    fun deleteRecord(recordId: Int) = DeleteRecordAsyncTask(mRecordDao).execute(recordId)
-    fun insertLocation(locationEntity: LocationEntity?) = InsertLocationAsyncTask(mLocationDao).execute(locationEntity)
+    override fun insertRecord(recordEntity: RecordEntity?) = InsertRecordAsyncTask(mRecordDao).execute(recordEntity)
+    override fun updateRecordName(id: Int, name: String) = UpdateNameRecordAsyncTask(mRecordDao).execute(mapOf(id to name))
+    override fun updateLastRecordModification(id: Int) = UpdateLastRecordModificationAsyncTask(mRecordDao).execute(id)
+    override fun deleteRecord(recordId: Int) = DeleteRecordAsyncTask(mRecordDao).execute(recordId)
+    override fun insertLocation(locationEntity: LocationEntity?) = InsertLocationAsyncTask(mLocationDao).execute(locationEntity)
 
     private class InsertRecordAsyncTask constructor(private val mDao: RecordDao?) :
         AsyncTask<RecordEntity?, Void?, Void?>() {
