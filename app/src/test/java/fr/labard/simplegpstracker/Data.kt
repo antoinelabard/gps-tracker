@@ -12,23 +12,24 @@ class Data {
 
         const val unassignedId = 1000 // Default Id which belongs to no record nor location to test bad assignment behavior
 
-        val r1 = RecordEntity(0, "r", Date(), Date()) // First record
-        val r2 = RecordEntity(1, "r1", Date(), Date()) // Second record
+        val r1 = RecordEntity(0, "r1", Date(), Date())
+        val r2 = RecordEntity(1, "r2", Date(), Date())
+        val r3 = RecordEntity(2, "r3", Date(), Date())
         val rConflict = RecordEntity(r1.id, "rConflict", Date(), Date()) // Has the same id as r intentionally
 
         val lUnassigned = LocationEntity(0, unassignedId, 944006400000, 0.0, 0.0, 0.0f) // Here the recordId belongs to no record intentionally
 
-        val l1 = Location("").apply { // First Location
+        val l1 = Location("").apply {
             latitude = 0.0
             longitude = 0.0
             time = 944006400000 // 01/01/2000 00:00:00 in ms
         }
-        val l2 = Location("").apply { // Second location
+        val l2 = Location("").apply {
             latitude = 1.0
             longitude = 1.0
             time = 944006405000 // 01/01/2000 00:00:05 in ms
         }
-        val l3 = Location("").apply { // ...
+        val l3 = Location("").apply {
             latitude = -1.0
             longitude = 0.0
             time = 944006415000 // 01/01/2000 00:00:15 in ms
