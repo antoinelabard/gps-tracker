@@ -8,12 +8,10 @@ import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import fr.labard.simplegpstracker.GPSApplication
 import fr.labard.simplegpstracker.R
 import fr.labard.simplegpstracker.model.util.Constants
 import kotlinx.android.synthetic.main.activity_main.*
@@ -27,16 +25,14 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         createNotificationChannel()
 
-        val recyclerView = findViewById<RecyclerView>(R.id.recyclerview)
+        val recyclerView = findViewById<RecyclerView>(R.id.recyclerview_record_list)
         val adapter = RecordListAdapter(this)
 
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-//        mMainActivityViewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
-        private val viewModel by viewModels<MainActivityViewModel> {
-            MainActivityViewModelFactory((requireContext().applicationContext as GPSApplication).appRepository)
-        }
+        mMainActivityViewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
+
         mMainActivityViewModel.allRecords
             .observe(this,
                 { records ->

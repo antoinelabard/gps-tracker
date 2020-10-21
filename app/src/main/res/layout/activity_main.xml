@@ -21,7 +21,13 @@
 
 <!--    </com.google.android.material.appbar.AppBarLayout>-->
 
-    <include layout="@layout/content_main"/>
+<!--    <include layout="@layout/content_main"/>-->
+
+    <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/activity_main_record_list_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:name="fr.labard.simplegpstracker.RecordListFragment"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/activity_main_new_record_button"

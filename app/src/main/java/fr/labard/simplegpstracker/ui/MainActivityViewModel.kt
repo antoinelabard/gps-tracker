@@ -31,9 +31,9 @@ class MainActivityViewModel(
         ))
     }
 
-    fun insertRecord(recordEntity: RecordEntity?) = appRepository.insertRecord(recordEntity)
+    fun insertRecord(recordEntity: RecordEntity) = appRepository.insertRecord(recordEntity)
 
-    fun getRecordsIds() = allRecords.value!!.map {it.id}
+    private fun getRecordsIds() = allRecords.value!!.map {it.id}
 }
 
 @Suppress("UNCHECKED_CAST")
