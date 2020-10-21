@@ -31,7 +31,7 @@ object ServiceLocator {
 
     private fun createLocalDataSource(context: Context): LocalDataSource {
         val database = database ?: createDataBase(context)
-        return LocalDataSource(database.recordDao(), database.locationDao())
+        return LocalDataSource(database.recordDao()!!, database.locationDao()!!)
     }
 
     private fun createDataBase(context: Context): AppRoomDatabase {
@@ -46,9 +46,9 @@ object ServiceLocator {
     @VisibleForTesting
     fun resetRepository() {
         synchronized(lock) {
-            runBlocking {
-                LocalDataSource.deleteAll()
-            }
+//            runBlocking { // Not needed for the moment
+//                RemoteDataSource().deleteAll()
+//            }
             // Clear all data to avoid test pollution.
             database?.apply {
                 clearAllTables()

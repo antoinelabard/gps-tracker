@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import fr.labard.simplegpstracker.model.Constants
+import fr.labard.simplegpstracker.model.util.Constants
 import fr.labard.simplegpstracker.model.data.local.db.record.RecordEntity
 
 @Entity(

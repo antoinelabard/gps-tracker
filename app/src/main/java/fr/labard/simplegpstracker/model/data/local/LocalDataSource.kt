@@ -1,16 +1,13 @@
 package fr.labard.simplegpstracker.model.data.local
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.ServiceLifecycleDispatcher
 import fr.labard.simplegpstracker.model.data.DataSource
-import fr.labard.simplegpstracker.model.data.Resource
 import fr.labard.simplegpstracker.model.data.local.db.location.LocationDao
 import fr.labard.simplegpstracker.model.data.local.db.location.LocationEntity
 import fr.labard.simplegpstracker.model.data.local.db.record.RecordDao
 import fr.labard.simplegpstracker.model.data.local.db.record.RecordEntity
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import java.lang.Error
 import java.util.*
 
 class LocalDataSource(

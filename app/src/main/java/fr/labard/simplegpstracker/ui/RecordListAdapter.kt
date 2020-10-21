@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import fr.labard.simplegpstracker.R
-import fr.labard.simplegpstracker.model.Constants
+import fr.labard.simplegpstracker.model.util.Constants
 import fr.labard.simplegpstracker.model.data.local.db.record.RecordEntity
 
 

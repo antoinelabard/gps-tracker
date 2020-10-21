@@ -11,6 +11,7 @@ import fr.labard.simplegpstracker.Data.Companion.l3
 import fr.labard.simplegpstracker.Data.Companion.tl12
 import fr.labard.simplegpstracker.Data.Companion.tl13
 import fr.labard.simplegpstracker.Data.Companion.tl14
+import fr.labard.simplegpstracker.model.util.LocationOps
 import org.junit.Test
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue

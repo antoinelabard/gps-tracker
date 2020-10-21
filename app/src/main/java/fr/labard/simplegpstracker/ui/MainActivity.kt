@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import fr.labard.simplegpstracker.GPSApplication
 import fr.labard.simplegpstracker.R
-import fr.labard.simplegpstracker.model.Constants
+import fr.labard.simplegpstracker.model.util.Constants
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {

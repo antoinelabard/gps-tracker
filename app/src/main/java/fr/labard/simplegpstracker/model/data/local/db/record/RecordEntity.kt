@@ -3,7 +3,7 @@ package fr.labard.simplegpstracker.model.data.local.db.record
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import fr.labard.simplegpstracker.model.Constants
+import fr.labard.simplegpstracker.model.util.Constants
 import java.util.*
 
 @Entity(tableName = Constants.Database.RECORD_TABLE)

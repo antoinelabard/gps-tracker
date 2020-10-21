@@ -7,7 +7,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
-import fr.labard.simplegpstracker.model.Constants
+import fr.labard.simplegpstracker.model.util.Constants
 import fr.labard.simplegpstracker.model.data.local.db.location.LocationDao
 import fr.labard.simplegpstracker.model.data.local.db.location.LocationEntity
 import fr.labard.simplegpstracker.model.data.local.db.record.RecordDao

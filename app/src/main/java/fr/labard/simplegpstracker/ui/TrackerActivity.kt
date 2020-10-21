@@ -16,7 +16,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import fr.labard.simplegpstracker.R
-import fr.labard.simplegpstracker.model.Constants
+import fr.labard.simplegpstracker.model.util.Constants
 import fr.labard.simplegpstracker.model.GpsService
 import kotlinx.android.synthetic.main.activity_tracker.*
 import org.osmdroid.api.IMapController
