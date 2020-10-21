@@ -1,4 +1,4 @@
-package fr.labard.simplegpstracker.model.db
+package fr.labard.simplegpstracker.model.data.local.db
 
 import android.content.Context
 import android.os.AsyncTask
@@ -8,10 +8,10 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import fr.labard.simplegpstracker.model.Constants
-import fr.labard.simplegpstracker.model.db.location.LocationDao
-import fr.labard.simplegpstracker.model.db.location.LocationEntity
-import fr.labard.simplegpstracker.model.db.record.RecordDao
-import fr.labard.simplegpstracker.model.db.record.RecordEntity
+import fr.labard.simplegpstracker.model.data.local.db.location.LocationDao
+import fr.labard.simplegpstracker.model.data.local.db.location.LocationEntity
+import fr.labard.simplegpstracker.model.data.local.db.record.RecordDao
+import fr.labard.simplegpstracker.model.data.local.db.record.RecordEntity
 import java.util.*
 
 @Database(entities = [RecordEntity::class, LocationEntity::class], version = 1, exportSchema = false)

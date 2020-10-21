@@ -1,4 +1,4 @@
-package fr.labard.simplegpstracker.model.db.record
+package fr.labard.simplegpstracker.model.data.local.db.record
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao

@@ -1,11 +1,11 @@
-package fr.labard.simplegpstracker.model.db.location
+package fr.labard.simplegpstracker.model.data.local.db.location
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import fr.labard.simplegpstracker.model.Constants
-import fr.labard.simplegpstracker.model.db.record.RecordEntity
+import fr.labard.simplegpstracker.model.data.local.db.record.RecordEntity
 
 @Entity(
     tableName = Constants.Database.LOCATION_TABLE,

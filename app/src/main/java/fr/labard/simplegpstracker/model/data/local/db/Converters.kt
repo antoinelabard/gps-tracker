@@ -1,4 +1,4 @@
-package fr.labard.simplegpstracker.model.db
+package fr.labard.simplegpstracker.model.data.local.db
 
 import androidx.room.TypeConverter
 import java.util.*

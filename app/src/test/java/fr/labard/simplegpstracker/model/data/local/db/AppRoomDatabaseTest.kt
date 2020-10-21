@@ -1,4 +1,4 @@
-package fr.labard.simplegpstracker.model.db
+package fr.labard.simplegpstracker.model.data.local.db
 
 import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
@@ -12,8 +12,8 @@ import fr.labard.simplegpstracker.Data.Companion.r1
 import fr.labard.simplegpstracker.Data.Companion.r2
 import fr.labard.simplegpstracker.Data.Companion.rConflict
 import fr.labard.simplegpstracker.Data.Companion.unassignedId
-import fr.labard.simplegpstracker.model.db.location.LocationDao
-import fr.labard.simplegpstracker.model.db.record.RecordDao
+import fr.labard.simplegpstracker.model.data.local.db.location.LocationDao
+import fr.labard.simplegpstracker.model.data.local.db.record.RecordDao
 import junit.framework.Assert.assertNotNull
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat

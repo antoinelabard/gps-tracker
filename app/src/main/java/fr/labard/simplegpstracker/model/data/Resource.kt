@@ -1,4 +1,4 @@
-package fr.labard.simplegpstracker.model.db
+package fr.labard.simplegpstracker.model.data
 
 sealed class Resource<T>(
     val data: T? = null,

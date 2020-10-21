@@ -1,13 +1,14 @@
-package fr.labard.simplegpstracker.model.db
+package fr.labard.simplegpstracker.model.data
 
 import android.app.Application
 import android.os.AsyncTask
 import android.util.Log
 import androidx.lifecycle.LiveData
-import fr.labard.simplegpstracker.model.db.location.LocationDao
-import fr.labard.simplegpstracker.model.db.location.LocationEntity
-import fr.labard.simplegpstracker.model.db.record.RecordDao
-import fr.labard.simplegpstracker.model.db.record.RecordEntity
+import fr.labard.simplegpstracker.model.data.local.db.AppRoomDatabase
+import fr.labard.simplegpstracker.model.data.local.db.location.LocationDao
+import fr.labard.simplegpstracker.model.data.local.db.location.LocationEntity
+import fr.labard.simplegpstracker.model.data.local.db.record.RecordDao
+import fr.labard.simplegpstracker.model.data.local.db.record.RecordEntity
 import java.util.*
 
 class AppRepository internal constructor(application: Application?) : IRepository {

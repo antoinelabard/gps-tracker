@@ -1,9 +1,9 @@
-package fr.labard.simplegpstracker.model.db
+package fr.labard.simplegpstracker.model.data
 
 import android.os.AsyncTask
 import androidx.lifecycle.LiveData
-import fr.labard.simplegpstracker.model.db.location.LocationEntity
-import fr.labard.simplegpstracker.model.db.record.RecordEntity
+import fr.labard.simplegpstracker.model.data.local.db.location.LocationEntity
+import fr.labard.simplegpstracker.model.data.local.db.record.RecordEntity
 
 interface IRepository {
     fun getRecords(): LiveData<List<RecordEntity>>
