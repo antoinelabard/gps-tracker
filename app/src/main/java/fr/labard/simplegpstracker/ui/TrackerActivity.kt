@@ -18,8 +18,6 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import fr.labard.simplegpstracker.R
 import fr.labard.simplegpstracker.model.Constants
 import fr.labard.simplegpstracker.model.GpsService
-import fr.labard.simplegpstracker.model.db.location.LocationEntity
-import fr.labard.simplegpstracker.model.db.record.RecordEntity
 import kotlinx.android.synthetic.main.activity_tracker.*
 import org.osmdroid.api.IMapController
 import org.osmdroid.config.Configuration

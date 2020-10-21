@@ -1,8 +1,9 @@
 package fr.labard.simplegpstracker.ui
 
 import androidx.lifecycle.ViewModel
-import fr.labard.simplegpstracker.model.db.IRepository
-import fr.labard.simplegpstracker.model.db.record.RecordEntity
+import androidx.lifecycle.ViewModelProvider
+import fr.labard.simplegpstracker.model.data.IRepository
+import fr.labard.simplegpstracker.model.data.local.db.record.RecordEntity
 import java.util.*
 
 class MainActivityViewModel(
@@ -33,4 +34,12 @@ class MainActivityViewModel(
     fun insertRecord(recordEntity: RecordEntity?) = appRepository.insertRecord(recordEntity)
 
     fun getRecordsIds() = allRecords.value!!.map {it.id}
+}
+
+@Suppress("UNCHECKED_CAST")
+class MainActivityViewModelFactory (
+    private val tasksRepository: IRepository
+) : ViewModelProvider.NewInstanceFactory() {
+    override fun <T : ViewModel> create(modelClass: Class<T>) =
+        (MainActivityViewModel(tasksRepository) as T)
 }

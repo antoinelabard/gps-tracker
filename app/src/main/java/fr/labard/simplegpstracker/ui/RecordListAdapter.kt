@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import fr.labard.simplegpstracker.R
 import fr.labard.simplegpstracker.model.Constants
-import fr.labard.simplegpstracker.model.db.record.RecordEntity
+import fr.labard.simplegpstracker.model.data.local.db.record.RecordEntity
 
 
 class RecordListAdapter (val context: Context?) :

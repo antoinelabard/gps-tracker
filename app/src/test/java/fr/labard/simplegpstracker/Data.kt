@@ -1,8 +1,8 @@
 package fr.labard.simplegpstracker
 
 import android.location.Location
-import fr.labard.simplegpstracker.model.db.location.LocationEntity
-import fr.labard.simplegpstracker.model.db.record.RecordEntity
+import fr.labard.simplegpstracker.model.data.local.db.location.LocationEntity
+import fr.labard.simplegpstracker.model.data.local.db.record.RecordEntity
 import java.util.*
 import kotlin.math.pow
 

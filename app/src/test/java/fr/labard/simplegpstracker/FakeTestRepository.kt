@@ -3,9 +3,9 @@ package fr.labard.simplegpstracker
 import android.os.AsyncTask
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import fr.labard.simplegpstracker.model.db.IRepository
-import fr.labard.simplegpstracker.model.db.location.LocationEntity
-import fr.labard.simplegpstracker.model.db.record.RecordEntity
+import fr.labard.simplegpstracker.model.data.IRepository
+import fr.labard.simplegpstracker.model.data.local.db.location.LocationEntity
+import fr.labard.simplegpstracker.model.data.local.db.record.RecordEntity
 import java.util.*
 
 class FakeTestRepository: IRepository {

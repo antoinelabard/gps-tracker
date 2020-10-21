@@ -3,9 +3,10 @@ package fr.labard.simplegpstracker
 import android.content.Context
 import androidx.annotation.VisibleForTesting
 import androidx.room.Room
-import fr.labard.simplegpstracker.model.db.AppRepository
-import fr.labard.simplegpstracker.model.db.AppRoomDatabase
-import fr.labard.simplegpstracker.model.db.IRepository
+import fr.labard.simplegpstracker.model.data.AppRepository
+import fr.labard.simplegpstracker.model.data.local.db.AppRoomDatabase
+import fr.labard.simplegpstracker.model.data.IRepository
+import fr.labard.simplegpstracker.model.data.local.LocalDataSource
 import kotlinx.coroutines.runBlocking
 
 object ServiceLocator {

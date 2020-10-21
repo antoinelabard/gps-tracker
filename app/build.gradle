@@ -40,6 +40,9 @@ android {
         includeAndroidResources = true
     }
 
+//    buildFeatures { // for data binding
+//        dataBinding true
+//    }
 }
 
 dependencies {

@@ -3,9 +3,9 @@ package fr.labard.simplegpstracker.ui
 import android.app.Application
 import android.location.Location
 import androidx.lifecycle.AndroidViewModel
-import fr.labard.simplegpstracker.model.db.AppRepository
-import fr.labard.simplegpstracker.model.db.location.LocationEntity
-import fr.labard.simplegpstracker.model.db.record.RecordEntity
+import fr.labard.simplegpstracker.model.data.AppRepository
+import fr.labard.simplegpstracker.model.data.local.db.location.LocationEntity
+import fr.labard.simplegpstracker.model.data.local.db.record.RecordEntity
 import java.util.*
 
 class TrackerActivityViewModel(application: Application?) : AndroidViewModel(application!!) {

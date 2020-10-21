@@ -8,13 +8,14 @@ import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import fr.labard.simplegpstracker.GPSApplication
 import fr.labard.simplegpstracker.R
 import fr.labard.simplegpstracker.model.Constants
-import fr.labard.simplegpstracker.model.db.record.RecordEntity
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -32,7 +33,10 @@ class MainActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        mMainActivityViewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
+//        mMainActivityViewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
+        private val viewModel by viewModels<MainActivityViewModel> {
+            MainActivityViewModelFactory((requireContext().applicationContext as GPSApplication).appRepository)
+        }
         mMainActivityViewModel.allRecords
             .observe(this,
                 { records ->
