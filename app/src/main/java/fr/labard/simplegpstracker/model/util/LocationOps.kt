@@ -1,4 +1,4 @@
-package fr.labard.simplegpstracker.model
+package fr.labard.simplegpstracker.model.util
 
 import android.location.Location
 
