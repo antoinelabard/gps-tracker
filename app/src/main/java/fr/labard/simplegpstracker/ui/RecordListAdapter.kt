@@ -23,7 +23,7 @@ class RecordListAdapter (val context: Context?) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecordViewHolder {
-        val itemView: View = mInflater.inflate(R.layout.recyclerview_item, parent, false)
+        val itemView: View = mInflater.inflate(R.layout.recyclerview_record_list_item, parent, false)
         return RecordViewHolder(itemView)
     }
 
