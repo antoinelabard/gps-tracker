@@ -1,17 +1,18 @@
 package fr.labard.simplegpstracker.model.data
 
-import android.os.AsyncTask
 import androidx.lifecycle.LiveData
 import fr.labard.simplegpstracker.model.data.local.db.location.LocationEntity
 import fr.labard.simplegpstracker.model.data.local.db.record.RecordEntity
 
 interface IRepository {
     fun getRecords(): LiveData<List<RecordEntity>>
-    fun insertRecord(recordEntity: RecordEntity?): AsyncTask<RecordEntity?, Void?, Void?>?
-    fun updateRecordName(id: Int, name: String): AsyncTask<Map<Int, String>, Void?, Void?>?
-    fun updateLastRecordModification(id: Int): AsyncTask<Int, Void?, Void?>?
-    fun deleteRecord(recordId: Int): AsyncTask<Int?, Void?, Void?>?
+    fun insertRecord(recordEntity: RecordEntity)
+    fun updateRecordName(id: Int, name: String)
+    fun updateLastRecordModification(id: Int)
+    fun deleteRecord(recordId: Int)
 
     fun getLocations(): LiveData<List<LocationEntity>>
-    fun insertLocation(locationEntity: LocationEntity?): AsyncTask<LocationEntity?, Void?, Void?>?
+    fun insertLocation(locationEntity: LocationEntity)
+
+    fun deleteAll()
 }

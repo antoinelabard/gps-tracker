@@ -6,7 +6,7 @@ import fr.labard.simplegpstracker.model.data.IRepository
 class GPSApplication : Application() {
 
     val appRepository: IRepository
-        get() = ServiceLocator
+        get() = ServiceLocator.provideAppRepository(this)
 
     override fun onCreate() {
         super.onCreate()
