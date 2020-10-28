@@ -22,13 +22,8 @@
             android:layout_margin="16dp"
             tools:listitem="@layout/recyclerview_record_list_item"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="16dp">
-    </androidx.recyclerview.widget.RecyclerView>
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -24,12 +24,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         createNotificationChannel()
-//
-        val recyclerView = findViewById<RecyclerView>(R.id.recyclerview_record_list)
+
+//        val recyclerView = findViewById<RecyclerView>(R.id.recyclerview_record_list)
 //        val adapter = RecordListAdapter(this)
 
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(this)
+//        recyclerView.adapter = adapter
+//        recyclerView.layoutManager = LinearLayoutManager(this)
 
         mMainActivityViewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
 
@@ -39,14 +39,14 @@ class MainActivity : AppCompatActivity() {
 //                    adapter.setRecords(records)
 //                })
 //
-        activity_main_new_record_fab.setOnClickListener {
-            val newId = mMainActivityViewModel.generateNewId()
-            mMainActivityViewModel.insertNewRecord(newId)
-            adapter.notifyDataSetChanged()
-            val intent = Intent(this@MainActivity, TrackerActivity::class.java)
-            intent.putExtra(Constants.Intent.RECORD_ID_EXTRA, newId)
-            startActivity(intent)
-        }
+//        activity_main_new_record_fab.setOnClickListener {
+//            val newId = mMainActivityViewModel.generateNewId()
+//            mMainActivityViewModel.insertNewRecord(newId)
+//            adapter.notifyDataSetChanged()
+//            val intent = Intent(this@MainActivity, TrackerActivity::class.java)
+//            intent.putExtra(Constants.Intent.RECORD_ID_EXTRA, newId)
+//            startActivity(intent)
+//        }
 
     }
 
