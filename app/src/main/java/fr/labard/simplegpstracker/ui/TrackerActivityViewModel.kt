@@ -1,40 +1,43 @@
 package fr.labard.simplegpstracker.ui
 
-import android.app.Application
 import android.location.Location
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import fr.labard.simplegpstracker.RecordListFragmentViewModel
 import fr.labard.simplegpstracker.model.data.AppRepository
+import fr.labard.simplegpstracker.model.data.IRepository
 import fr.labard.simplegpstracker.model.data.local.db.location.LocationEntity
 import fr.labard.simplegpstracker.model.data.local.db.record.RecordEntity
 import java.util.*
 
-class TrackerActivityViewModel(application: Application?) : AndroidViewModel(application!!) {
-    private val mAppRepository = AppRepository(application)
-    val allRecords = mAppRepository.allRecords
-    val allLocations = mAppRepository.allLocations
+class TrackerActivityViewModel(
+    private val appRepository: IRepository
+) : ViewModel() {
+    val allRecords = appRepository.getRecords()
+    val allLocations = appRepository.getLocations()
 
     var recordId: Int = 0
     var isRecording = false
 
     fun getRecordById(id: Int): RecordEntity {
-        val records = allRecords.value?.filter { it.id == id }!!
+        val records = allRecords.value?.filter { it.id == id } ?: listOf()
         if (records.isEmpty()) return RecordEntity(-1, "", Date(), Date())
         return records.first()
     }
 
     fun updateRecordName(name: String) {
-        mAppRepository.updateRecordName(recordId, name)
+        this.appRepository.updateRecordName(recordId, name)
         updateLastRecordModification()
     }
 
     fun updateLastRecordModification() {
-        mAppRepository.updateLastRecordModification(recordId)
+        this.appRepository.updateLastRecordModification(recordId)
     }
 
-    fun deleteRecord(recordId: Int) = mAppRepository.deleteRecord(recordId)
+    fun deleteRecord(recordId: Int) = appRepository.deleteRecord(recordId)
 
     fun insertLocation(location: Location) {
-        mAppRepository.insertLocation(
+        this.appRepository.insertLocation(
             LocationEntity(
                 0,
                 recordId,
@@ -46,6 +49,13 @@ class TrackerActivityViewModel(application: Application?) : AndroidViewModel(app
         )
     }
 
-    fun getLocationsByRecordId(recordId: Int): List<LocationEntity> = allLocations.value?.filter { it.recordId == recordId } ?: listOf()
+//    fun getLocationsByRecordId(recordId: Int): List<LocationEntity> = allLocations.value?.filter { it.recordId == recordId } ?: listOf()
 }
 
+@Suppress("UNCHECKED_CAST")
+class TrackerActivityViewModelFactory (
+    private val repository: IRepository
+) : ViewModelProvider.NewInstanceFactory() {
+    override fun <T : ViewModel> create(modelClass: Class<T>) =
+        TrackerActivityViewModelFactory(repository) as T
+}
