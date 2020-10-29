@@ -28,24 +28,32 @@ class AppRepository internal constructor(
         return localDataSource.getRecords()
     }
 
+    override fun getRecordById(id: String): RecordEntity {
+        TODO("Not yet implemented")
+    }
+
     override fun insertRecord(recordEntity: RecordEntity) {
         localDataSource.insertRecord(recordEntity)
     }
 
-    override fun updateRecordName(id: Int, name: String) {
+    override fun updateRecordName(id: String, name: String) {
         localDataSource.updateRecordName(id, name)
     }
 
-    override fun updateLastRecordModification(id: Int) {
+    override fun updateLastRecordModification(id: String) {
         localDataSource.updateLastRecordModification(id)
     }
 
-    override fun deleteRecord(recordId: Int) {
-        localDataSource.deleteRecord(recordId)
+    override fun deleteRecord(id: String) {
+        localDataSource.deleteRecord(id)
     }
 
     override fun getLocations(): LiveData<List<LocationEntity>> {
         return localDataSource.getLocations()
+    }
+
+    override fun getLocationsByRecordId(recordId: String) {
+        TODO("Not yet implemented")
     }
 
     override fun insertLocation(locationEntity: LocationEntity) {

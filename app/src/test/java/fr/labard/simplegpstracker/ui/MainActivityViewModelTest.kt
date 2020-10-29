@@ -39,7 +39,7 @@ class MainActivityViewModelTest {
         viewModel = MainActivityViewModel(fakeTestRepository)
     }
 
-    @Test
+    /*@Test
     fun insertRecord() {
         //When
         viewModel.insertRecord(r3)
@@ -48,5 +48,5 @@ class MainActivityViewModelTest {
         val result = viewModel.allRecords.getOrAwaitValue()
         assertThat(result, `is`(listOf(r1, r2, r3)))
 
-    }
+    }*/
 }

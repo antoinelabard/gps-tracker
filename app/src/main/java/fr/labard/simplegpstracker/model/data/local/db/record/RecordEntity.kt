@@ -8,9 +8,6 @@ import java.util.*
 
 @Entity(tableName = Constants.Database.RECORD_TABLE)
 data class RecordEntity (
-    @PrimaryKey
-    @ColumnInfo(name = Constants.Database.RECORD_ENTITY_ID, index = true)
-    var id: Int,
 
     @ColumnInfo(name = Constants.Database.RECORD_ENTITY_NAME)
     var name: String,
@@ -20,4 +17,8 @@ data class RecordEntity (
 
     @ColumnInfo(name = Constants.Database.RECORD_LAST_MODIFICATION)
     var lastModification: Date
-) { fun clone(): RecordEntity = RecordEntity(id, name, creationDate, lastModification) }
+) {
+    @PrimaryKey
+    @ColumnInfo(name = Constants.Database.RECORD_ENTITY_ID, index = true)
+    var id: String = UUID.randomUUID().toString()
+}

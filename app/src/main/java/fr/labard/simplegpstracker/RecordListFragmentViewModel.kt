@@ -9,9 +9,9 @@ import java.util.*
 class RecordListFragmentViewModel(
     private val appRepository: IRepository
 ) : ViewModel() {
-    val recordLiveData = appRepository.getRecords()
+    val recordsLiveData = appRepository.getRecords()
 
-    fun generateNewId(): Int {
+    /*fun generateNewId(): Int {
         var newId = 0
         val recordIds = getRecordsIds()
         while (true) {
@@ -19,23 +19,23 @@ class RecordListFragmentViewModel(
             ++newId
         }
         return newId
-    }
+    }*/
 
-    fun insertNewRecord(recordId: Int) {
+    fun insertRecord() {//recordId: Int) {
         val date = Date()
-        insertRecord(
+        appRepository.insertRecord(
             RecordEntity(
-            recordId,
-            "Record: $date",
-            date,
-            date
+//                recordId,
+                "Record: $date",
+                date,
+                date
             )
         )
     }
 
-    fun insertRecord(recordEntity: RecordEntity) = appRepository.insertRecord(recordEntity)
+//    fun insertRecord(recordEntity: RecordEntity) = appRepository.insertRecord(recordEntity)
 
-    private fun getRecordsIds() = recordLiveData.value!!.map {it.id}
+//    private fun getRecordsIds() = recordsLiveData.value!!.map {it.id}
 }
 
 @Suppress("UNCHECKED_CAST")

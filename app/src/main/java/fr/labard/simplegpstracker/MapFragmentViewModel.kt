@@ -10,9 +10,9 @@ class MapFragmentViewModel(
 ) : ViewModel() {
 
     val allLocations = appRepository.getLocations()
-    var recordId = 0
+    var recordId = ""
 
-    fun getLocationsByRecordId(recordId: Int): List<LocationEntity> = allLocations.value?.filter { it.recordId == recordId } ?: listOf()
+    fun getLocationsByRecordId(recordId: String): List<LocationEntity> = allLocations.value?.filter { it.recordId == recordId } ?: listOf()
 
 
 }

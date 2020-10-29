@@ -3,50 +3,47 @@ package fr.labard.simplegpstracker.ui
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import fr.labard.simplegpstracker.R
 import fr.labard.simplegpstracker.model.util.Constants
-import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity() {
 
-    private lateinit var mMainActivityViewModel: MainActivityViewModel
+class MainActivity : FragmentActivity() {
+
+//    private lateinit var viewModel: MainActivityViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         createNotificationChannel()
 
-//        val recyclerView = findViewById<RecyclerView>(R.id.recyclerview_record_list)
-//        val adapter = RecordListAdapter(this)
+        /*val recyclerView = findViewById<RecyclerView>(R.id.recyclerview_record_list)
+        val adapter = RecordListAdapter(this)
 
-//        recyclerView.adapter = adapter
-//        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(this)
 
-        mMainActivityViewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
 
-//        mMainActivityViewModel.allRecords
-//            .observe(this,
-//                { records ->
-//                    adapter.setRecords(records)
-//                })
-//
-//        activity_main_new_record_fab.setOnClickListener {
-//            val newId = mMainActivityViewModel.generateNewId()
-//            mMainActivityViewModel.insertNewRecord(newId)
-//            adapter.notifyDataSetChanged()
-//            val intent = Intent(this@MainActivity, TrackerActivity::class.java)
-//            intent.putExtra(Constants.Intent.RECORD_ID_EXTRA, newId)
-//            startActivity(intent)
-//        }
+        mMainActivityViewModel.allRecords
+            .observe(this,
+                { records ->
+                    adapter.setRecords(records)
+                })
+
+        activity_main_new_record_fab.setOnClickListener {
+            val newId = mMainActivityViewModel.generateNewId()
+            mMainActivityViewModel.insertNewRecord(newId)
+            adapter.notifyDataSetChanged()
+            val intent = Intent(this@MainActivity, TrackerActivity::class.java)
+            intent.putExtra(Constants.Intent.RECORD_ID_EXTRA, newId)
+            startActivity(intent)
+        }*/
 
     }
 

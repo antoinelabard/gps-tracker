@@ -17,27 +17,35 @@ class LocalDataSource(
 ): DataSource {
 
     override fun getRecords(): LiveData<List<RecordEntity>> {
-        return recordDao.getAll()
+        return recordDao.getRecords()
+    }
+
+    override fun getRecordById(id: String): RecordEntity {
+        TODO("Not yet implemented")
     }
 
     override fun insertRecord(recordEntity: RecordEntity) {
-        recordDao.insert(recordEntity)
+        recordDao.insertRecord(recordEntity)
     }
 
-    override fun updateRecordName(id: Int, name: String) {
-        recordDao.updateName(id, name)
+    override fun updateRecordName(id: String, name: String) {
+        recordDao.updateRecordName(id, name)
     }
 
-    override fun updateLastRecordModification(id: Int) {
+    override fun updateLastRecordModification(id: String) {
         recordDao.updateLastRecordModification(id, Date())
     }
 
-    override fun deleteRecord(recordId: Int) {
-        recordDao.deleteById(recordId)
+    override fun deleteRecord(id: String) {
+        recordDao.deleteRecord(id)
     }
 
     override fun getLocations(): LiveData<List<LocationEntity>> {
         return locationDao.getAll()
+    }
+
+    override fun getLocationsByRecordId(recordId: String) {
+        TODO("Not yet implemented")
     }
 
     override fun insertLocation(locationEntity: LocationEntity) {

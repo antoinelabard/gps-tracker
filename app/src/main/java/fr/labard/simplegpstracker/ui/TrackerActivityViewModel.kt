@@ -16,28 +16,26 @@ class TrackerActivityViewModel(
     val allRecords = appRepository.getRecords()
     val allLocations = appRepository.getLocations()
 
-    var recordId: Int = 0
+    var recordId = ""
     var isRecording = false
 
-    fun getRecordById(id: Int): RecordEntity {
-        val records = allRecords.value?.filter { it.id == id } ?: listOf()
-        if (records.isEmpty()) return RecordEntity(-1, "", Date(), Date())
-        return records.first()
+    fun getRecordById(id: String): RecordEntity {
+        return allRecords.value?.find { it.id == id }!!
     }
 
     fun updateRecordName(name: String) {
-        this.appRepository.updateRecordName(recordId, name)
+        appRepository.updateRecordName(recordId, name)
         updateLastRecordModification()
     }
 
     fun updateLastRecordModification() {
-        this.appRepository.updateLastRecordModification(recordId)
+        appRepository.updateLastRecordModification(recordId)
     }
 
-    fun deleteRecord(recordId: Int) = appRepository.deleteRecord(recordId)
+    fun deleteRecord(recordId: String) = appRepository.deleteRecord(recordId)
 
     fun insertLocation(location: Location) {
-        this.appRepository.insertLocation(
+        appRepository.insertLocation(
             LocationEntity(
                 0,
                 recordId,

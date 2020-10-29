@@ -62,7 +62,7 @@ class TrackerActivity : AppCompatActivity() {
             (applicationContext as GPSApplication).appRepository
         )).get(TrackerActivityViewModel::class.java)
 
-        viewModel.recordId = intent.getIntExtra(Constants.Intent.RECORD_ID_EXTRA, 0)
+        viewModel.recordId = intent.getStringExtra(Constants.Intent.RECORD_ID_EXTRA)!!
 
         MapFragment().arguments = bundleOf(Constants.Intent.RECORD_ID_EXTRA to viewModel.recordId)
 

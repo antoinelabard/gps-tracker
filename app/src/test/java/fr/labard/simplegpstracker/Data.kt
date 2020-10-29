@@ -10,12 +10,12 @@ class Data {
     companion object {
         val PRECISION = 10.0.pow(-2)
 
-        const val unassignedId = 1000 // Default Id which belongs to no record nor location to test bad assignment behavior
+        const val unassignedId = "unassignedId" // Default Id which belongs to no record nor location to test bad assignment behavior
 
-        val r1 = RecordEntity(0, "r1", Date(), Date())
-        val r2 = RecordEntity(1, "r2", Date(), Date())
-        val r3 = RecordEntity(2, "r3", Date(), Date())
-        val rConflict = RecordEntity(r1.id, "rConflict", Date(), Date()) // Has the same id as r intentionally
+        val r1 = RecordEntity("r1", Date(), Date())
+        val r2 = RecordEntity("r2", Date(), Date())
+        val r3 = RecordEntity("r3", Date(), Date())
+        val rConflict = RecordEntity("rConflict", Date(), Date()).apply {id = r1.id} // Has the same id as r intentionally
 
         val lUnassigned = LocationEntity(0, unassignedId, 944006400000, 0.0, 0.0, 0.0f) // Here the recordId belongs to no record intentionally
 
@@ -42,7 +42,7 @@ class Data {
 
         val le1 = LocationEntity(
             0,
-            0,
+            "0",
             l1.time,
             l1.latitude,
             l1.longitude,
@@ -51,7 +51,7 @@ class Data {
 
         val le2 = LocationEntity(
             0,
-            0,
+            "0",
             l2.time,
             l2.latitude,
             l2.longitude,

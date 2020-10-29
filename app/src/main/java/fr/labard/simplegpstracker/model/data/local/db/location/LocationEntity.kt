@@ -22,7 +22,7 @@ data class LocationEntity (
     var id: Int,
 
     @ColumnInfo(name = Constants.Database.LOCATION_ENTITY_RECORD_ID)
-    var recordId: Int,
+    var recordId: String,
 
     @ColumnInfo(name = Constants.Database.LOCATION_ENTITY_TIME)
     var time: Long, // timestamp in milliseconds

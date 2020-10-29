@@ -66,9 +66,9 @@ class AppRoomDatabaseTest {
     @Test
     @Throws(Exception::class)
     fun insertAndGetAllRecords() {
-        recordDao.insert(r1)
-        recordDao.insert(r2)
-        val result = recordDao.getAll()
+        recordDao.insertRecord(r1)
+        recordDao.insertRecord(r2)
+        val result = recordDao.getRecords()
         result.observeForever{}
         assertThat(result.value?.toSet(), equalTo(setOf(r1, r2)))
     }
@@ -76,9 +76,9 @@ class AppRoomDatabaseTest {
     @Test
     @Throws(Exception::class)
     fun insertRecordReplaceOnIdConflict() {
-        recordDao.insert(r1)
-        recordDao.insert(rConflict)
-        val result = recordDao.getAll()
+        recordDao.insertRecord(r1)
+        recordDao.insertRecord(rConflict)
+        val result = recordDao.getRecords()
         result.observeForever{}
         assertThat(result.value?.get(0), equalTo(rConflict))
     }
@@ -86,10 +86,10 @@ class AppRoomDatabaseTest {
     @Test
     @Throws(Exception::class)
     fun deleteRecordById() {
-        recordDao.insert(r1)
-        recordDao.insert(r2)
-        recordDao.deleteById(r2.id)
-        val result = recordDao.getAll()
+        recordDao.insertRecord(r1)
+        recordDao.insertRecord(r2)
+        recordDao.deleteRecord(r2.id)
+        val result = recordDao.getRecords()
         result.observeForever{}
         assertThat(result.value, equalTo(listOf(r1)))
     }
@@ -97,10 +97,10 @@ class AppRoomDatabaseTest {
     @Test
     @Throws(Exception::class)
     fun deleteRecordByIdWithUnassignedIdDoNothing() {
-        recordDao.insert(r1)
-        recordDao.insert(r2)
-        recordDao.deleteById(unassignedId)
-        val result = recordDao.getAll()
+        recordDao.insertRecord(r1)
+        recordDao.insertRecord(r2)
+        recordDao.deleteRecord(unassignedId)
+        val result = recordDao.getRecords()
         result.observeForever{}
         assertThat(result.value, equalTo(listOf(r1, r2)))
     }
@@ -108,10 +108,10 @@ class AppRoomDatabaseTest {
     @Test
     @Throws(Exception::class)
     fun deleteAllRecords() {
-        recordDao.insert(r1)
-        recordDao.insert(r2)
+        recordDao.insertRecord(r1)
+        recordDao.insertRecord(r2)
         recordDao.deleteAll()
-        val result = recordDao.getAll()
+        val result = recordDao.getRecords()
         result.observeForever{}
         assertThat(result.value, equalTo(listOf()))
     }
@@ -119,9 +119,9 @@ class AppRoomDatabaseTest {
     @Test
     @Throws(Exception::class)
     fun updateRecordName() {
-        recordDao.insert(r1)
-        recordDao.updateName(r1.id, "new")
-        val result = recordDao.getAll()
+        recordDao.insertRecord(r1)
+        recordDao.updateRecordName(r1.id, "new")
+        val result = recordDao.getRecords()
         result.observeForever{}
         assertThat(result.value?.get(0)?.name, equalTo("new"))
     }
@@ -129,9 +129,9 @@ class AppRoomDatabaseTest {
     @Test
     @Throws(Exception::class)
     fun updateRecordNameWithUnassignedIdDoNothing() {
-        recordDao.insert(r1)
-        recordDao.updateName(unassignedId, "new")
-        val result = recordDao.getAll()
+        recordDao.insertRecord(r1)
+        recordDao.updateRecordName(unassignedId, "new")
+        val result = recordDao.getRecords()
         result.observeForever{}
         assertThat(result.value?.get(0)?.name, equalTo(r1.name))
     }
@@ -139,11 +139,11 @@ class AppRoomDatabaseTest {
     @Test
     @Throws(Exception::class)
     fun updateLastRecordModification() {
-        recordDao.insert(r1)
+        recordDao.insertRecord(r1)
         Thread.sleep(10)
         val d = Date()
         recordDao.updateLastRecordModification(r1.id, d)
-        val result = recordDao.getAll()
+        val result = recordDao.getRecords()
         result.observeForever{}
         assertThat(result.value?.get(0)?.lastModification, equalTo(d))
     }
@@ -151,11 +151,11 @@ class AppRoomDatabaseTest {
     @Test
     @Throws(Exception::class)
     fun updateLastRecordModificationWithUnassignedIdDoNothing() {
-        recordDao.insert(r1)
+        recordDao.insertRecord(r1)
         Thread.sleep(10)
         val d = Date()
         recordDao.updateLastRecordModification(unassignedId, d)
-        val result = recordDao.getAll()
+        val result = recordDao.getRecords()
         result.observeForever{}
         assertThat(result.value?.get(0)?.lastModification, equalTo(r1.lastModification))
     }
@@ -167,7 +167,7 @@ class AppRoomDatabaseTest {
             le1.copy().apply { id = 1 }, // the location id autoincrements and we must consider it
             le2.copy().apply { id = 2 }
         )
-        recordDao.insert(r1)
+        recordDao.insertRecord(r1)
         locationDao.insert(le1)
         locationDao.insert(le2)
         val result = locationDao.getAll()
@@ -183,7 +183,7 @@ class AppRoomDatabaseTest {
     @Test
     @Throws(Exception::class)
     fun deleteAllLocations() {
-        recordDao.insert(r1)
+        recordDao.insertRecord(r1)
         locationDao.insert(le1)
         locationDao.insert(le1)
         locationDao.deleteAll()

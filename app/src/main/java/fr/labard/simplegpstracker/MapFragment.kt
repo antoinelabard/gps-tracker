@@ -45,7 +45,7 @@ class MapFragment : Fragment() {
         buildMapView()
 
         setFragmentResultListener("requestRecordId") { _, bundle ->
-            viewModel.recordId = bundle.getInt("recordId")
+            viewModel.recordId = bundle.getString("recordId")!!
         }
 
         viewModel.allLocations.observe(viewLifecycleOwner, {

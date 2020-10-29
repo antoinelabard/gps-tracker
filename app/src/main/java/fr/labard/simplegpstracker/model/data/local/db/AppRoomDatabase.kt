@@ -25,23 +25,23 @@ abstract class AppRoomDatabase : RoomDatabase() {
         private val mRecordDao: RecordDao? = db!!.recordDao()
         private val mLocationDao: LocationDao? = db!!.locationDao()
         var records = arrayOf(
-            RecordEntity(0, "Record 1", Date(1577836800000), Date(1590969600000)),
-            RecordEntity(1, "Record 2", Date(1546300800000), Date(1559347200000)),
-            RecordEntity(2, "Record 3", Date(1514764800000), Date(1527811200000))
+            RecordEntity("Record 1", Date(1577836800000), Date(1590969600000)),
+            RecordEntity("Record 2", Date(1546300800000), Date(1559347200000)),
+            RecordEntity("Record 3", Date(1514764800000), Date(1527811200000))
         )
         var locations = arrayOf(
-            LocationEntity(0, 0, 944006400000, 1.0, 2.0, 0.0f),
-            LocationEntity(0, 1, 944006405000, 2.0, 3.0, 0.0f),
-            LocationEntity(0, 1, 944006410000, 3.0, 4.0, 0.0f),
-            LocationEntity(0, 2, 944006415000, 4.0, 5.0, 0.0f),
-            LocationEntity(0, 2, 944006420000, 5.0, 6.0, 0.0f),
-            LocationEntity(0, 2, 944006425000, 6.0, 7.0, 0.0f)
+            LocationEntity(0, "0", 944006400000, 1.0, 2.0, 0.0f),
+            LocationEntity(0, "1", 944006405000, 2.0, 3.0, 0.0f),
+            LocationEntity(0, "1", 944006410000, 3.0, 4.0, 0.0f),
+            LocationEntity(0, "2", 944006415000, 4.0, 5.0, 0.0f),
+            LocationEntity(0, "2", 944006420000, 5.0, 6.0, 0.0f),
+            LocationEntity(0, "2", 944006425000, 6.0, 7.0, 0.0f)
         )
         override fun doInBackground(vararg params: Void?): Void? {
             mRecordDao!!.deleteAll()
             mLocationDao!!.deleteAll()
             for (element in records) {
-                mRecordDao.insert(element)
+                mRecordDao.insertRecord(element)
             }
             for (element in locations) {
                 mLocationDao.insert(element)

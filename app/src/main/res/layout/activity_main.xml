@@ -24,7 +24,7 @@
 <!--    <include layout="@layout/content_main"/>-->
 
     <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/activity_main_record_list_fragment"
+            android:id="@+id/activity_main_fragment_record_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:name="fr.labard.simplegpstracker.RecordListFragment"/>
