@@ -20,7 +20,7 @@ abstract class AppRoomDatabase : RoomDatabase() {
     abstract fun recordDao(): RecordDao?
     abstract fun locationDao(): LocationDao?
 
-    private class PopulateDbAsync internal constructor(db: AppRoomDatabase?) :
+    /*private class PopulateDbAsync internal constructor(db: AppRoomDatabase?) :
         AsyncTask<Void?, Void?, Void?>() {
         private val mRecordDao: RecordDao? = db!!.recordDao()
         private val mLocationDao: LocationDao? = db!!.locationDao()
@@ -48,9 +48,9 @@ abstract class AppRoomDatabase : RoomDatabase() {
             }
             return null
         }
-    }
+    }*/
 
-    companion object {
+    /*companion object {
         private var INSTANCE: AppRoomDatabase? = null
         fun getDatabase(context: Context): AppRoomDatabase? {
             if (INSTANCE == null) {
@@ -67,13 +67,13 @@ abstract class AppRoomDatabase : RoomDatabase() {
                 }
             }
             return INSTANCE
-        }
+        }*/
 
-        private val sRoomDatabaseCallback: Callback = object : Callback() {
+        /*private val sRoomDatabaseCallback: Callback = object : Callback() {
             override fun onOpen(db: SupportSQLiteDatabase) {
                 super.onOpen(db)
 //                PopulateDbAsync(INSTANCE).execute()
             }
         }
-    }
+    }*/
 }
