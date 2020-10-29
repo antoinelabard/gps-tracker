@@ -2,8 +2,11 @@ package fr.labard.simplegpstracker
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import fr.labard.simplegpstracker.model.data.IRepository
 import fr.labard.simplegpstracker.model.data.local.db.record.RecordEntity
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import java.util.*
 
 class RecordListFragmentViewModel(
@@ -21,7 +24,7 @@ class RecordListFragmentViewModel(
         return newId
     }*/
 
-    fun insertRecord() {//recordId: Int) {
+    fun insertRecord() = viewModelScope.launch {//recordId: Int) {
         val date = Date()
         appRepository.insertRecord(
             RecordEntity(

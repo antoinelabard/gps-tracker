@@ -31,7 +31,7 @@ class MainActivityViewModelTest {
     private lateinit var viewModel: MainActivityViewModel
 
     @Before
-    fun setupViewModel() {
+    suspend fun setupViewModel() {
         fakeTestRepository = FakeTestRepository()
         fakeTestRepository.insertRecord(r1)
         fakeTestRepository.insertRecord(r2)
