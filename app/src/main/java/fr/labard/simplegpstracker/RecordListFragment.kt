@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -30,18 +31,21 @@ class RecordListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = layoutInflater.inflate(R.layout.fragment_record_list, container, false)
+
         recyclerView = view.findViewById(R.id.recyclerview_record_list)
-
         recyclerView.layoutManager = LinearLayoutManager(activity)
+        adapter = RecordListAdapter(context)
+        recyclerView.adapter = adapter
 
-        return inflater.inflate(R.layout.fragment_record_list, container, false)
+        return view
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        adapter = RecordListAdapter(context)
-        recyclerView.adapter = adapter
+        viewModel.recordsLiveData.observe(viewLifecycleOwner, {
+                records -> adapter.setRecords(records)
+        })
 
         activity_main_new_record_fab.setOnClickListener {
 //            val newId = viewModel.generateNewId()
