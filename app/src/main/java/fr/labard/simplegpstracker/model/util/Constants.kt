@@ -26,11 +26,13 @@ class Constants {
             const val LATITUDE_EXTRA = "latitude"
             const val LONGITUDE_EXTRA = "longitude"
             const val SPEED_EXTRA = "speed"
+            const val TIME_EXTRA = "time"
             const val RECORD_ID_EXTRA = "recordId"
             const val IS_RECORDING_EXTRA = "isRecording"
             const val ACTION_PAUSE = "pause"
-            const val ACTION_RECORD = "record"
+            const val ACTION_PLAY = "record"
             const val ACTION_STOP = "stop"
+            const val REQUEST_RECORD_ID = "requestRecordId"
         }
     }
     class Database {

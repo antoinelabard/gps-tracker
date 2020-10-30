@@ -1,17 +1,11 @@
 package fr.labard.simplegpstracker
 
 import android.os.Bundle
-import android.provider.SyncStateContract
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResult
-import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
-import fr.labard.simplegpstracker.model.util.Constants
-import kotlinx.android.synthetic.main.activity_tracker.*
 import org.osmdroid.api.IMapController
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
@@ -36,36 +30,31 @@ class MapFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        setFragmentResult("requestRecordId", bundleOf(
-            Constants.Intent.RECORD_ID_EXTRA to
-            arguments?.getInt(Constants.Intent.RECORD_ID_EXTRA)
-        ))
-        val view = layoutInflater.inflate(R.layout.fragment_record_list, container, false)
-        mapView = view.findViewById(R.id.activity_tracker_fragment_map)
+
+//        setFragmentResult(Constants.Intent.REQUEST_RECORD_ID, bundleOf(
+//            Constants.Intent.RECORD_ID_EXTRA to arguments?.getString(Constants.Intent.RECORD_ID_EXTRA)
+//        ))
+
+//        viewModel.recordId = arguments?.getString(Constants.Intent.RECORD_ID_EXTRA)!!
+
+        val view = layoutInflater.inflate(R.layout.fragment_map, container, false)
+        mapView = view.findViewById(R.id.fragment_map_mapview)
         buildMapView()
 
-        setFragmentResultListener("requestRecordId") { _, bundle ->
-            viewModel.recordId = bundle.getString("recordId")!!
-        }
+//        setFragmentResultListener(Constants.Intent.REQUEST_RECORD_ID) { _, bundle ->
+//            viewModel.recordId = bundle.getString(Constants.Intent.RECORD_ID_EXTRA)!!
+//        }
 
-        viewModel.allLocations.observe(viewLifecycleOwner, {
-            activity_tracker_toolbar.subtitle = (viewModel
-                .getLocationsByRecordId(viewModel.recordId).count().toString())
-            val line = Polyline()
-            var parcours = viewModel.getLocationsByRecordId(viewModel.recordId)
-                .map { GeoPoint(it.latitude, it.longitude) }
-            if (parcours.isEmpty()) parcours = mutableListOf(GeoPoint(0.0, 0.0))
-            line.setPoints(parcours)
-            mapView.overlayManager.add(line)
-            mapController.setCenter(parcours.last())
-        })
+        viewModel.activeRecordId.observe(viewLifecycleOwner, { viewModel.getLocationsByRecordActiveId() })
+
+        viewModel.locations.observe(viewLifecycleOwner, { updateMapView() })
 
         return inflater.inflate(R.layout.fragment_map, container, false)
     }
 
-    /*override fun onActivityCreated(savedInstanceState: Bundle?) {
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-    }*/
+    }
 
     private fun buildMapView() {
         /*requestPermissionsIfNecessary(arrayOf(
@@ -99,6 +88,13 @@ class MapFragment : Fragment() {
             add(mLocationOverlay)
             add(mCompassOverlay)
         }
+    }
+
+    private fun updateMapView() {
+        val parkour: List<GeoPoint>? = viewModel.getLocationsByRecordActiveId().map { GeoPoint(it.latitude, it.longitude) }
+        if (parkour!!.isEmpty()) return
+        mapView.overlayManager.add(Polyline().apply { setPoints(parkour) })
+        mapController.setCenter(parkour.last())
     }
 
     override fun onPause() {

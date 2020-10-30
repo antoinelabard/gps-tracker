@@ -1,22 +1,19 @@
 package fr.labard.simplegpstracker.ui
 
 import android.location.Location
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import fr.labard.simplegpstracker.RecordListFragmentViewModel
-import fr.labard.simplegpstracker.model.data.AppRepository
 import fr.labard.simplegpstracker.model.data.IRepository
 import fr.labard.simplegpstracker.model.data.local.db.location.LocationEntity
 import fr.labard.simplegpstracker.model.data.local.db.record.RecordEntity
-import java.util.*
 
 class TrackerActivityViewModel(
     private val appRepository: IRepository
 ) : ViewModel() {
     val allRecords = appRepository.getRecords()
-    val allLocations = appRepository.getLocations()
+    var activeRecordId = appRepository.getActiveRecordId()
 
-    var recordId = ""
     var isRecording = false
 
     fun getRecordById(id: String): RecordEntity {
@@ -24,12 +21,12 @@ class TrackerActivityViewModel(
     }
 
     fun updateRecordName(name: String) {
-        appRepository.updateRecordName(recordId, name)
+        appRepository.updateRecordName(activeRecordId.value!!, name)
         updateLastRecordModification()
     }
 
     fun updateLastRecordModification() {
-        appRepository.updateLastRecordModification(recordId)
+        appRepository.updateLastRecordModification(activeRecordId.value!!)
     }
 
     fun deleteRecord(recordId: String) = appRepository.deleteRecord(recordId)
@@ -38,7 +35,7 @@ class TrackerActivityViewModel(
         appRepository.insertLocation(
             LocationEntity(
                 0,
-                recordId,
+                activeRecordId.value!!,
                 location.time,
                 location.latitude,
                 location.longitude,
@@ -47,7 +44,11 @@ class TrackerActivityViewModel(
         )
     }
 
-//    fun getLocationsByRecordId(recordId: Int): List<LocationEntity> = allLocations.value?.filter { it.recordId == recordId } ?: listOf()
+    fun getActiveRecordId(): String = appRepository.getActiveRecordId().value!!
+
+    fun setActiveRecordId(recordId: String) {
+        appRepository.setActiveRecordId(recordId)
+    }
 }
 
 @Suppress("UNCHECKED_CAST")
@@ -55,5 +56,5 @@ class TrackerActivityViewModelFactory (
     private val repository: IRepository
 ) : ViewModelProvider.NewInstanceFactory() {
     override fun <T : ViewModel> create(modelClass: Class<T>) =
-        TrackerActivityViewModelFactory(repository) as T
+        TrackerActivityViewModel(repository) as T
 }

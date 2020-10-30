@@ -19,7 +19,6 @@ import kotlinx.android.synthetic.main.fragment_record_list.*
 class RecordListFragment : Fragment() {
 
     lateinit var recyclerView: RecyclerView
-
     lateinit var adapter: RecordListAdapter
 
     private val viewModel by viewModels<RecordListFragmentViewModel> {

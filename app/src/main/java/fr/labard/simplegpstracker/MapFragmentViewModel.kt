@@ -1,5 +1,6 @@
 package fr.labard.simplegpstracker
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import fr.labard.simplegpstracker.model.data.IRepository
@@ -9,12 +10,14 @@ class MapFragmentViewModel(
     private val appRepository: IRepository
 ) : ViewModel() {
 
-    val allLocations = appRepository.getLocations()
-    var recordId = ""
+    var activeRecordId = appRepository.getActiveRecordId()
+    var locations = appRepository.getLocations()
 
-    fun getLocationsByRecordId(recordId: String): List<LocationEntity> = allLocations.value?.filter { it.recordId == recordId } ?: listOf()
+    fun getLocationsByRecordActiveId(): List<LocationEntity> = locations.value!!.filter { it.recordId == activeRecordId.value }
 
-
+    fun setActiveRecordId(recordId: String) {
+        appRepository.setActiveRecordId(recordId)
+    }
 }
 
 @Suppress("UNCHECKED_CAST")
@@ -22,5 +25,5 @@ class MapFragmentViewModelFactory (
     private val repository: IRepository
 ) : ViewModelProvider.NewInstanceFactory() {
     override fun <T : ViewModel> create(modelClass: Class<T>) =
-        (MapFragmentViewModelFactory(repository) as T)
+        (MapFragmentViewModel(repository) as T)
 }

@@ -13,7 +13,7 @@ class FakeTestRepository: IRepository {
         TODO("Not yet implemented")
     }
 
-    override fun getRecordById(id: String): LiveData<RecordEntity> {
+    override fun getRecord(id: String): LiveData<RecordEntity> {
         TODO("Not yet implemented")
     }
 
@@ -42,6 +42,14 @@ class FakeTestRepository: IRepository {
     }
 
     override fun insertLocation(locationEntity: LocationEntity) {
+        TODO("Not yet implemented")
+    }
+
+    override fun getActiveRecordId(): String {
+        TODO("Not yet implemented")
+    }
+
+    override fun setActiveRecordId(recordId: String) {
         TODO("Not yet implemented")
     }
 

@@ -9,30 +9,19 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.EditText
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import fr.labard.simplegpstracker.GPSApplication
-import fr.labard.simplegpstracker.MapFragmentViewModel
 import fr.labard.simplegpstracker.R
 import fr.labard.simplegpstracker.model.util.Constants
 import fr.labard.simplegpstracker.model.GpsService
-import fr.labard.simplegpstracker.model.data.AppRepository
-import fr.labard.simplegpstracker.model.data.local.LocalDataSource
-import fr.labard.simplegpstracker.model.data.local.db.location.LocationDao
-import fr.labard.simplegpstracker.model.data.local.db.record.RecordDao
 import kotlinx.android.synthetic.main.activity_tracker.*
 import org.osmdroid.config.Configuration
-import androidx.fragment.app.setFragmentResult
-import androidx.fragment.app.setFragmentResultListener
 import fr.labard.simplegpstracker.MapFragment
 
 class TrackerActivity : AppCompatActivity() {
@@ -48,6 +37,7 @@ class TrackerActivity : AppCompatActivity() {
                 latitude = intent.getDoubleExtra(Constants.Intent.LATITUDE_EXTRA, 0.0)
                 longitude = intent.getDoubleExtra(Constants.Intent.LONGITUDE_EXTRA, 0.0)
                 speed = intent.getFloatExtra(Constants.Intent.SPEED_EXTRA, 0.0f)
+                time = intent.getLongExtra(Constants.Intent.TIME_EXTRA, 0)
             }
             viewModel.insertLocation(location)
         }
@@ -62,9 +52,9 @@ class TrackerActivity : AppCompatActivity() {
             (applicationContext as GPSApplication).appRepository
         )).get(TrackerActivityViewModel::class.java)
 
-        viewModel.recordId = intent.getStringExtra(Constants.Intent.RECORD_ID_EXTRA)!!
+        viewModel.setActiveRecordId(intent.getStringExtra(Constants.Intent.RECORD_ID_EXTRA)!!)
 
-        MapFragment().arguments = bundleOf(Constants.Intent.RECORD_ID_EXTRA to viewModel.recordId)
+        MapFragment().arguments = bundleOf(Constants.Intent.RECORD_ID_EXTRA to viewModel.getActiveRecordId())
 
         localBroadcastManager = LocalBroadcastManager.getInstance(applicationContext)
 
@@ -82,7 +72,7 @@ class TrackerActivity : AppCompatActivity() {
 
         viewModel.allRecords.observe(this, {
             activity_tracker_toolbar.title = viewModel
-                .getRecordById(viewModel.recordId).name
+                .getRecordById(viewModel.getActiveRecordId()).name
         })
         /*mTrackerActivityViewModel.allLocations
             .observe(this,
@@ -126,8 +116,8 @@ class TrackerActivity : AppCompatActivity() {
         }*/
 
         locationServiceIntent = Intent(applicationContext, GpsService::class.java)
-            .putExtra(Constants.Intent.RECORD_ID_EXTRA, viewModel.recordId)
-            .setAction(Constants.Intent.ACTION_RECORD)
+            .putExtra(Constants.Intent.RECORD_ID_EXTRA, viewModel.activeRecordId.value)
+            .setAction(Constants.Intent.ACTION_PLAY)
 
         activity_tracker_play_fab.setOnClickListener {
             if (viewModel.isRecording) {
@@ -182,7 +172,7 @@ class TrackerActivity : AppCompatActivity() {
                     .setMessage(R.string.delete_message)
                     .setIcon(R.drawable.ic_action_delete)
                     .setPositiveButton(R.string.yes) { _: DialogInterface, _: Int ->
-                        viewModel.deleteRecord(viewModel.recordId)
+                        viewModel.deleteRecord(viewModel.getActiveRecordId())
                         Toast.makeText(this, R.string.deletion_complete, Toast.LENGTH_LONG)
 
                         finish()
@@ -255,11 +245,12 @@ class TrackerActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         activity_tracker_mapview.onResume()
-    }
+    }*/
 
     override fun onDestroy() {
         super.onDestroy()
+        viewModel.setActiveRecordId("")
         stopService(locationServiceIntent)
         LocalBroadcastManager.getInstance(this).unregisterReceiver(LocationBroadcastReceiver)
-    }*/
+    }
 }
