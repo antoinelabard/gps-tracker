@@ -39,14 +39,15 @@ class MapFragment : Fragment() {
         Configuration.getInstance().load(activity, activity?.getPreferences(Context.MODE_PRIVATE))
         val view = layoutInflater.inflate(R.layout.fragment_map, container, false)
         mapView = view.findViewById(R.id.fragment_map_mapview)
-//        buildMapView()
+        buildMapView()
 
         viewModel.allLocations.observe(viewLifecycleOwner, {
             viewModel.setLocationsByRecordActiveId()
+            viewModel.locationsByRecordId.toString()
             updateMapView()
         })
 
-        return inflater.inflate(R.layout.fragment_map, container, false)
+        return view
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
