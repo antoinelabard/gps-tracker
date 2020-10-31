@@ -48,6 +48,14 @@ class TrackerActivity : AppCompatActivity() {
         setContentView(R.layout.activity_tracker)
         setSupportActionBar(findViewById(R.id.activity_tracker_toolbar))
 
+        requestPermissionsIfNecessary(arrayOf(
+            android.Manifest.permission.ACCESS_FINE_LOCATION,
+            android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            android.Manifest.permission.READ_EXTERNAL_STORAGE,
+            android.Manifest.permission.INTERNET,
+            android.Manifest.permission.ACCESS_NETWORK_STATE
+        ))
+
         viewModel = ViewModelProvider(this, TrackerActivityViewModelFactory(
             (applicationContext as GPSApplication).appRepository
         )).get(TrackerActivityViewModel::class.java)
@@ -59,14 +67,6 @@ class TrackerActivity : AppCompatActivity() {
         localBroadcastManager = LocalBroadcastManager.getInstance(applicationContext)
 
         Configuration.getInstance().load(applicationContext, getPreferences(Context.MODE_PRIVATE))
-
-        requestPermissionsIfNecessary(arrayOf(
-            android.Manifest.permission.ACCESS_FINE_LOCATION,
-            android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            android.Manifest.permission.READ_EXTERNAL_STORAGE,
-            android.Manifest.permission.INTERNET,
-            android.Manifest.permission.ACCESS_NETWORK_STATE
-        ))
 
 //        buildMapView()
 

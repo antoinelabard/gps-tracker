@@ -1,5 +1,6 @@
 package fr.labard.simplegpstracker
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import org.osmdroid.api.IMapController
+import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
@@ -20,7 +22,6 @@ class MapFragment : Fragment() {
 
     lateinit var mapView: MapView
     private lateinit var mapController: IMapController
-
 
     private val viewModel by viewModels<MapFragmentViewModel> {
         MapFragmentViewModelFactory((requireContext().applicationContext as GPSApplication).appRepository)
@@ -45,9 +46,12 @@ class MapFragment : Fragment() {
 //            viewModel.recordId = bundle.getString(Constants.Intent.RECORD_ID_EXTRA)!!
 //        }
 
-        viewModel.activeRecordId.observe(viewLifecycleOwner, { viewModel.getLocationsByRecordActiveId() })
-
-        viewModel.locations.observe(viewLifecycleOwner, { updateMapView() })
+        viewModel.allLocations.observe(viewLifecycleOwner, {
+            viewModel.locationsByRecordId = viewModel.allLocations.value?.filter {
+                it.recordId == viewModel.activeRecordId.value
+            }!!
+            updateMapView()
+        })
 
         return inflater.inflate(R.layout.fragment_map, container, false)
     }
@@ -91,7 +95,7 @@ class MapFragment : Fragment() {
     }
 
     private fun updateMapView() {
-        val parkour: List<GeoPoint>? = viewModel.getLocationsByRecordActiveId().map { GeoPoint(it.latitude, it.longitude) }
+        val parkour: List<GeoPoint>? = viewModel.locationsByRecordId.map { GeoPoint(it.latitude, it.longitude) }
         if (parkour!!.isEmpty()) return
         mapView.overlayManager.add(Polyline().apply { setPoints(parkour) })
         mapController.setCenter(parkour.last())

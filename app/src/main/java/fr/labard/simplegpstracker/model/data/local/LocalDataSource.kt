@@ -18,26 +18,35 @@ class LocalDataSource(
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ): DataSource {
 
-    override fun getRecords(): LiveData<List<RecordEntity>> = recordDao.getRecords()
+    override fun getRecords(): LiveData<List<RecordEntity>> =
+        recordDao.getRecords()
 
-    override fun getRecord(id: String): LiveData<RecordEntity> = recordDao.getRecordById(id)
+    override fun getRecord(id: String): LiveData<RecordEntity> =
+        recordDao.getRecordById(id)
 
-    override fun insertRecord(recordEntity: RecordEntity) = InsertRecordAsyncTask(recordDao).execute(recordEntity)
+    override fun insertRecord(recordEntity: RecordEntity) =
+        InsertRecordAsyncTask(recordDao).execute(recordEntity)
 
-    override fun updateRecordName(id: String, name: String) = UpdateRecordNameAsyncTask(recordDao).execute(mapOf(id to name))
+    override fun updateRecordName(id: String, name: String) =
+        UpdateRecordNameAsyncTask(recordDao).execute(mapOf(id to name))
 
-    override fun updateLastRecordModification(id: String) = UpdateLastRecordModificationAsyncTask(recordDao).execute(id)
+    override fun updateLastRecordModification(id: String) =
+        UpdateLastRecordModificationAsyncTask(recordDao).execute(id)
 
-    override fun deleteRecord(id: String) = DeleteRecordAsyncTask(recordDao).execute(id)
+    override fun deleteRecord(id: String) =
+        DeleteRecordAsyncTask(recordDao).execute(id)
 
-    override fun getLocations(): LiveData<List<LocationEntity>> = locationDao.getAll()
+    override fun getLocations(): LiveData<List<LocationEntity>> =
+        locationDao.getAll()
 
     override fun getLocationsByRecordId(recordId: String): LiveData<List<LocationEntity>> =
         locationDao.getLocationsByRecordId(recordId)
 
-    override fun insertLocation(locationEntity: LocationEntity) = InsertLocationAsyncTask(locationDao).execute(locationEntity)
+    override fun insertLocation(locationEntity: LocationEntity) =
+        InsertLocationAsyncTask(locationDao).execute(locationEntity)
 
-    override fun deleteAll() = DeleteAllAsyncTask(recordDao).execute()
+    override fun deleteAll() =
+        DeleteAllAsyncTask(recordDao).execute()
 
 
     private class InsertRecordAsyncTask constructor(private val dao: RecordDao) :
