@@ -19,7 +19,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintVertical_bias="0.5"/>
+            app:layout_constraintVertical_bias="0.5">
+
+        <com.google.android.material.tabs.TabLayout
+                android:id="@+id/activity_tracker_tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/colorPrimary"/>
+
+    </androidx.appcompat.widget.Toolbar>
 
     <androidx.fragment.app.FragmentContainerView
             android:id="@+id/activity_tracker_fragment_map"

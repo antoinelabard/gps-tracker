@@ -22,4 +22,6 @@
     <string name="play">Play</string>
     <string name="pause">Pause</string>
     <string name="canceled">Canceled</string>
+    <string name="map">Map</string>
+    <string name="statistics">Statistics</string>
 </resources>
