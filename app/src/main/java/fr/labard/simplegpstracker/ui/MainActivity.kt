@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.ViewModelProvider
 import fr.labard.simplegpstracker.R
 import fr.labard.simplegpstracker.model.util.Constants
 
@@ -21,30 +20,6 @@ class MainActivity : FragmentActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         createNotificationChannel()
-
-        /*val recyclerView = findViewById<RecyclerView>(R.id.recyclerview_record_list)
-        val adapter = RecordListAdapter(this)
-
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(this)
-
-        viewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
-
-        mMainActivityViewModel.allRecords
-            .observe(this,
-                { records ->
-                    adapter.setRecords(records)
-                })
-
-        activity_main_new_record_fab.setOnClickListener {
-            val newId = mMainActivityViewModel.generateNewId()
-            mMainActivityViewModel.insertNewRecord(newId)
-            adapter.notifyDataSetChanged()
-            val intent = Intent(this@MainActivity, TrackerActivity::class.java)
-            intent.putExtra(Constants.Intent.RECORD_ID_EXTRA, newId)
-            startActivity(intent)
-        }*/
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

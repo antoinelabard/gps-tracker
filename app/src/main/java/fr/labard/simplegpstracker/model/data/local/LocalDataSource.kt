@@ -93,7 +93,6 @@ class LocalDataSource(
             }
             return null
         }
-
     }
 
     private class DeleteAllAsyncTask constructor(private val dao: RecordDao?) :

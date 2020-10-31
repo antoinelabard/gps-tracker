@@ -13,7 +13,7 @@ class MapFragmentViewModel(
     var allLocations = appRepository.getLocations()
     var locationsByRecordId = listOf<LocationEntity>()
 
-    fun getLocationsByRecordActiveId(): List<LocationEntity> = allLocations.value!!.filter { it.recordId == activeRecordId.value }
+    fun setLocationsByRecordActiveId(): List<LocationEntity> = allLocations.value!!.filter { it.recordId == activeRecordId.value }
 }
 
 @Suppress("UNCHECKED_CAST")

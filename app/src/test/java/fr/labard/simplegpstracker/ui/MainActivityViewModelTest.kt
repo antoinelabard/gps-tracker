@@ -4,16 +4,11 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import fr.labard.simplegpstracker.Data.Companion.r1
 import fr.labard.simplegpstracker.Data.Companion.r2
-import fr.labard.simplegpstracker.Data.Companion.r3
 import fr.labard.simplegpstracker.FakeTestRepository
 import fr.labard.simplegpstracker.MainCoroutineRule
-import fr.labard.simplegpstracker.getOrAwaitValue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import org.hamcrest.MatcherAssert.assertThat
-import org.hamcrest.Matchers.`is`
 import org.junit.Before
 import org.junit.Rule
-import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)

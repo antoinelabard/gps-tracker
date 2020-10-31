@@ -49,7 +49,6 @@ class GpsService: Service(), LocationListener {
     override fun onProviderDisabled(provider: String?) {}
     override fun onBind(intent: Intent?): IBinder? = null
 
-//    @RequiresApi(Build.VERSION_CODES.O)
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
         recordId = intent?.getStringExtra(Constants.Intent.RECORD_ID_EXTRA)!!
@@ -67,13 +66,13 @@ class GpsService: Service(), LocationListener {
             .setAction(Constants.Intent.ACTION_STOP)
         val stopPendingIntent = PendingIntent.getForegroundService(this, 1, stopIntent, 0)
 
-        val notification = NotificationCompat.Builder(this, Constants.Notification.CHANNEL_ID)
-            .setContentTitle(getString(R.string.gpstracker_notification_title))
-            .setContentText(getString(R.string.gpstracker_notification_content))
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setOngoing(true)
-            .setPriority(NotificationCompat.PRIORITY_HIGH)
-            .setContentIntent(
+        val notification = NotificationCompat.Builder(this, Constants.Notification.CHANNEL_ID).apply {
+            setContentTitle(getString(R.string.gpstracker_notification_title))
+            setContentText(getString(R.string.gpstracker_notification_content))
+            setSmallIcon(R.drawable.ic_launcher_foreground)
+            setOngoing(true)
+            priority = NotificationCompat.PRIORITY_HIGH
+            setContentIntent(
                 PendingIntent.getActivity(
                     applicationContext, 0, Intent(
                         applicationContext,
@@ -81,8 +80,9 @@ class GpsService: Service(), LocationListener {
                     ).putExtra(Constants.Intent.RECORD_ID_EXTRA, recordId), 0
                 )
             )
-            .setAutoCancel(true)
-            .addAction(R.drawable.ic_baseline_stop_24, getString(R.string.stop), stopPendingIntent)
+            setAutoCancel(true)
+            addAction(R.drawable.ic_baseline_stop_24, getString(R.string.stop), stopPendingIntent)
+        }
 
         when (intent.action) {
             Constants.Intent.ACTION_STOP -> stopSelf()

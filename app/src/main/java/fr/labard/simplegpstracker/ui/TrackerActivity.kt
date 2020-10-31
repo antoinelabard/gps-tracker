@@ -17,17 +17,15 @@ import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import fr.labard.simplegpstracker.GPSApplication
-import fr.labard.simplegpstracker.R
-import fr.labard.simplegpstracker.model.util.Constants
-import fr.labard.simplegpstracker.model.GpsService
-import kotlinx.android.synthetic.main.activity_tracker.*
-import org.osmdroid.config.Configuration
 import fr.labard.simplegpstracker.MapFragment
+import fr.labard.simplegpstracker.R
+import fr.labard.simplegpstracker.model.GpsService
+import fr.labard.simplegpstracker.model.util.Constants
+import kotlinx.android.synthetic.main.activity_tracker.*
 
 class TrackerActivity : AppCompatActivity() {
 
     private lateinit var viewModel: TrackerActivityViewModel
-//    private lateinit var mapController: IMapController
     private lateinit var localBroadcastManager: LocalBroadcastManager
     lateinit var locationServiceIntent: Intent
 
@@ -66,54 +64,10 @@ class TrackerActivity : AppCompatActivity() {
 
         localBroadcastManager = LocalBroadcastManager.getInstance(applicationContext)
 
-        Configuration.getInstance().load(applicationContext, getPreferences(Context.MODE_PRIVATE))
-
-//        buildMapView()
-
         viewModel.allRecords.observe(this, {
             activity_tracker_toolbar.title = viewModel
                 .getRecordById(viewModel.getActiveRecordId()).name
         })
-        /*mTrackerActivityViewModel.allLocations
-            .observe(this,
-                {
-                    activity_tracker_toolbar.subtitle = (mTrackerActivityViewModel
-                        .getLocationsByRecordId(mTrackerActivityViewModel.recordId).count().toString())
-                    val line = Polyline()
-                    var parcours = mTrackerActivityViewModel
-                        .getLocationsByRecordId(mTrackerActivityViewModel.recordId).map {
-                        GeoPoint(it.latitude, it.longitude)
-                    }
-                    if (parcours.isEmpty()) parcours = mutableListOf(GeoPoint(0.0, 0.0))
-                    line.setPoints(parcours)
-                    activity_tracker_mapview.overlayManager.add(line)
-                    mapController.setCenter(parcours.last())
-                }
-            )*/
-
-        /*try {
-            if (
-                ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(this, android.Manifest.permission.INTERNET)
-                != PackageManager.PERMISSION_GRANTED
-                || ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_NETWORK_STATE)
-                != PackageManager.PERMISSION_GRANTED
-            ) {
-                ActivityCompat.requestPermissions(
-                    this, arrayOf(
-                        android.Manifest.permission.ACCESS_FINE_LOCATION,
-                        android.Manifest.permission.ACCESS_COARSE_LOCATION,
-                        android.Manifest.permission.INTERNET,
-                        android.Manifest.permission.ACCESS_NETWORK_STATE
-                    ), Constants.Permission.REQUEST_CODE
-                )
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }*/
 
         locationServiceIntent = Intent(applicationContext, GpsService::class.java)
             .putExtra(Constants.Intent.RECORD_ID_EXTRA, viewModel.activeRecordId.value)
@@ -202,50 +156,6 @@ class TrackerActivity : AppCompatActivity() {
             )
         }
     }
-
-    /*private fun buildMapView() {
-        requestPermissionsIfNecessary(arrayOf(
-            android.Manifest.permission.ACCESS_FINE_LOCATION,
-            android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            android.Manifest.permission.READ_EXTERNAL_STORAGE,
-            android.Manifest.permission.INTERNET,
-            android.Manifest.permission.ACCESS_NETWORK_STATE
-        ))
-
-        activity_tracker_mapview.setTileSource(TileSourceFactory.MAPNIK)
-        activity_tracker_mapview.setMultiTouchControls(true)
-        mapController = activity_tracker_mapview.controller
-        mapController.setZoom(3.0)
-        val mLocationOverlay = MyLocationNewOverlay(
-            GpsMyLocationProvider(this),
-            activity_tracker_mapview
-        )
-        mLocationOverlay.enableMyLocation()
-        activity_tracker_mapview.overlays.add(mLocationOverlay)
-
-        val mCompassOverlay = CompassOverlay(
-            this,
-            InternalCompassOrientationProvider(this),
-            activity_tracker_mapview
-        )
-
-        mCompassOverlay.enableCompass()
-
-        activity_tracker_mapview.overlays.apply {
-            add(mLocationOverlay)
-            add(mCompassOverlay)
-        }
-    }
-
-    override fun onPause() {
-        super.onStop()
-        activity_tracker_mapview.onPause()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        activity_tracker_mapview.onResume()
-    }*/
 
     override fun onDestroy() {
         super.onDestroy()

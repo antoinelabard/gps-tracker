@@ -32,24 +32,13 @@ class MapFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-//        setFragmentResult(Constants.Intent.REQUEST_RECORD_ID, bundleOf(
-//            Constants.Intent.RECORD_ID_EXTRA to arguments?.getString(Constants.Intent.RECORD_ID_EXTRA)
-//        ))
-
-//        viewModel.recordId = arguments?.getString(Constants.Intent.RECORD_ID_EXTRA)!!
-
+        Configuration.getInstance().load(activity, activity?.getPreferences(Context.MODE_PRIVATE))
         val view = layoutInflater.inflate(R.layout.fragment_map, container, false)
         mapView = view.findViewById(R.id.fragment_map_mapview)
-        buildMapView()
-
-//        setFragmentResultListener(Constants.Intent.REQUEST_RECORD_ID) { _, bundle ->
-//            viewModel.recordId = bundle.getString(Constants.Intent.RECORD_ID_EXTRA)!!
-//        }
+//        buildMapView()
 
         viewModel.allLocations.observe(viewLifecycleOwner, {
-            viewModel.locationsByRecordId = viewModel.allLocations.value?.filter {
-                it.recordId == viewModel.activeRecordId.value
-            }!!
+            viewModel.setLocationsByRecordActiveId()
             updateMapView()
         })
 
@@ -58,31 +47,26 @@ class MapFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+//        buildMapView()
     }
 
     private fun buildMapView() {
-        /*requestPermissionsIfNecessary(arrayOf(
-            android.Manifest.permission.ACCESS_FINE_LOCATION,
-            android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            android.Manifest.permission.READ_EXTERNAL_STORAGE,
-            android.Manifest.permission.INTERNET,
-            android.Manifest.permission.ACCESS_NETWORK_STATE
-        ))*/
+
 
         mapView.setTileSource(TileSourceFactory.MAPNIK)
         mapView.setMultiTouchControls(true)
         mapController = mapView.controller
         mapController.setZoom(3.0)
         val mLocationOverlay = MyLocationNewOverlay(
-            GpsMyLocationProvider(activity),
+            GpsMyLocationProvider(activity?.applicationContext),
             mapView
         )
         mLocationOverlay.enableMyLocation()
         mapView.overlays.add(mLocationOverlay)
 
         val mCompassOverlay = CompassOverlay(
-                activity,
-            InternalCompassOrientationProvider(activity),
+            activity,
+            InternalCompassOrientationProvider(activity?.applicationContext),
             mapView
         )
 
@@ -110,10 +94,4 @@ class MapFragment : Fragment() {
         super.onResume()
         mapView.onResume()
     }
-
-    /*override fun onDestroy() {
-        super.onDestroy()
-        stopService(locationServiceIntent)
-        LocalBroadcastManager.getInstance(activity).unregisterReceiver(LocationBroadcastReceiver)
-    }*/
 }

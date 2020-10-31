@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import fr.labard.simplegpstracker.model.data.IRepository
 import fr.labard.simplegpstracker.model.data.local.db.record.RecordEntity
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -14,31 +13,16 @@ class RecordListFragmentViewModel(
 ) : ViewModel() {
     val recordsLiveData = appRepository.getRecords()
 
-    /*fun generateNewId(): Int {
-        var newId = 0
-        val recordIds = getRecordsIds()
-        while (true) {
-            if (recordIds.find { it == newId } == null) break
-            ++newId
-        }
-        return newId
-    }*/
-
-    fun insertRecord() = viewModelScope.launch {//recordId: Int) {
+    fun insertRecord() = viewModelScope.launch {
         val date = Date()
         appRepository.insertRecord(
             RecordEntity(
-//                recordId,
                 "Record: $date",
                 date,
                 date
             )
         )
     }
-
-//    fun insertRecord(recordEntity: RecordEntity) = appRepository.insertRecord(recordEntity)
-
-//    private fun getRecordsIds() = recordsLiveData.value!!.map {it.id}
 }
 
 @Suppress("UNCHECKED_CAST")
