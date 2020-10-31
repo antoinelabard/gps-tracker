@@ -5,7 +5,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.TrackerActivity"
+        tools:context=".ui.tracker.TrackerActivity"
         android:orientation="vertical"
         android:id="@+id/activity_tracker_layout">
 
@@ -21,20 +21,11 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintVertical_bias="0.5"/>
 
-<!--    <org.osmdroid.views.MapView-->
-<!--            android:id="@+id/activity_tracker_mapview"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="0dp"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/activity_tracker_toolbar"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"/>-->
-
     <androidx.fragment.app.FragmentContainerView
             android:id="@+id/activity_tracker_fragment_map"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:name="fr.labard.simplegpstracker.MapFragment"
+            android:name="fr.labard.simplegpstracker.ui.tracker.MapFragment"
             app:layout_constraintEnd_toEndOf="parent" app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/activity_tracker_toolbar"/>

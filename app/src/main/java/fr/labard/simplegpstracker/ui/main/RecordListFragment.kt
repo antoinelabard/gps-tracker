@@ -1,4 +1,4 @@
-package fr.labard.simplegpstracker
+package fr.labard.simplegpstracker.ui.main
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,7 +8,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import fr.labard.simplegpstracker.ui.RecordListAdapter
+import fr.labard.simplegpstracker.GPSApplication
+import fr.labard.simplegpstracker.R
+import fr.labard.simplegpstracker.model.main.RecordListAdapter
+import fr.labard.simplegpstracker.model.main.RecordListFragmentViewModel
+import fr.labard.simplegpstracker.model.main.RecordListFragmentViewModelFactory
 import kotlinx.android.synthetic.main.fragment_record_list.*
 
 class RecordListFragment : Fragment() {

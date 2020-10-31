@@ -6,6 +6,7 @@ import fr.labard.simplegpstracker.Data.Companion.r1
 import fr.labard.simplegpstracker.Data.Companion.r2
 import fr.labard.simplegpstracker.FakeTestRepository
 import fr.labard.simplegpstracker.MainCoroutineRule
+import fr.labard.simplegpstracker.model.main.MainActivityViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Before
 import org.junit.Rule

@@ -1,4 +1,4 @@
-package fr.labard.simplegpstracker.ui
+package fr.labard.simplegpstracker.ui.main
 
 import android.app.NotificationChannel
 import android.app.NotificationManager

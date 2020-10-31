@@ -1,7 +1,6 @@
-package fr.labard.simplegpstracker.ui
+package fr.labard.simplegpstracker.tracker
 
 import android.location.Location
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import fr.labard.simplegpstracker.model.data.IRepository

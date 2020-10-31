@@ -17,7 +17,7 @@ import androidx.core.app.NotificationCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import fr.labard.simplegpstracker.R
 import fr.labard.simplegpstracker.model.util.Constants
-import fr.labard.simplegpstracker.ui.TrackerActivity
+import fr.labard.simplegpstracker.ui.tracker.TrackerActivity
 
 class GpsService: Service(), LocationListener {
 

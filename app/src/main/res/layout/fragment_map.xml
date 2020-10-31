@@ -5,7 +5,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/fragment_map"
-        tools:context=".MapFragment">
+        tools:context=".ui.tracker.MapFragment">
 
     <org.osmdroid.views.MapView
             android:id="@+id/fragment_map_mapview"
@@ -15,13 +15,5 @@
             app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintVertical_bias="1.0">
     </org.osmdroid.views.MapView>
-
-<!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
-<!--            android:id="@+id/activity_tracker_play_fab"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_margin="@dimen/fab_margin"-->
-<!--            android:src="@drawable/ic_action_gps_active"-->
-<!--            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintBottom_toBottomOf="parent"/>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

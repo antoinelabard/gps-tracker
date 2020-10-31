@@ -19,11 +19,11 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:fullBackupContent="true"
             android:name=".GPSApplication">
-        <activity android:name=".ui.TrackerActivity">
+        <activity android:name=".ui.tracker.TrackerActivity">
 <!--            <intent-filter android:label="@string/location_filter_label"-->
 <!--                           android:icon="@drawable/common_full_open_on_phone"/>-->
         </activity>
-        <activity android:name=".ui.MainActivity">
+        <activity android:name=".ui.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

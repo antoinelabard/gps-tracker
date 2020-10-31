@@ -1,4 +1,4 @@
-package fr.labard.simplegpstracker
+package fr.labard.simplegpstracker.ui.tracker
 
 import android.content.Context
 import android.os.Bundle
@@ -7,6 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import fr.labard.simplegpstracker.GPSApplication
+import fr.labard.simplegpstracker.R
+import fr.labard.simplegpstracker.tracker.MapFragmentViewModel
+import fr.labard.simplegpstracker.tracker.MapFragmentViewModelFactory
 import org.osmdroid.api.IMapController
 import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory

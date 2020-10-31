@@ -1,4 +1,4 @@
-package fr.labard.simplegpstracker.ui
+package fr.labard.simplegpstracker.ui.tracker
 
 import android.content.*
 import android.content.pm.PackageManager
@@ -17,10 +17,11 @@ import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import fr.labard.simplegpstracker.GPSApplication
-import fr.labard.simplegpstracker.MapFragment
 import fr.labard.simplegpstracker.R
 import fr.labard.simplegpstracker.model.GpsService
 import fr.labard.simplegpstracker.model.util.Constants
+import fr.labard.simplegpstracker.tracker.TrackerActivityViewModel
+import fr.labard.simplegpstracker.tracker.TrackerActivityViewModelFactory
 import kotlinx.android.synthetic.main.activity_tracker.*
 
 class TrackerActivity : AppCompatActivity() {
@@ -56,7 +57,8 @@ class TrackerActivity : AppCompatActivity() {
 
         viewModel = ViewModelProvider(this, TrackerActivityViewModelFactory(
             (applicationContext as GPSApplication).appRepository
-        )).get(TrackerActivityViewModel::class.java)
+        )
+        ).get(TrackerActivityViewModel::class.java)
 
         viewModel.setActiveRecordId(intent.getStringExtra(Constants.Intent.RECORD_ID_EXTRA)!!)
 

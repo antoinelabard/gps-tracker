@@ -1,4 +1,4 @@
-package fr.labard.simplegpstracker.ui
+package fr.labard.simplegpstracker.model.main
 
 import android.content.Context
 import android.content.Intent
@@ -8,8 +8,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import fr.labard.simplegpstracker.R
-import fr.labard.simplegpstracker.model.util.Constants
 import fr.labard.simplegpstracker.model.data.local.db.record.RecordEntity
+import fr.labard.simplegpstracker.model.util.Constants
+import fr.labard.simplegpstracker.ui.tracker.TrackerActivity
 
 
 class RecordListAdapter (val context: Context?) :
