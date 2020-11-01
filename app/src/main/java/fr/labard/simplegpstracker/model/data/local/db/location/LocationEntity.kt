@@ -1,11 +1,12 @@
 package fr.labard.simplegpstracker.model.data.local.db.location
 
+import android.location.Location
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import fr.labard.simplegpstracker.model.util.Constants
 import fr.labard.simplegpstracker.model.data.local.db.record.RecordEntity
+import fr.labard.simplegpstracker.model.util.Constants
 
 @Entity(
     tableName = Constants.Database.LOCATION_TABLE,
@@ -36,4 +37,25 @@ data class LocationEntity (
     @ColumnInfo(name = Constants.Database.LOCATION_ENTITY_SPEED)
     var speed: Float // in meters per seconds
 
-    )
+    ) {
+
+    fun ditanceTo(l: LocationEntity): Float {
+        val l1 = Location("").apply {
+            latitude = this.latitude
+            longitude = this.longitude
+        }
+        val l2 = Location("").apply {
+            latitude = l.latitude
+            longitude = l.longitude
+        }
+        return l1.distanceTo(l2)
+    }
+
+    fun distanceTo(l: Location): Float {
+        val l1 = Location("").apply {
+            latitude = this.latitude
+            longitude = this.longitude
+        }
+        return l1.distanceTo(l)
+    }
+}
