@@ -30,7 +30,7 @@ class TrackerActivity : AppCompatActivity() {
     private lateinit var localBroadcastManager: LocalBroadcastManager
     lateinit var locationServiceIntent: Intent
 
-    private val LocationBroadcastReceiver = object : BroadcastReceiver() {
+    private val locationBroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent){
             val location = Location(Constants.LocationService.LOCATION_PROVIDER).apply {
                 latitude = intent.getDoubleExtra(Constants.Intent.LATITUDE_EXTRA, 0.0)
@@ -87,7 +87,7 @@ class TrackerActivity : AppCompatActivity() {
         }
 
         LocalBroadcastManager.getInstance(this).registerReceiver(
-            LocationBroadcastReceiver,
+            locationBroadcastReceiver,
             IntentFilter(Constants.LocationService.LOCATION_BROADCAST)
         )
     }
@@ -163,6 +163,6 @@ class TrackerActivity : AppCompatActivity() {
         super.onDestroy()
         viewModel.setActiveRecordId("")
         stopService(locationServiceIntent)
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(LocationBroadcastReceiver)
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(locationBroadcastReceiver)
     }
 }
