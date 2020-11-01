@@ -23,9 +23,9 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import fr.labard.simplegpstracker.GPSApplication
 import fr.labard.simplegpstracker.R
 import fr.labard.simplegpstracker.model.GpsService
+import fr.labard.simplegpstracker.model.tracker.TrackerActivityViewModel
+import fr.labard.simplegpstracker.model.tracker.TrackerActivityViewModelFactory
 import fr.labard.simplegpstracker.model.util.Constants
-import fr.labard.simplegpstracker.tracker.TrackerActivityViewModel
-import fr.labard.simplegpstracker.tracker.TrackerActivityViewModelFactory
 import kotlinx.android.synthetic.main.activity_tracker.*
 
 class TrackerActivity : AppCompatActivity() {

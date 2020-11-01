@@ -9,8 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import fr.labard.simplegpstracker.GPSApplication
 import fr.labard.simplegpstracker.R
-import fr.labard.simplegpstracker.tracker.MapFragmentViewModel
-import fr.labard.simplegpstracker.tracker.MapFragmentViewModelFactory
+import fr.labard.simplegpstracker.model.tracker.MapFragmentViewModel
+import fr.labard.simplegpstracker.model.tracker.MapFragmentViewModelFactory
 import org.osmdroid.api.IMapController
 import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory

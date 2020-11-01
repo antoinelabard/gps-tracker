@@ -9,14 +9,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import fr.labard.simplegpstracker.GPSApplication
 import fr.labard.simplegpstracker.R
-import fr.labard.simplegpstracker.tracker.FollowFragmentViewModel
-import fr.labard.simplegpstracker.tracker.FollowFragmentViewModelFactory
+import fr.labard.simplegpstracker.model.tracker.FollowFragmentViewModel
+import fr.labard.simplegpstracker.model.tracker.FollowFragmentViewModelFactory
 import org.osmdroid.api.IMapController
 import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
-import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.Polyline
 import org.osmdroid.views.overlay.compass.CompassOverlay
 import org.osmdroid.views.overlay.compass.InternalCompassOrientationProvider
@@ -48,17 +47,10 @@ class FollowFragment : Fragment() {
             updateMapView()
         })
 
-
-
-        mapView.overlayManager.add(Marker(mapView).apply {position = GeoPoint(0.0, 0.0)
-        setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)})
-
         return view
     }
 
     private fun buildMapView() {
-
-
         mapView.setTileSource(TileSourceFactory.MAPNIK)
         mapView.setMultiTouchControls(true)
         mapController = mapView.controller

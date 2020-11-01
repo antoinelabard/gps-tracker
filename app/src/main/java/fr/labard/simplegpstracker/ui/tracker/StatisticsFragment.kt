@@ -8,8 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import fr.labard.simplegpstracker.GPSApplication
 import fr.labard.simplegpstracker.R
-import fr.labard.simplegpstracker.tracker.MapFragmentViewModel
-import fr.labard.simplegpstracker.tracker.StatisticsFragmentViewModelFactory
+import fr.labard.simplegpstracker.model.tracker.MapFragmentViewModel
+import fr.labard.simplegpstracker.model.tracker.StatisticsFragmentViewModelFactory
 
 class StatisticsFragment : Fragment() {
 

@@ -1,4 +1,4 @@
-package fr.labard.simplegpstracker.tracker
+package fr.labard.simplegpstracker.model.tracker
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
