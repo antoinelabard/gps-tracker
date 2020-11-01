@@ -5,14 +5,14 @@ import android.os.AsyncTask
 import androidx.annotation.VisibleForTesting
 import androidx.room.Room
 import fr.labard.simplegpstracker.model.data.AppRepository
-import fr.labard.simplegpstracker.model.data.local.db.AppRoomDatabase
 import fr.labard.simplegpstracker.model.data.IRepository
 import fr.labard.simplegpstracker.model.data.local.LocalDataSource
+import fr.labard.simplegpstracker.model.data.local.db.AppRoomDatabase
 import fr.labard.simplegpstracker.model.data.local.db.location.LocationDao
 import fr.labard.simplegpstracker.model.data.local.db.location.LocationEntity
 import fr.labard.simplegpstracker.model.data.local.db.record.RecordDao
 import fr.labard.simplegpstracker.model.data.local.db.record.RecordEntity
-import kotlinx.coroutines.runBlocking
+import fr.labard.simplegpstracker.model.util.Constants
 import java.util.*
 
 object ServiceLocator {
@@ -43,7 +43,7 @@ object ServiceLocator {
     private fun createDataBase(context: Context): AppRoomDatabase {
         val result = Room.databaseBuilder(
             context.applicationContext,
-            AppRoomDatabase::class.java, "AppRoomDatabase.db"
+            AppRoomDatabase::class.java, Constants.Database.DATABASE_NAME
         ).build()
         database = result
         PopulateDbAsync(result)

@@ -37,7 +37,7 @@ class Constants {
     }
     class Database {
         companion object {
-            const val DATABASE_NAME = "app_database"
+            const val DATABASE_NAME = "AppRoomDatabase.db"
             const val RECORD_TABLE = "record_table"
             const val LOCATION_TABLE = "location_table"
 
