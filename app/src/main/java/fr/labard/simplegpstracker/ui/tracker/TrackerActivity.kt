@@ -1,8 +1,8 @@
 package fr.labard.simplegpstracker.ui.tracker
 
-import android.content.*
+import android.content.DialogInterface
+import android.content.Intent
 import android.content.pm.PackageManager
-import android.location.Location
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -19,7 +19,6 @@ import androidx.fragment.app.add
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import androidx.lifecycle.ViewModelProvider
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import fr.labard.simplegpstracker.GPSApplication
 import fr.labard.simplegpstracker.R
 import fr.labard.simplegpstracker.model.GpsService
@@ -31,20 +30,7 @@ import kotlinx.android.synthetic.main.activity_tracker.*
 class TrackerActivity : AppCompatActivity() {
 
     private lateinit var viewModel: TrackerActivityViewModel
-    private lateinit var localBroadcastManager: LocalBroadcastManager
     lateinit var locationServiceIntent: Intent
-
-    private val locationBroadcastReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context, intent: Intent){
-            val location = Location(Constants.LocationService.LOCATION_PROVIDER).apply {
-                latitude = intent.getDoubleExtra(Constants.Intent.LATITUDE_EXTRA, 0.0)
-                longitude = intent.getDoubleExtra(Constants.Intent.LONGITUDE_EXTRA, 0.0)
-                speed = intent.getFloatExtra(Constants.Intent.SPEED_EXTRA, 0.0f)
-                time = intent.getLongExtra(Constants.Intent.TIME_EXTRA, 0)
-            }
-            viewModel.insertLocation(location)
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,8 +62,6 @@ class TrackerActivity : AppCompatActivity() {
 
         MapFragment().arguments = bundleOf(Constants.Intent.RECORD_ID_EXTRA to viewModel.getActiveRecordId())
 
-        localBroadcastManager = LocalBroadcastManager.getInstance(applicationContext)
-
         viewModel.allRecords.observe(this, {
             activity_tracker_toolbar.title = viewModel
                 .getRecordById(viewModel.getActiveRecordId()).name
@@ -98,10 +82,6 @@ class TrackerActivity : AppCompatActivity() {
             viewModel.isRecording = !viewModel.isRecording
         }
 
-        LocalBroadcastManager.getInstance(this).registerReceiver(
-            locationBroadcastReceiver,
-            IntentFilter(Constants.LocationService.LOCATION_BROADCAST)
-        )
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -195,6 +175,5 @@ class TrackerActivity : AppCompatActivity() {
         super.onDestroy()
         viewModel.setActiveRecordId("")
         stopService(locationServiceIntent)
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(locationBroadcastReceiver)
     }
 }

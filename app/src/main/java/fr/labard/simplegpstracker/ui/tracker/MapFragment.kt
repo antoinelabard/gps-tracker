@@ -1,16 +1,22 @@
 package fr.labard.simplegpstracker.ui.tracker
 
+import android.content.BroadcastReceiver
 import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import android.location.Location
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import fr.labard.simplegpstracker.GPSApplication
 import fr.labard.simplegpstracker.R
 import fr.labard.simplegpstracker.model.tracker.MapFragmentViewModel
 import fr.labard.simplegpstracker.model.tracker.MapFragmentViewModelFactory
+import fr.labard.simplegpstracker.model.util.Constants
 import org.osmdroid.api.IMapController
 import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
@@ -24,11 +30,26 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 
 class MapFragment : Fragment() {
 
-    lateinit var mapView: MapView
+    private lateinit var localBroadcastManager: LocalBroadcastManager
+    private lateinit var mapView: MapView
     private lateinit var mapController: IMapController
 
     private val viewModel by viewModels<MapFragmentViewModel> {
         MapFragmentViewModelFactory((requireContext().applicationContext as GPSApplication).appRepository)
+    }
+
+    private val locationBroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent){
+            if (intent.getStringExtra(Constants.Service.MODE) == Constants.Service.MODE_RECORD) {
+                val location = Location(Constants.Service.LOCATION_PROVIDER).apply {
+                    latitude = intent.getDoubleExtra(Constants.Intent.LATITUDE_EXTRA, 0.0)
+                    longitude = intent.getDoubleExtra(Constants.Intent.LONGITUDE_EXTRA, 0.0)
+                    speed = intent.getFloatExtra(Constants.Intent.SPEED_EXTRA, 0.0f)
+                    time = intent.getLongExtra(Constants.Intent.TIME_EXTRA, 0)
+                }
+                viewModel.insertLocation(location)
+            }
+        }
     }
 
     override fun onCreateView(
@@ -43,10 +64,15 @@ class MapFragment : Fragment() {
 
         viewModel.allLocations.observe(viewLifecycleOwner, {
             viewModel.setLocationsByRecordActiveId()
-            viewModel.locationsByRecordId.toString()
             updateMapView()
         })
 
+        localBroadcastManager = LocalBroadcastManager.getInstance(activity!!.applicationContext)
+
+        LocalBroadcastManager.getInstance(activity!!).registerReceiver(
+            locationBroadcastReceiver,
+            IntentFilter(Constants.Service.LOCATION_BROADCAST)
+        )
         return view
     }
 
@@ -93,5 +119,10 @@ class MapFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         mapView.onResume()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        LocalBroadcastManager.getInstance(activity!!).unregisterReceiver(locationBroadcastReceiver)
     }
 }

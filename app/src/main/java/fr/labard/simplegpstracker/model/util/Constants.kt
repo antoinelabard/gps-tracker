@@ -13,12 +13,15 @@ class Constants {
             const val REQUEST_CODE = 21
         }
     }
-    class LocationService {
+    class Service {
         companion object {
             const val LOCATION_BROADCAST = "31"
             const val LOCATION_PROVIDER = ""
-            const val MIN_TIME_REFRESH: Long = 400 // in milliseconds
+            const val MIN_TIME_REFRESH = 400L // in milliseconds
             const val MIN_DISTANCE_REFRESH = 1.0f // in meters
+            const val MODE_RECORD = "modeRecord"
+            const val MODE_FOLLOW = "modeFollow"
+            const val MODE = "mode"
         }
     }
     class Intent {
@@ -52,6 +55,11 @@ class Constants {
             const val LOCATION_ENTITY_LATITUDE = "latitude"
             const val LOCATION_ENTITY_LONGITUDE = "longitude"
             const val LOCATION_ENTITY_SPEED = "speed"
+        }
+    }
+    class Location {
+        companion object {
+            const val MIN_RADIUS = 5.0 // in meters
         }
     }
 }

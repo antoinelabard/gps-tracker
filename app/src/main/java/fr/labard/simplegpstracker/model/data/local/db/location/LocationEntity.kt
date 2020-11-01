@@ -39,7 +39,7 @@ data class LocationEntity (
 
     ) {
 
-    fun ditanceTo(l: LocationEntity): Float {
+    fun distanceTo(l: LocationEntity): Float {
         val l1 = Location("").apply {
             latitude = this.latitude
             longitude = this.longitude

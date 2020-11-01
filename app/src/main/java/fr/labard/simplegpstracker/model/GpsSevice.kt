@@ -24,6 +24,7 @@ class GpsService: Service(), LocationListener {
     private lateinit var locationManager: LocationManager
     private var locationProvider: String? = null
     private var recordId = ""
+    private var mode: String = Constants.Service.MODE_RECORD
 
     override fun onCreate() {
         super.onCreate()
@@ -35,11 +36,12 @@ class GpsService: Service(), LocationListener {
     override fun onLocationChanged(location: Location?) {
         if (location != null) {
             LocalBroadcastManager.getInstance(this).sendBroadcast(
-                Intent(Constants.LocationService.LOCATION_BROADCAST)
-                    .putExtra(Constants.Intent.LATITUDE_EXTRA, location.latitude)
-                    .putExtra(Constants.Intent.LONGITUDE_EXTRA, location.longitude)
-                    .putExtra(Constants.Intent.SPEED_EXTRA, location.speed)
-                    .putExtra(Constants.Intent.TIME_EXTRA, location.time)
+                Intent(Constants.Service.LOCATION_BROADCAST).apply {
+                    putExtra(Constants.Intent.LATITUDE_EXTRA, location.latitude)
+                    putExtra(Constants.Intent.LONGITUDE_EXTRA, location.longitude)
+                    putExtra(Constants.Intent.SPEED_EXTRA, location.speed)
+                    putExtra(Constants.Intent.TIME_EXTRA, location.time)
+                }
             )
         }
     }
@@ -53,20 +55,23 @@ class GpsService: Service(), LocationListener {
 
         recordId = intent?.getStringExtra(Constants.Intent.RECORD_ID_EXTRA)!!
 
+        val playIntent = Intent(this, GpsService::class.java).apply {
+            action = when (intent.action) {
+                Constants.Intent.ACTION_PAUSE -> Constants.Intent.ACTION_PLAY
+                else -> Constants.Intent.ACTION_PAUSE
+            }
+        }
+        val playPendingIntent = PendingIntent.getForegroundService(
+            this, 1, playIntent, 0)
 
-        val playIntent = Intent(this, GpsService::class.java)
-            .setAction(
-                when (intent.action) {
-                    Constants.Intent.ACTION_PAUSE -> Constants.Intent.ACTION_PLAY
-                    else -> Constants.Intent.ACTION_PAUSE
-                }
-            )
-        val playPendingIntent = PendingIntent.getForegroundService(this, 1, playIntent, 0)
-        val stopIntent = Intent(this, GpsService::class.java)
-            .setAction(Constants.Intent.ACTION_STOP)
-        val stopPendingIntent = PendingIntent.getForegroundService(this, 1, stopIntent, 0)
+        val stopIntent = Intent(this, GpsService::class.java).apply {
+            action = Constants.Intent.ACTION_STOP
+        }
+        val stopPendingIntent = PendingIntent.getForegroundService(
+            this, 1, stopIntent, 0)
 
-        val notification = NotificationCompat.Builder(this, Constants.Notification.CHANNEL_ID).apply {
+        val notification = NotificationCompat.Builder(
+            this, Constants.Notification.CHANNEL_ID).apply {
             setContentTitle(getString(R.string.gpstracker_notification_title))
             setContentText(getString(R.string.gpstracker_notification_content))
             setSmallIcon(R.drawable.ic_launcher_foreground)
@@ -114,8 +119,8 @@ class GpsService: Service(), LocationListener {
 
         locationManager.requestLocationUpdates(
             locationProvider!!,
-            Constants.LocationService.MIN_TIME_REFRESH,
-            Constants.LocationService.MIN_DISTANCE_REFRESH,
+            Constants.Service.MIN_TIME_REFRESH,
+            Constants.Service.MIN_DISTANCE_REFRESH,
             this
         )
     }

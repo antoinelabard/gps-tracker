@@ -1,10 +1,8 @@
 package fr.labard.simplegpstracker.model.tracker
 
-import android.location.Location
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import fr.labard.simplegpstracker.model.data.IRepository
-import fr.labard.simplegpstracker.model.data.local.db.location.LocationEntity
 import fr.labard.simplegpstracker.model.data.local.db.record.RecordEntity
 import java.util.*
 
@@ -30,19 +28,6 @@ class TrackerActivityViewModel(
     }
 
     fun deleteRecord(recordId: String) = appRepository.deleteRecord(recordId)
-
-    fun insertLocation(location: Location) {
-        appRepository.insertLocation(
-            LocationEntity(
-                0,
-                activeRecordId.value!!,
-                location.time,
-                location.latitude,
-                location.longitude,
-                location.speed
-            )
-        )
-    }
 
     fun getActiveRecordId(): String = appRepository.getActiveRecordId().value!!
 

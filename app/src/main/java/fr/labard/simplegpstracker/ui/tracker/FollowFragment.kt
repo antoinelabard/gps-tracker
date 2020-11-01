@@ -1,16 +1,22 @@
 package fr.labard.simplegpstracker.ui.tracker
 
+import android.content.BroadcastReceiver
 import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import android.location.Location
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import fr.labard.simplegpstracker.GPSApplication
 import fr.labard.simplegpstracker.R
 import fr.labard.simplegpstracker.model.tracker.FollowFragmentViewModel
 import fr.labard.simplegpstracker.model.tracker.FollowFragmentViewModelFactory
+import fr.labard.simplegpstracker.model.util.Constants
 import org.osmdroid.api.IMapController
 import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
@@ -31,6 +37,22 @@ class FollowFragment : Fragment() {
         FollowFragmentViewModelFactory((requireContext().applicationContext as GPSApplication).appRepository)
     }
 
+
+    private val locationBroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent){
+            if (intent.getStringExtra(Constants.Service.MODE) == Constants.Service.MODE_FOLLOW) {
+                viewModel.currentLocation = Location("").apply {
+                    latitude = intent.getDoubleExtra(Constants.Intent.LATITUDE_EXTRA, 0.0)
+                    longitude = intent.getDoubleExtra(Constants.Intent.LONGITUDE_EXTRA, 0.0)
+                }
+                if (viewModel.locationsByRecordId.last().distanceTo(viewModel.currentLocation) < Constants.Location.MIN_RADIUS) {
+                    viewModel.locationsByRecordId.removeLast()
+                }
+                updateMapView()
+            }
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -41,11 +63,10 @@ class FollowFragment : Fragment() {
         mapView = view.findViewById(R.id.fragment_map_mapview)
         buildMapView()
 
-        viewModel.allLocations.observe(viewLifecycleOwner, {
-            viewModel.setLocationsByRecordActiveId()
-            viewModel.locationsByRecordId.toString()
-            updateMapView()
-        })
+        LocalBroadcastManager.getInstance(activity!!).registerReceiver(
+            locationBroadcastReceiver,
+            IntentFilter(Constants.Service.LOCATION_BROADCAST)
+        )
 
         return view
     }

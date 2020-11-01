@@ -1,5 +1,6 @@
 package fr.labard.simplegpstracker.model.tracker
 
+import android.location.Location
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import fr.labard.simplegpstracker.model.data.IRepository
@@ -15,6 +16,19 @@ class MapFragmentViewModel(
 
     fun setLocationsByRecordActiveId() {
         locationsByRecordId = allLocations.value!!.filter { it.recordId == activeRecordId.value }
+    }
+
+    fun insertLocation(location: Location) {
+        appRepository.insertLocation(
+            LocationEntity(
+                0,
+                activeRecordId.value!!,
+                location.time,
+                location.latitude,
+                location.longitude,
+                location.speed
+            )
+        )
     }
 }
 
