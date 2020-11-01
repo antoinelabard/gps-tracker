@@ -7,18 +7,16 @@ import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import androidx.fragment.app.FragmentActivity
+import androidx.appcompat.app.AppCompatActivity
 import fr.labard.simplegpstracker.R
 import fr.labard.simplegpstracker.model.util.Constants
 
-
-class MainActivity : FragmentActivity() {
-
-//    private lateinit var viewModel: MainActivityViewModel
+class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        setSupportActionBar(findViewById(R.id.activity_main_toolbar))
         createNotificationChannel()
     }
 

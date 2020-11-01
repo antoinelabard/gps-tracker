@@ -8,12 +8,16 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.EditText
+import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
+import androidx.fragment.app.add
+import androidx.fragment.app.commit
+import androidx.fragment.app.replace
 import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import fr.labard.simplegpstracker.GPSApplication
@@ -54,6 +58,14 @@ class TrackerActivity : AppCompatActivity() {
             android.Manifest.permission.INTERNET,
             android.Manifest.permission.ACCESS_NETWORK_STATE
         ))
+
+        if (findViewById<FrameLayout>(R.id.activity_tracker_fragment_container) != null) {
+            if (savedInstanceState != null) return
+            supportFragmentManager.commit {
+                add<MapFragment>(R.id.activity_tracker_fragment_container, null, intent.extras)
+            }
+        }
+
 
         viewModel = ViewModelProvider(this, TrackerActivityViewModelFactory(
             (applicationContext as GPSApplication).appRepository
@@ -100,7 +112,28 @@ class TrackerActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.activity_tracker_rename -> {
+            R.id.activity_tracker_action_record -> {
+                supportFragmentManager.commit {
+                    replace<MapFragment>(R.id.activity_tracker_fragment_container, null, bundleOf())
+                    addToBackStack(null)
+                }
+                true
+            }
+            R.id.activity_tracker_action_follow -> {
+                supportFragmentManager.commit {
+                    replace<FollowFragment>(R.id.activity_tracker_fragment_container, null, bundleOf())
+                    addToBackStack(null)
+                }
+                true
+            }
+            R.id.activity_tracker_action_stats -> {
+                supportFragmentManager.commit {
+                    replace<StatisticsFragment>(R.id.activity_tracker_fragment_container, null, bundleOf())
+                    addToBackStack(null)
+                }
+                true
+            }
+            R.id.activity_tracker_action_rename -> {
                 val dialog_rename = layoutInflater.inflate(R.layout.dialog_rename, null)
                 AlertDialog.Builder(this)
                     .setView(dialog_rename)
@@ -122,7 +155,7 @@ class TrackerActivity : AppCompatActivity() {
                     .show()
                 true
             }
-            R.id.activity_tracker_delete -> {
+            R.id.activity_tracker_action_delete -> {
                 AlertDialog.Builder(this)
                     .setTitle(R.string.delete)
                     .setMessage(R.string.delete_message)
@@ -130,7 +163,6 @@ class TrackerActivity : AppCompatActivity() {
                     .setPositiveButton(R.string.yes) { _: DialogInterface, _: Int ->
                         viewModel.deleteRecord(viewModel.getActiveRecordId())
                         Toast.makeText(this, R.string.deletion_complete, Toast.LENGTH_LONG)
-
                         finish()
                     }
                     .setNegativeButton(R.string.no) { _: DialogInterface, _: Int ->

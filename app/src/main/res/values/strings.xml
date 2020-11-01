@@ -24,4 +24,9 @@
     <string name="canceled">Canceled</string>
     <string name="map">Map</string>
     <string name="statistics">Statistics</string>
+    <string name="follow">Follow</string>
+    <string name="stats">Stats</string>
+    <string name="import_locations">Import</string>
+    <string name="export_locations">Export</string>
+    <string name="record">Record</string>
 </resources>

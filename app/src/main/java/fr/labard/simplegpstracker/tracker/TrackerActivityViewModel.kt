@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import fr.labard.simplegpstracker.model.data.IRepository
 import fr.labard.simplegpstracker.model.data.local.db.location.LocationEntity
 import fr.labard.simplegpstracker.model.data.local.db.record.RecordEntity
+import java.util.*
 
 class TrackerActivityViewModel(
     private val appRepository: IRepository
@@ -15,9 +16,9 @@ class TrackerActivityViewModel(
 
     var isRecording = false
 
-    fun getRecordById(id: String): RecordEntity {
-        return allRecords.value?.find { it.id == id }!!
-    }
+    fun getRecordById(id: String)
+            = allRecords.value?.find { it.id == id }
+        ?: RecordEntity("", Date(), Date())
 
     fun updateRecordName(name: String) {
         appRepository.updateRecordName(activeRecordId.value!!, name)

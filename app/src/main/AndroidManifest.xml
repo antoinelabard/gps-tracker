@@ -4,24 +4,27 @@
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"  />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
 
     <application
+            android:name=".GPSApplication"
             android:allowBackup="true"
+            android:fullBackupContent="true"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            android:fullBackupContent="true"
-            android:name=".GPSApplication">
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        <activity android:name=".MainActivityqsdfqsdfqsdf">
+        </activity>
         <activity android:name=".ui.tracker.TrackerActivity">
-<!--            <intent-filter android:label="@string/location_filter_label"-->
-<!--                           android:icon="@drawable/common_full_open_on_phone"/>-->
+
+            <!-- <intent-filter android:label="@string/location_filter_label" -->
+            <!-- android:icon="@drawable/common_full_open_on_phone"/> -->
         </activity>
         <activity android:name=".ui.main.MainActivity">
             <intent-filter>
@@ -30,10 +33,18 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
         <service android:name=".model.GpsService"/>
-        <uses-library android:name="android.test.runner" android:required="false" />
-        <uses-library android:name="android.test.base" android:required="false" />
-        <uses-library android:name="android.test.mock" android:required="false" />
+
+        <uses-library
+                android:name="android.test.runner"
+                android:required="false"/>
+        <uses-library
+                android:name="android.test.base"
+                android:required="false"/>
+        <uses-library
+                android:name="android.test.mock"
+                android:required="false"/>
     </application>
 
 </manifest>

@@ -22,8 +22,6 @@
                 android:id="@+id/activity_tracker_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?attr/colorPrimary"
-                android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -32,15 +30,21 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/activity_tracker_fragment_map"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:name="fr.labard.simplegpstracker.ui.tracker.MapFragment"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/activity_tracker_appbar"/>
+<!--    <androidx.fragment.app.FragmentContainerView-->
+<!--            android:id="@+id/activity_tracker_fragment_map"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="0dp"-->
+<!--            android:name="fr.labard.simplegpstracker.ui.tracker.MapFragment"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/activity_tracker_appbar"/>-->
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                 android:id="@+id/activity_tracker_fragment_container"
+                 android:layout_width="match_parent"
+                 android:layout_height="match_parent" />
+
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/activity_tracker_play_fab"
