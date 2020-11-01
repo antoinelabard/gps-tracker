@@ -50,11 +50,6 @@ class MapFragment : Fragment() {
         return view
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-//        buildMapView()
-    }
-
     private fun buildMapView() {
 
 
@@ -98,5 +93,16 @@ class MapFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         mapView.onResume()
+    }
+
+    companion object {
+        private const val ARG_SECTION_NUMBER = "section_number"
+        @JvmStatic
+        fun newInstance(sectionNumber: Int) =
+            MapFragment().apply {
+                arguments = Bundle().apply {
+                    putInt(ARG_SECTION_NUMBER, sectionNumber)
+                }
+            }
     }
 }
