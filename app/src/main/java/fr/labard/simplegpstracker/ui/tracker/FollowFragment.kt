@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -47,6 +48,7 @@ class FollowFragment : Fragment() {
                 }
                 if (viewModel.locationsByRecordId.last().distanceTo(viewModel.currentLocation) < Constants.Location.MIN_RADIUS) {
                     viewModel.locationsByRecordId.removeLast()
+                    Toast.makeText(activity, "Checkpoint reached", Toast.LENGTH_SHORT).show()
                 }
                 updateMapView()
             }
@@ -101,6 +103,9 @@ class FollowFragment : Fragment() {
         val parkour: List<GeoPoint>? = viewModel.locationsByRecordId.map { GeoPoint(it.latitude, it.longitude) }
         if (parkour!!.isEmpty()) return
         mapView.overlayManager.add(Polyline().apply { setPoints(parkour) })
-        mapController.setCenter(parkour.last())
+        mapController.setCenter(GeoPoint(
+            viewModel.currentLocation.latitude,
+            viewModel.currentLocation.longitude,
+        ))
     }
 }
