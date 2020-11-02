@@ -16,4 +16,13 @@
             app:layout_constraintVertical_bias="1.0">
     </org.osmdroid.views.MapView>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/activity_tracker_record_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/fab_margin"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:src="@drawable/ic_action_gps_active"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -37,6 +37,7 @@ class GpsService: Service(), LocationListener {
         if (location != null) {
             LocalBroadcastManager.getInstance(this).sendBroadcast(
                 Intent(Constants.Service.LOCATION_BROADCAST).apply {
+                    putExtra(Constants.Intent.MODE, mode)
                     putExtra(Constants.Intent.LATITUDE_EXTRA, location.latitude)
                     putExtra(Constants.Intent.LONGITUDE_EXTRA, location.longitude)
                     putExtra(Constants.Intent.SPEED_EXTRA, location.speed)
@@ -54,6 +55,7 @@ class GpsService: Service(), LocationListener {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
         recordId = intent?.getStringExtra(Constants.Intent.RECORD_ID_EXTRA)!!
+        mode = intent.getStringExtra(Constants.Intent.MODE)!!
 
         val playIntent = Intent(this, GpsService::class.java).apply {
             action = when (intent.action) {

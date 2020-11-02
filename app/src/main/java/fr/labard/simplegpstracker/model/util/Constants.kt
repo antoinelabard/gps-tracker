@@ -36,6 +36,7 @@ class Constants {
             const val ACTION_PLAY = "record"
             const val ACTION_STOP = "stop"
             const val REQUEST_RECORD_ID = "requestRecordId"
+            const val MODE = "mode"
         }
     }
     class Database {

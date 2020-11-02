@@ -14,9 +14,11 @@ import androidx.fragment.app.viewModels
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import fr.labard.simplegpstracker.GPSApplication
 import fr.labard.simplegpstracker.R
+import fr.labard.simplegpstracker.model.GpsService
 import fr.labard.simplegpstracker.model.tracker.MapFragmentViewModel
 import fr.labard.simplegpstracker.model.tracker.MapFragmentViewModelFactory
 import fr.labard.simplegpstracker.model.util.Constants
+import kotlinx.android.synthetic.main.fragment_map.*
 import org.osmdroid.api.IMapController
 import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
@@ -31,6 +33,7 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 class MapFragment : Fragment() {
 
     private lateinit var localBroadcastManager: LocalBroadcastManager
+    lateinit var locationServiceIntent: Intent
     private lateinit var mapView: MapView
     private lateinit var mapController: IMapController
 
@@ -73,7 +76,28 @@ class MapFragment : Fragment() {
             locationBroadcastReceiver,
             IntentFilter(Constants.Service.LOCATION_BROADCAST)
         )
+
+        locationServiceIntent = Intent(activity?.applicationContext, GpsService::class.java)
+            .putExtra(Constants.Intent.RECORD_ID_EXTRA, viewModel.currentRecordId.value)
+            .putExtra(Constants.Intent.MODE, Constants.Service.MODE_RECORD)
+            .setAction(Constants.Intent.ACTION_PLAY)
+
         return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        activity_tracker_record_fab.setOnClickListener {
+            if (viewModel.isRecording) {
+                activity?.stopService(locationServiceIntent)
+                activity_tracker_record_fab.setImageResource(R.drawable.ic_action_gps_active)
+            } else {
+                activity?.startService(locationServiceIntent)
+                activity_tracker_record_fab.setImageResource(R.drawable.ic_action_gps_inactive)
+            }
+            viewModel.isRecording = !viewModel.isRecording
+        }
     }
 
     private fun buildMapView() {
@@ -123,6 +147,7 @@ class MapFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
+        activity?.stopService(locationServiceIntent)
         LocalBroadcastManager.getInstance(activity!!).unregisterReceiver(locationBroadcastReceiver)
     }
 }

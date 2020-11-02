@@ -12,8 +12,6 @@ class TrackerActivityViewModel(
     val allRecords = appRepository.getRecords()
     var activeRecordId = appRepository.getActiveRecordId()
 
-    var isRecording = false
-
     fun getRecordById(id: String)
             = allRecords.value?.find { it.id == id }
         ?: RecordEntity("", Date(), Date())

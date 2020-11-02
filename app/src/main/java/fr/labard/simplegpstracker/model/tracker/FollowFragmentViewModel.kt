@@ -9,10 +9,12 @@ class FollowFragmentViewModel(
     private val appRepository: IRepository
 ) : ViewModel() {
 
+
     var currentRecordId = appRepository.getActiveRecordId()
     var allLocations = appRepository.getLocations()
     var locationsByRecordId = allLocations.value!!.filter { it.recordId == currentRecordId.value } as MutableList
     var currentLocation = Location("")
+    var isRecording = false
 }
 
 @Suppress("UNCHECKED_CAST")

@@ -15,9 +15,11 @@ import androidx.fragment.app.viewModels
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import fr.labard.simplegpstracker.GPSApplication
 import fr.labard.simplegpstracker.R
+import fr.labard.simplegpstracker.model.GpsService
 import fr.labard.simplegpstracker.model.tracker.FollowFragmentViewModel
 import fr.labard.simplegpstracker.model.tracker.FollowFragmentViewModelFactory
 import fr.labard.simplegpstracker.model.util.Constants
+import kotlinx.android.synthetic.main.fragment_follow.*
 import org.osmdroid.api.IMapController
 import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
@@ -33,6 +35,7 @@ class FollowFragment : Fragment() {
 
     lateinit var mapView: MapView
     private lateinit var mapController: IMapController
+    lateinit var locationServiceIntent: Intent
 
     private val viewModel by viewModels<FollowFragmentViewModel> {
         FollowFragmentViewModelFactory((requireContext().applicationContext as GPSApplication).appRepository)
@@ -70,7 +73,26 @@ class FollowFragment : Fragment() {
             IntentFilter(Constants.Service.LOCATION_BROADCAST)
         )
 
+        locationServiceIntent = Intent(activity?.applicationContext, GpsService::class.java)
+            .putExtra(Constants.Intent.RECORD_ID_EXTRA, viewModel.currentRecordId.value)
+            .putExtra(Constants.Intent.MODE, Constants.Service.MODE_RECORD)
+            .setAction(Constants.Intent.ACTION_PLAY)
+
         return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        activity_tracker_record_fab.setOnClickListener {
+            if (viewModel.isRecording) {
+                activity?.stopService(locationServiceIntent)
+                activity_tracker_record_fab.setImageResource(R.drawable.ic_action_gps_active)
+            } else {
+                activity?.startService(locationServiceIntent)
+                activity_tracker_record_fab.setImageResource(R.drawable.ic_action_gps_inactive)
+            }
+            viewModel.isRecording = !viewModel.isRecording
+        }
     }
 
     private fun buildMapView() {
@@ -107,5 +129,10 @@ class FollowFragment : Fragment() {
             viewModel.currentLocation.latitude,
             viewModel.currentLocation.longitude,
         ))
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        activity?.stopService(locationServiceIntent)
     }
 }

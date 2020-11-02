@@ -1,7 +1,6 @@
 package fr.labard.simplegpstracker.ui.tracker
 
 import android.content.DialogInterface
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.Menu
@@ -21,7 +20,6 @@ import androidx.fragment.app.replace
 import androidx.lifecycle.ViewModelProvider
 import fr.labard.simplegpstracker.GPSApplication
 import fr.labard.simplegpstracker.R
-import fr.labard.simplegpstracker.model.GpsService
 import fr.labard.simplegpstracker.model.tracker.TrackerActivityViewModel
 import fr.labard.simplegpstracker.model.tracker.TrackerActivityViewModelFactory
 import fr.labard.simplegpstracker.model.util.Constants
@@ -30,7 +28,6 @@ import kotlinx.android.synthetic.main.activity_tracker.*
 class TrackerActivity : AppCompatActivity() {
 
     private lateinit var viewModel: TrackerActivityViewModel
-    lateinit var locationServiceIntent: Intent
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,22 +63,6 @@ class TrackerActivity : AppCompatActivity() {
             activity_tracker_toolbar.title = viewModel
                 .getRecordById(viewModel.getActiveRecordId()).name
         })
-
-        locationServiceIntent = Intent(applicationContext, GpsService::class.java)
-            .putExtra(Constants.Intent.RECORD_ID_EXTRA, viewModel.activeRecordId.value)
-            .setAction(Constants.Intent.ACTION_PLAY)
-
-        activity_tracker_play_fab.setOnClickListener {
-            if (viewModel.isRecording) {
-                stopService(locationServiceIntent)
-                activity_tracker_play_fab.setImageResource(R.drawable.ic_action_gps_active)
-            } else {
-                startService(locationServiceIntent)
-                activity_tracker_play_fab.setImageResource(R.drawable.ic_action_gps_inactive)
-            }
-            viewModel.isRecording = !viewModel.isRecording
-        }
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -174,6 +155,5 @@ class TrackerActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         viewModel.setActiveRecordId("")
-        stopService(locationServiceIntent)
     }
 }

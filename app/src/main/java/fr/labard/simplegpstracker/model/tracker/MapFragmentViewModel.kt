@@ -10,19 +10,20 @@ class MapFragmentViewModel(
     private val appRepository: IRepository
 ) : ViewModel() {
 
-    var activeRecordId = appRepository.getActiveRecordId()
+    var currentRecordId = appRepository.getActiveRecordId()
     var allLocations = appRepository.getLocations()
     var locationsByRecordId = listOf<LocationEntity>()
+    var isRecording = false
 
     fun setLocationsByRecordActiveId() {
-        locationsByRecordId = allLocations.value!!.filter { it.recordId == activeRecordId.value }
+        locationsByRecordId = allLocations.value!!.filter { it.recordId == currentRecordId.value }
     }
 
     fun insertLocation(location: Location) {
         appRepository.insertLocation(
             LocationEntity(
                 0,
-                activeRecordId.value!!,
+                currentRecordId.value!!,
                 location.time,
                 location.latitude,
                 location.longitude,
