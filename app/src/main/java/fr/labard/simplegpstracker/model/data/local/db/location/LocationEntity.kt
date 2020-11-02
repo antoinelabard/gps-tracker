@@ -41,8 +41,8 @@ data class LocationEntity (
 
     fun distanceTo(l: LocationEntity): Float {
         val l1 = Location("").apply {
-            latitude = this.latitude
-            longitude = this.longitude
+            latitude = latitude
+            longitude = longitude
         }
         val l2 = Location("").apply {
             latitude = l.latitude
@@ -53,9 +53,16 @@ data class LocationEntity (
 
     fun distanceTo(l: Location): Float {
         val l1 = Location("").apply {
-            latitude = this.latitude
-            longitude = this.longitude
+            latitude = latitude
+            longitude = longitude
         }
         return l1.distanceTo(l)
+    }
+
+    fun toLocation() = Location("").apply {
+        latitude = this@LocationEntity.latitude
+        longitude = this@LocationEntity.longitude
+        speed = this@LocationEntity.speed
+        time = this@LocationEntity.time
     }
 }

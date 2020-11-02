@@ -10,12 +10,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import fr.labard.simplegpstracker.GPSApplication
 import fr.labard.simplegpstracker.R
 import fr.labard.simplegpstracker.model.GpsService
+import fr.labard.simplegpstracker.model.data.local.db.location.LocationEntity
 import fr.labard.simplegpstracker.model.tracker.FollowFragmentViewModel
 import fr.labard.simplegpstracker.model.tracker.FollowFragmentViewModelFactory
 import fr.labard.simplegpstracker.model.util.Constants
@@ -25,6 +28,7 @@ import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
+import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.Polyline
 import org.osmdroid.views.overlay.compass.CompassOverlay
 import org.osmdroid.views.overlay.compass.InternalCompassOrientationProvider
@@ -37,6 +41,9 @@ class FollowFragment : Fragment() {
     private lateinit var mapController: IMapController
     lateinit var locationServiceIntent: Intent
 
+    lateinit var polyline: Polyline
+    lateinit var checkpoint: Marker
+
     private val viewModel by viewModels<FollowFragmentViewModel> {
         FollowFragmentViewModelFactory((requireContext().applicationContext as GPSApplication).appRepository)
     }
@@ -44,7 +51,8 @@ class FollowFragment : Fragment() {
 
     private val locationBroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent){
-            if (intent.getStringExtra(Constants.Service.MODE) == Constants.Service.MODE_FOLLOW) {
+            if (intent.getStringExtra(Constants.Service.MODE) == Constants.Service.MODE_FOLLOW
+                && viewModel.locationsByRecordId.isNotEmpty()) {
                 viewModel.currentLocation = Location("").apply {
                     latitude = intent.getDoubleExtra(Constants.Intent.LATITUDE_EXTRA, 0.0)
                     longitude = intent.getDoubleExtra(Constants.Intent.LONGITUDE_EXTRA, 0.0)
@@ -68,6 +76,18 @@ class FollowFragment : Fragment() {
         mapView = view.findViewById(R.id.fragment_map_mapview)
         buildMapView()
 
+        viewModel.allLocations.observe(viewLifecycleOwner, object: Observer<List<LocationEntity>> {
+            override fun onChanged(t: List<LocationEntity>?) {
+                viewModel.locationsByRecordId = (viewModel.allLocations.value
+                    ?.map { it.toLocation() }!! as MutableList<Location>)
+                    .apply { sortBy { it.time } }
+
+
+                updateMapView()
+                viewModel.allLocations.removeObserver(this)
+            }
+        })
+
         LocalBroadcastManager.getInstance(activity!!).registerReceiver(
             locationBroadcastReceiver,
             IntentFilter(Constants.Service.LOCATION_BROADCAST)
@@ -75,7 +95,7 @@ class FollowFragment : Fragment() {
 
         locationServiceIntent = Intent(activity?.applicationContext, GpsService::class.java)
             .putExtra(Constants.Intent.RECORD_ID_EXTRA, viewModel.currentRecordId.value)
-            .putExtra(Constants.Intent.MODE, Constants.Service.MODE_RECORD)
+            .putExtra(Constants.Intent.MODE, Constants.Service.MODE_FOLLOW)
             .setAction(Constants.Intent.ACTION_PLAY)
 
         return view
@@ -99,8 +119,10 @@ class FollowFragment : Fragment() {
         mapView.setTileSource(TileSourceFactory.MAPNIK)
         mapView.setMultiTouchControls(true)
         mapController = mapView.controller
-        mapController.setZoom(3.0)
-        val mLocationOverlay = MyLocationNewOverlay(
+        mapController.setZoom(10.0)
+        polyline = Polyline()
+        checkpoint = Marker(mapView)
+            val mLocationOverlay = MyLocationNewOverlay(
             GpsMyLocationProvider(activity?.applicationContext),
             mapView
         )
@@ -124,7 +146,21 @@ class FollowFragment : Fragment() {
     private fun updateMapView() {
         val parkour: List<GeoPoint>? = viewModel.locationsByRecordId.map { GeoPoint(it.latitude, it.longitude) }
         if (parkour!!.isEmpty()) return
-        mapView.overlayManager.add(Polyline().apply { setPoints(parkour) })
+        mapView.overlays.remove(polyline)
+        polyline = Polyline()
+        mapView.overlays.remove(checkpoint)
+        checkpoint = Marker(mapView)
+            .apply { icon = ContextCompat.getDrawable(activity?.applicationContext!!, R.drawable.ic_add_black_24dp) }
+        mapView.overlayManager.add(polyline.apply { setPoints(parkour) })
+        mapView.overlayManager.add(checkpoint.apply {
+            position = GeoPoint(
+                viewModel.locationsByRecordId.last().latitude,
+                viewModel.locationsByRecordId.last().longitude
+            )
+            if (viewModel.locationsByRecordId.size == 1) {
+                icon = ContextCompat.getDrawable(activity?.applicationContext!!, R.drawable.ic_action_delete)
+            }
+        })
         mapController.setCenter(GeoPoint(
             viewModel.currentLocation.latitude,
             viewModel.currentLocation.longitude,

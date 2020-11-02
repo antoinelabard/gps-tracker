@@ -60,7 +60,7 @@ class Constants {
     }
     class Location {
         companion object {
-            const val MIN_RADIUS = 5.0 // in meters
+            const val MIN_RADIUS = 20.0 // in meters
         }
     }
 }
