@@ -2,6 +2,8 @@ package fr.labard.simplegpstracker.model.util
 
 import android.util.Xml
 import fr.labard.simplegpstracker.model.data.local.db.Converters
+import fr.labard.simplegpstracker.model.data.local.db.location.LocationEntity
+import fr.labard.simplegpstracker.model.data.local.db.record.RecordEntity
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserException
 import java.io.IOException
@@ -13,8 +15,39 @@ class XmlParser {
     // We don't use namespaces
     private val ns: String? = null
 
+    data class RecordList(val records: MutableList<RecordTag>) {
+        fun toXml(): String {
+            var s = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
+            for (record in records) {
+                s += "<record id=\"${record.id}\" name=\"${record.name}\" creationdate=\"${record.creationDate}\" lastmodification=\"${record.lastModification}\">"
+                for (location in record.locations) {
+                    s += "        <location id=\"${location.id}\" time=\"${location.time}\" latitude=\"${location.latitude}\" longitude=\"${location.longitude}\" speed=\"${location.speed}\"/>"
+                }
+                s += "</record>"
+            }
+
+            return s
+        }
+    }
+
+    data class RecordTag(
+        val id: String,
+        val name: String,
+        val creationDate: Date,
+        val lastModification: Date,
+        val locations: MutableList<LocationTag>
+    )
+
+    data class LocationTag(
+        val id: Int,
+        val time: Long,
+        val latitude: Double,
+        val longitude: Double,
+        val speed: Float
+    )
+
     @Throws(XmlPullParserException::class, IOException::class)
-    fun parse(inputStream: InputStream): List<*> {
+    fun parse(inputStream: InputStream): RecordList {
         inputStream.use { inputStream1 ->
             val parser: XmlPullParser = Xml.newPullParser()
             parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false)
@@ -25,8 +58,8 @@ class XmlParser {
     }
 
     @Throws(XmlPullParserException::class, IOException::class)
-    private fun readFeed(parser: XmlPullParser): List<RecordTag> {
-        val records = mutableListOf<RecordTag>()
+    private fun readFeed(parser: XmlPullParser): RecordList {
+        val recordList = RecordList(mutableListOf())
 
 //        parser.require(XmlPullParser.START_TAG, ns, "feed")
         while (parser.next() != XmlPullParser.END_TAG) {
@@ -35,32 +68,14 @@ class XmlParser {
             }
             // Starts by looking for the record tag
             if (parser.name == "record") {
-                records.add(readRecordTag(parser))
+                recordList.records.add(readRecordTag(parser))
             } else {
                 skip(parser)
             }
         }
-        return records
+        return recordList
     }
 
-    data class RecordTag(
-        val id: String,
-        val name: String,
-        val creationDate: Date,
-        val lastModification: Date,
-        val location: MutableList<LocationTag>
-    )
-
-    data class LocationTag(
-        val id: Int,
-        val time: Long,
-        val latitude: Double,
-        val longitude: Double,
-        val speed: Double
-    )
-
-    // Parses the contents of a record tag. If it encounters a title, summary, or link tag, hands them off
-    // to their respective "read" methods for processing. Otherwise, skips the tag.
     @Throws(XmlPullParserException::class, IOException::class)
     private fun readRecordTag(parser: XmlPullParser): RecordTag {
         parser.require(XmlPullParser.START_TAG, ns, "record")
@@ -83,7 +98,6 @@ class XmlParser {
         return RecordTag(id, name, creationDate, lastModification, locations)
     }
 
-    // Processes title tags in the feed.
     @Throws(IOException::class, XmlPullParserException::class)
     private fun readLocationTag(parser: XmlPullParser): LocationTag {
         parser.require(XmlPullParser.START_TAG, ns, "location")
@@ -110,6 +124,24 @@ class XmlParser {
         }
     }
 
+    fun export(records: List<RecordEntity>, locations: List<LocationEntity>): String {
+        val recordList = RecordList(mutableListOf())
+        for (record in records) {
+            val recordTag = RecordTag(
+                record.id,
+                record.name,
+                record.creationDate,
+                record.lastModification,
+                mutableListOf()
+            )
+            for (location in locations) {
+                val locationTag = LocationTag(location.id, location.time, location.latitude, location.longitude, location.speed)
+                recordTag.locations.add(locationTag)
+            }
+            recordList.records.add(recordTag)
+        }
+        return recordList.toXml()
+    }
 }
 
 /*<?xml version="1.0" encoding="utf-8"?>
