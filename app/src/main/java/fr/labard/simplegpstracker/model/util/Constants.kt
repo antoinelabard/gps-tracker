@@ -8,22 +8,6 @@ class Constants {
             const val ACTION_STOP = 13
         }
     }
-    class Permission {
-        companion object {
-            const val REQUEST_CODE = 21
-        }
-    }
-    class Service {
-        companion object {
-            const val LOCATION_BROADCAST = "31"
-            const val LOCATION_PROVIDER = ""
-            const val MIN_TIME_REFRESH = 400L // in milliseconds
-            const val MIN_DISTANCE_REFRESH = 1.0f // in meters
-            const val MODE_RECORD = "modeRecord"
-            const val MODE_FOLLOW = "modeFollow"
-            const val MODE = "mode"
-        }
-    }
     class Intent {
         companion object {
             const val LATITUDE_EXTRA = "latitude"
@@ -36,6 +20,22 @@ class Constants {
             const val ACTION_PLAY = "record"
             const val ACTION_STOP = "stop"
             const val REQUEST_RECORD_ID = "requestRecordId"
+            const val MODE = "mode"
+            const val REQUEST_CODE = 21
+            const val CREATE_FILE_REQUEST_CODE = 22
+            const val OPEN_FILE_REQUEST_CODE = 23
+            const val SAVE_FILE_REQUEST_CODE = 24
+
+        }
+    }
+    class Service {
+        companion object {
+            const val LOCATION_BROADCAST = "31"
+            const val LOCATION_PROVIDER = ""
+            const val MIN_TIME_REFRESH = 400L // in milliseconds
+            const val MIN_DISTANCE_REFRESH = 1.0f // in meters
+            const val MODE_RECORD = "modeRecord"
+            const val MODE_FOLLOW = "modeFollow"
             const val MODE = "mode"
         }
     }

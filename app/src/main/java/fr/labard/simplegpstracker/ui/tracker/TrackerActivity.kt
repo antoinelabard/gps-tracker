@@ -147,7 +147,7 @@ class TrackerActivity : AppCompatActivity() {
             ActivityCompat.requestPermissions(
                 this,
                 permissionsToRequest.toArray(arrayOf<String>()),
-                Constants.Permission.REQUEST_CODE
+                Constants.Intent.REQUEST_CODE
             )
         }
     }

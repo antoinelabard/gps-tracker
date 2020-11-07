@@ -47,7 +47,7 @@ class XmlParser {
     )
 
     @Throws(XmlPullParserException::class, IOException::class)
-    fun parse(inputStream: InputStream): RecordList {
+    fun import(inputStream: InputStream): RecordList {
         inputStream.use { inputStream1 ->
             val parser: XmlPullParser = Xml.newPullParser()
             parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false)
@@ -105,7 +105,7 @@ class XmlParser {
         val time = parser.getAttributeValue(null, "time").toLong()
         val latitude = parser.getAttributeValue(null, "latitude").toDouble()
         val longitude = parser.getAttributeValue(null, "longitude").toDouble()
-        val speed = parser.getAttributeValue(null, "speed").toDouble()
+        val speed = parser.getAttributeValue(null, "speed").toFloat()
         parser.require(XmlPullParser.END_TAG, ns, "location")
         return LocationTag(id, time, latitude, longitude, speed)
     }
