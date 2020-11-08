@@ -11,9 +11,8 @@ class MainActivityViewModel(
 ) : ViewModel() {
     val allRecords = appRepository.getRecords()
     val allLocations = appRepository.getLocations()
-    val records = listOf<RecordEntity>()
-    val locations = listOf<LocationEntity>()
-
+    var records = listOf<RecordEntity>()
+    var locations = listOf<LocationEntity>()
 }
 
 @Suppress("UNCHECKED_CAST")

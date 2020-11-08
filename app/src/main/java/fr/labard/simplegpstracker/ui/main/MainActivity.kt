@@ -35,10 +35,17 @@ class MainActivity : AppCompatActivity() {
             (applicationContext as GPSApplication).appRepository
         )
         ).get(MainActivityViewModel::class.java)
+
+        viewModel.allRecords.observe(this, {
+            viewModel.records = viewModel.allRecords.value!!
+        })
+        viewModel.allLocations.observe(this, {
+            viewModel.locations = viewModel.allLocations.value!!
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_main, menu)
+        menuInflater.inflate(R.menu.activity_main_menu, menu)
         return true
     }
 
@@ -110,8 +117,7 @@ class MainActivity : AppCompatActivity() {
         try {
             contentResolver.openFileDescriptor(uri, "w")?.use {
                 FileOutputStream(it.fileDescriptor).use {
-                    it.write(text.toByteArray()
-                    )
+                    it.write(text.toByteArray())
                 }
             }
         } catch (e: FileNotFoundException) {

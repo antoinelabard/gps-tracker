@@ -72,27 +72,24 @@ class TrackerActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
+        when (item.itemId) {
             R.id.activity_tracker_action_record -> {
                 supportFragmentManager.commit {
                     replace<MapFragment>(R.id.activity_tracker_fragment_container, null, bundleOf())
                     addToBackStack(null)
                 }
-                true
             }
             R.id.activity_tracker_action_follow -> {
                 supportFragmentManager.commit {
                     replace<FollowFragment>(R.id.activity_tracker_fragment_container, null, bundleOf())
                     addToBackStack(null)
                 }
-                true
             }
             R.id.activity_tracker_action_stats -> {
                 supportFragmentManager.commit {
                     replace<StatisticsFragment>(R.id.activity_tracker_fragment_container, null, bundleOf())
                     addToBackStack(null)
                 }
-                true
             }
             R.id.activity_tracker_action_rename -> {
                 val dialog_rename = layoutInflater.inflate(R.layout.dialog_rename, null)
@@ -114,7 +111,6 @@ class TrackerActivity : AppCompatActivity() {
                         Toast.makeText(this, getString(R.string.canceled), Toast.LENGTH_LONG).show()
                     }
                     .show()
-                true
             }
             R.id.activity_tracker_action_delete -> {
                 AlertDialog.Builder(this)
@@ -130,10 +126,10 @@ class TrackerActivity : AppCompatActivity() {
                         Toast.makeText(this, R.string.deletion_canceled, Toast.LENGTH_LONG).show()
                     }
                     .show()
-                true
             }
             else -> super.onOptionsItemSelected(item)
         }
+        return true
     }
 
     private fun requestPermissionsIfNecessary(permissions: Array<String>) {

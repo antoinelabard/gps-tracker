@@ -17,13 +17,13 @@ class XmlParser {
 
     data class RecordList(val records: MutableList<RecordTag>) {
         fun toXml(): String {
-            var s = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
+            var s = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
             for (record in records) {
-                s += "<record id=\"${record.id}\" name=\"${record.name}\" creationdate=\"${record.creationDate}\" lastmodification=\"${record.lastModification}\">"
+                s += "<record id=\"${record.id}\" name=\"${record.name}\" creationdate=\"${record.creationDate}\" lastmodification=\"${record.lastModification}\">\n"
                 for (location in record.locations) {
-                    s += "        <location id=\"${location.id}\" time=\"${location.time}\" latitude=\"${location.latitude}\" longitude=\"${location.longitude}\" speed=\"${location.speed}\"/>"
+                    s += "        <location id=\"${location.id}\" time=\"${location.time}\" latitude=\"${location.latitude}\" longitude=\"${location.longitude}\" speed=\"${location.speed}\"/>\n"
                 }
-                s += "</record>"
+                s += "</record>\n"
             }
 
             return s

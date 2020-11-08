@@ -2,10 +2,10 @@
       xmlns:app="http://schemas.android.com/apk/res-auto"
       xmlns:tools="http://schemas.android.com/tools"
       tools:context="com.example.roomwordssample.ui.MainActivity">
-    <item android:id="@+id/activity_main_action_export"
+    <item android:id="@+id/activity_main_action_import"
           android:title="@string/import_locations"
           app:showAsAction="never"/>
-    <item android:id="@+id/activity_main_action_import"
+    <item android:id="@+id/activity_main_action_export"
           android:title="@string/export_locations"
           app:showAsAction="never"/>
 </menu>
