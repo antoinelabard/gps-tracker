@@ -19,9 +19,18 @@ class XmlParser {
         fun toXml(): String {
             var s = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<feed>\n"
             for (record in recordTags) {
-                s += "<record id=\"${record.id}\" name=\"${record.name}\" creationdate=\"${Converters().dateToTimestamp(record.creationDate)}\" lastmodification=\"${Converters().dateToTimestamp(record.lastModification)}\">\n"
+                s += "<${Constants.Xml.RECORD} " +
+                    "${Constants.Xml.ID}=\"${record.id}\" " +
+                    "${Constants.Xml.NAME}=\"${record.name}\" " +
+                    "${Constants.Xml.CREATIONDATE}=\"${Converters().dateToTimestamp(record.creationDate)}\" " +
+                    "${Constants.Xml.LASTMODIFICATION}=\"${Converters().dateToTimestamp(record.lastModification)}\">\n"
                 for (location in record.locations) {
-                    s += "        <location id=\"${location.id}\" time=\"${location.time}\" latitude=\"${location.latitude}\" longitude=\"${location.longitude}\" speed=\"${location.speed}\"/>\n"
+                    s += "        <${Constants.Xml.LOCATION} " +
+                    "${Constants.Xml.ID}=\"${location.id}\" " +
+                    "${Constants.Xml.TIME}=\"${location.time}\" " +
+                    "${Constants.Xml.LATITUDE}=\"${location.latitude}\" " +
+                    "${Constants.Xml.LONGITUDE}=\"${location.longitude}\" " +
+                    "${Constants.Xml.SPEED}=\"${location.speed}\"/>\n"
                 }
                 s += "</record>\n"
             }
@@ -171,8 +180,3 @@ class XmlParser {
         return recordList.toXml()
     }
 }
-
-/*<?xml version="1.0" encoding="utf-8"?>
-<record id="1" name="1" creationdate="0" lastmodification="1">
-        <location id="0" time="0" latitude="0.0" longitude="0.0" speed="0.0"/>
-</record>*/

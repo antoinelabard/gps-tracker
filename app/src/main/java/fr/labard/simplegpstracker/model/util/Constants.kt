@@ -63,4 +63,18 @@ class Constants {
             const val MIN_RADIUS = 20.0 // in meters
         }
     }
+    class Xml {
+        companion object {
+            const val RECORD = "record"
+            const val LOCATION = "location"
+            const val ID = "id"
+            const val NAME = "name"
+            const val CREATIONDATE = "creationdate"
+            const val LASTMODIFICATION = "lastmodification"
+            const val TIME = "time"
+            const val LATITUDE = "latitude"
+            const val LONGITUDE = "longitude"
+            const val SPEED = "speed"
+        }
+    }
 }
