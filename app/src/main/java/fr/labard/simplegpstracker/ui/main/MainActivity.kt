@@ -72,7 +72,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun importData() {
-        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+            addCategory(Intent.CATEGORY_OPENABLE)
+            type = "text/plain"
+        }
+        startActivityForResult(intent, Constants.Intent.OPEN_FILE_REQUEST_CODE)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -91,7 +95,9 @@ class MainActivity : AppCompatActivity() {
                 }
                 Constants.Intent.OPEN_FILE_REQUEST_CODE ->
                     data?.data?.also {uri ->
-                        XmlParser().import(ByteArrayInputStream(readTextFromUri(uri).toByteArray()))
+                        val (r, l) = XmlParser().import(ByteArrayInputStream(readTextFromUri(uri).toByteArray()))
+                        for (i in r) viewModel.insertRecord(i)
+                        for (i in l) viewModel.insertLocation(i)
                     }
             }
         }

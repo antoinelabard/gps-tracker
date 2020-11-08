@@ -13,6 +13,9 @@ class MainActivityViewModel(
     val allLocations = appRepository.getLocations()
     var records = listOf<RecordEntity>()
     var locations = listOf<LocationEntity>()
+
+    fun insertRecord(recordEntity: RecordEntity) = appRepository.insertRecord(recordEntity)
+    fun insertLocation(locationEntity: LocationEntity) = appRepository.insertLocation(locationEntity)
 }
 
 @Suppress("UNCHECKED_CAST")
