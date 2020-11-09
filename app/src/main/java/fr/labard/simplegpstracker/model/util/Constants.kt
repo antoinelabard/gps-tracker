@@ -63,17 +63,18 @@ class Constants {
             const val MIN_RADIUS = 20.0 // in meters
         }
     }
-    class Xml {
+    class Gpx {
         companion object {
-            const val RECORD = "record"
-            const val LOCATION = "location"
+            const val GPX = "gpx" // root label of the document
+            const val TRK = "trk" // equivalent to record
+            const val TRKPT = "trkpt" // equivalent to location
             const val ID = "id"
             const val NAME = "name"
             const val CREATIONDATE = "creationdate"
             const val LASTMODIFICATION = "lastmodification"
             const val TIME = "time"
-            const val LATITUDE = "latitude"
-            const val LONGITUDE = "longitude"
+            const val LATITUDE = "lat"
+            const val LONGITUDE = "lon"
             const val SPEED = "speed"
         }
     }
