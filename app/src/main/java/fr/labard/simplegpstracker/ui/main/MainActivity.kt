@@ -4,12 +4,15 @@ import android.app.Activity
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import fr.labard.simplegpstracker.GPSApplication
@@ -56,6 +59,20 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.activity_main_action_export -> {
                 exportData()
+            }
+            R.id.activity_main_action_clear_all -> {
+                AlertDialog.Builder(this)
+                    .setTitle(R.string.clear_all)
+                    .setMessage(getString(R.string.confirmation))
+                    .setIcon(R.drawable.ic_action_delete)
+                    .setPositiveButton(R.string.yes) { _: DialogInterface, _: Int ->
+                        viewModel.deleteAll()
+                        Toast.makeText(this, R.string.deletion_complete, Toast.LENGTH_LONG)
+                    }
+                    .setNegativeButton(R.string.no) { _: DialogInterface, _: Int ->
+                        Toast.makeText(this, R.string.deletion_canceled, Toast.LENGTH_LONG).show()
+                    }
+                    .show()
             }
             else -> super.onOptionsItemSelected(item)
         }

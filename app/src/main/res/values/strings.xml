@@ -29,4 +29,6 @@
     <string name="import_locations">Import</string>
     <string name="export_locations">Export</string>
     <string name="record">Record</string>
+    <string name="clear_all">Clear all</string>
+    <string name="confirmation">Are you sure ?</string>
 </resources>

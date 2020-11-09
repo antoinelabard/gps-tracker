@@ -16,6 +16,7 @@ class MainActivityViewModel(
 
     fun insertRecord(recordEntity: RecordEntity) = appRepository.insertRecord(recordEntity)
     fun insertLocation(locationEntity: LocationEntity) = appRepository.insertLocation(locationEntity)
+    fun deleteAll() = appRepository.deleteAll()
 }
 
 @Suppress("UNCHECKED_CAST")
