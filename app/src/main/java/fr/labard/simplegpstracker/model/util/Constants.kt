@@ -65,6 +65,7 @@ class Constants {
     }
     class Gpx {
         companion object {
+            const val TRKSEG = "trkseg"
             const val GPX = "gpx" // root label of the document
             const val TRK = "trk" // equivalent to record
             const val TRKPT = "trkpt" // equivalent to location

@@ -82,7 +82,7 @@ class MainActivity : AppCompatActivity() {
     private fun exportData() {
         val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
             addCategory(Intent.CATEGORY_OPENABLE)
-            type = "text/plain"
+            type = "*/*"
             putExtra(Intent.EXTRA_TITLE, "backup : ${Date()}.xml")
         }
         startActivityForResult(intent, Constants.Intent.CREATE_FILE_REQUEST_CODE)
@@ -91,7 +91,7 @@ class MainActivity : AppCompatActivity() {
     private fun importData() {
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
             addCategory(Intent.CATEGORY_OPENABLE)
-            type = "text/plain"
+            type = "*/*"
         }
         startActivityForResult(intent, Constants.Intent.OPEN_FILE_REQUEST_CODE)
     }
@@ -112,7 +112,8 @@ class MainActivity : AppCompatActivity() {
                 }
                 Constants.Intent.OPEN_FILE_REQUEST_CODE ->
                     data?.data?.also {uri ->
-                        val (r, l) = XmlParser().import(ByteArrayInputStream(readTextFromUri(uri).toByteArray()))
+                        val (r, l)
+                                = XmlParser().import(ByteArrayInputStream(readTextFromUri(uri).toByteArray()))
                         for (i in r) viewModel.insertRecord(i)
                         for (i in l) viewModel.insertLocation(i)
                     }

@@ -21,9 +21,10 @@ class XmlParser {
             for (record in recordTags) {
                 s += "    <${Constants.Gpx.TRK} " +
                         "${Constants.Gpx.ID}=\"${record.id}\" " +
-                        "${Constants.Gpx.NAME}=\"${record.name}\" " +
                         "${Constants.Gpx.CREATIONDATE}=\"${Converters().dateToTimestamp(record.creationDate)}\" " +
-                        "${Constants.Gpx.LASTMODIFICATION}=\"${Converters().dateToTimestamp(record.lastModification)}\">\n"
+                        "${Constants.Gpx.LASTMODIFICATION}=\"${Converters().dateToTimestamp(record.lastModification)}\">\n" +
+                        "    <${Constants.Gpx.NAME}>${record.name}</${Constants.Gpx.NAME}>\n" +
+                        "    <${Constants.Gpx.TRKSEG}>\n"
                 for (location in record.locations) {
                     s += "        <${Constants.Gpx.TRKPT} " +
                             "${Constants.Gpx.ID}=\"${location.id}\" " +
@@ -33,7 +34,7 @@ class XmlParser {
                             "<${Constants.Gpx.TIME}>${location.time}</${Constants.Gpx.TIME}>" +
                             "</${Constants.Gpx.TRKPT}>\n"
                 }
-                s += "    </${Constants.Gpx.TRK}>\n"
+                s += "    </${Constants.Gpx.TRKSEG}>\n    </${Constants.Gpx.TRK}>\n"
             }
             s += "</${Constants.Gpx.GPX}>\n"
             return s
@@ -101,9 +102,7 @@ class XmlParser {
 
         parser.require(XmlPullParser.START_TAG, ns, Constants.Gpx.GPX)
         while (parser.next() != XmlPullParser.END_TAG) {
-            if (parser.eventType != XmlPullParser.START_TAG) {
-                continue
-            }
+            if (parser.eventType != XmlPullParser.START_TAG) continue
             if (parser.name == Constants.Gpx.TRK) {
                 recordList.recordTags.add(readRecordTag(parser))
             } else {
@@ -118,31 +117,37 @@ class XmlParser {
         parser.require(XmlPullParser.START_TAG, ns, Constants.Gpx.TRK)
 
         val id = parser.getAttributeValue(ns, Constants.Gpx.ID)
-        val name = parser.getAttributeValue(ns, Constants.Gpx.NAME)
-        val creationDate = Converters().timestampToDate(parser.getAttributeValue(ns, Constants.Gpx.CREATIONDATE).toLong())!!
-        val lastModification = Converters().timestampToDate(parser.getAttributeValue(ns, Constants.Gpx.LASTMODIFICATION).toLong())!!
+        var name: String? = null
+        val creationDate = parser.getAttributeValue(ns, Constants.Gpx.CREATIONDATE)
+        val lastModification = parser.getAttributeValue(ns, Constants.Gpx.LASTMODIFICATION)
         val locations = mutableListOf<LocationTag>()
 
         while (parser.next() != XmlPullParser.END_TAG) {
-            if (parser.eventType != XmlPullParser.START_TAG) {
-                continue
-            }
+            if (parser.eventType != XmlPullParser.START_TAG) continue
             when (parser.name) {
+                Constants.Gpx.NAME -> name = readName(parser)
                 Constants.Gpx.TRKPT -> locations.add(readLocationTag(parser))
+                Constants.Gpx.TRKSEG -> continue
                 else -> skip(parser)
             }
         }
-        return RecordTag(id, name, creationDate, lastModification, locations)
+        return RecordTag(
+                id ?: UUID.randomUUID().toString(),
+                name ?: "Record: ${Date()}",
+                if (creationDate != null) Converters().timestampToDate(creationDate.toLong())!! else Date(),
+                if (lastModification != null) Converters().timestampToDate(lastModification.toLong())!! else Date(),
+                locations
+        )
     }
 
     @Throws(IOException::class, XmlPullParserException::class)
     private fun readLocationTag(parser: XmlPullParser): LocationTag {
         parser.require(XmlPullParser.START_TAG, ns, Constants.Gpx.TRKPT)
-        val id = parser.getAttributeValue(ns, Constants.Gpx.ID).toInt()
+        val id = parser.getAttributeValue(ns, Constants.Gpx.ID)
         var time = 0L
-        val latitude = parser.getAttributeValue(ns, Constants.Gpx.LATITUDE).toDouble()
-        val longitude = parser.getAttributeValue(ns, Constants.Gpx.LONGITUDE).toDouble()
-        val speed = parser.getAttributeValue(ns, Constants.Gpx.SPEED).toFloat()
+        val latitude = parser.getAttributeValue(ns, Constants.Gpx.LATITUDE)
+        val longitude = parser.getAttributeValue(ns, Constants.Gpx.LONGITUDE)
+        val speed = parser.getAttributeValue(ns, Constants.Gpx.SPEED)
         while (parser.next() != XmlPullParser.END_TAG) {
             if (parser.eventType != XmlPullParser.START_TAG) {
                 continue
@@ -153,7 +158,13 @@ class XmlParser {
             }
         }
         parser.require(XmlPullParser.END_TAG, ns, Constants.Gpx.TRKPT)
-        return LocationTag(id, time, latitude, longitude, speed)
+        return LocationTag(
+            id?.toInt() ?: 0,// UUID.randomUUID().toString(),
+            time,
+            latitude?.toDouble() ?: 0.0,
+            longitude?.toDouble() ?: 0.0,
+            speed?.toFloat() ?: 0f
+        )
     }
 
     @Throws(XmlPullParserException::class, IOException::class)
@@ -162,6 +173,14 @@ class XmlParser {
         val title = readText(parser)
         parser.require(XmlPullParser.END_TAG, ns, Constants.Gpx.TIME)
         return title.toLong()
+    }
+
+    @Throws(XmlPullParserException::class, IOException::class)
+    private fun readName(parser: XmlPullParser): String {
+        parser.require(XmlPullParser.START_TAG, ns, Constants.Gpx.NAME)
+        val title = readText(parser)
+        parser.require(XmlPullParser.END_TAG, ns, Constants.Gpx.NAME)
+        return title
     }
 
     @Throws(IOException::class, XmlPullParserException::class)
