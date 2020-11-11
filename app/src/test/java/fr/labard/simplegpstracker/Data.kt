@@ -17,7 +17,7 @@ class Data {
         val r3 = RecordEntity("r3", Date(), Date())
         val rConflict = RecordEntity("rConflict", Date(), Date()).apply {id = r1.id} // Has the same id as r intentionally
 
-        val lUnassigned = LocationEntity(0, unassignedId, 944006400000, 0.0, 0.0, 0.0f) // Here the recordId belongs to no record intentionally
+        val lUnassigned = LocationEntity(unassignedId, 944006400000, 0.0, 0.0, 0.0f) // Here the recordId belongs to no record intentionally
 
         val l1 = Location("").apply {
             latitude = 0.0
@@ -41,7 +41,6 @@ class Data {
         }
 
         val le1 = LocationEntity(
-            0,
             "0",
             l1.time,
             l1.latitude,
@@ -50,7 +49,6 @@ class Data {
         )
 
         val le2 = LocationEntity(
-            0,
             "0",
             l2.time,
             l2.latitude,

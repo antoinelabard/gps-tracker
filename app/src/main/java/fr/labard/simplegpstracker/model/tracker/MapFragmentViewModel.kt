@@ -22,7 +22,6 @@ class MapFragmentViewModel(
     fun insertLocation(location: Location) {
         appRepository.insertLocation(
             LocationEntity(
-                0,
                 currentRecordId.value!!,
                 location.time,
                 location.latitude,

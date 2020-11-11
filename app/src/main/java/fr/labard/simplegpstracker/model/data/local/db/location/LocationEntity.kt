@@ -7,6 +7,7 @@ import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import fr.labard.simplegpstracker.model.data.local.db.record.RecordEntity
 import fr.labard.simplegpstracker.model.util.Constants
+import java.util.*
 
 @Entity(
     tableName = Constants.Database.LOCATION_TABLE,
@@ -18,10 +19,6 @@ import fr.labard.simplegpstracker.model.util.Constants
     )]
 )
 data class LocationEntity (
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = Constants.Database.LOCATION_ENTITY_ID)
-    var id: Int,
-
     @ColumnInfo(name = Constants.Database.LOCATION_ENTITY_RECORD_ID)
     var recordId: String,
 
@@ -39,25 +36,9 @@ data class LocationEntity (
 
     ) {
 
-    fun distanceTo(l: LocationEntity): Float {
-        val l1 = Location("").apply {
-            latitude = latitude
-            longitude = longitude
-        }
-        val l2 = Location("").apply {
-            latitude = l.latitude
-            longitude = l.longitude
-        }
-        return l1.distanceTo(l2)
-    }
-
-    fun distanceTo(l: Location): Float {
-        val l1 = Location("").apply {
-            latitude = latitude
-            longitude = longitude
-        }
-        return l1.distanceTo(l)
-    }
+    @PrimaryKey
+    @ColumnInfo(name = Constants.Database.LOCATION_ENTITY_ID)
+    var id = UUID.randomUUID().toString()
 
     fun toLocation() = Location("").apply {
         latitude = this@LocationEntity.latitude

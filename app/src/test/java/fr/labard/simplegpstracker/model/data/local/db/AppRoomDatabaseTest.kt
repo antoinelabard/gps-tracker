@@ -164,8 +164,8 @@ class AppRoomDatabaseTest {
     @Throws(Exception::class)
     fun insertAndGetAllLocations() {
         val expect = setOf(
-            le1.copy().apply { id = 1 }, // the location id autoincrements and we must consider it
-            le2.copy().apply { id = 2 }
+            le1.copy().apply { id = "1" },
+            le2.copy().apply { id = "2" }
         )
         recordDao.insertRecord(r1)
         locationDao.insert(le1)

@@ -12,7 +12,6 @@ import java.util.*
 
 class XmlParser {
 
-    // We don't use namespaces
     private val ns: String? = null
 
     data class RecordList(val recordTags: MutableList<RecordTag>) {
@@ -69,20 +68,19 @@ class XmlParser {
     }
 
     data class LocationTag(
-        val id: Int,
+        val id: String,
         val time: Long,
         val latitude: Double,
         val longitude: Double,
         val speed: Float
     ) {
         fun toLocationEntity(recordId: String) = LocationEntity(
-            this@LocationTag.id,
             recordId,
             this@LocationTag.time,
             this@LocationTag.latitude,
             this@LocationTag.longitude,
             this@LocationTag.speed
-        )
+        ).apply { id = this@LocationTag.id }
     }
 
     @Throws(XmlPullParserException::class, IOException::class)
@@ -159,7 +157,7 @@ class XmlParser {
         }
         parser.require(XmlPullParser.END_TAG, ns, Constants.Gpx.TRKPT)
         return LocationTag(
-            id?.toInt() ?: 0,// UUID.randomUUID().toString(),
+            id?.toString() ?: UUID.randomUUID().toString(),
             time,
             latitude?.toDouble() ?: 0.0,
             longitude?.toDouble() ?: 0.0,
