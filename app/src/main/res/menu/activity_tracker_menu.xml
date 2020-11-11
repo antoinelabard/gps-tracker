@@ -21,12 +21,4 @@
           android:title="@string/delete"
           app:showAsAction="never"/>
 
-    <item android:id="@+id/activity_tracker_action_import"
-          android:title="@string/import_locations"
-          app:showAsAction="never"/>
-
-<item android:id="@+id/activity_tracker_action_export"
-          android:title="@string/export_locations"
-          app:showAsAction="never"/>
-
 </menu>
