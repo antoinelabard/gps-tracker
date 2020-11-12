@@ -21,4 +21,8 @@
           android:title="@string/delete"
           app:showAsAction="never"/>
 
+<item android:id="@+id/activity_tracker_action_share_position"
+          android:title="@string/share_position"
+          app:showAsAction="never"/>
+
 </menu>

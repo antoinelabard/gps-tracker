@@ -1,6 +1,7 @@
 package fr.labard.simplegpstracker.ui.tracker
 
 import android.content.DialogInterface
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.Menu
@@ -66,6 +67,7 @@ class TrackerActivity : AppCompatActivity() {
             activity_tracker_toolbar.title = viewModel
                 .getRecordById(viewModel.getActiveRecordId()).name
         })
+        viewModel.allLocations.observe(this, {})
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -127,6 +129,16 @@ class TrackerActivity : AppCompatActivity() {
                         Toast.makeText(this, R.string.deletion_canceled, Toast.LENGTH_LONG).show()
                     }
                     .show()
+            }
+            R.id.activity_tracker_action_share_position -> {
+                val location = viewModel.allLocations.value
+                    ?.last { l -> l.time == viewModel.allLocations.value?.maxOf { it.time }}
+                val intent = Intent(Intent.ACTION_SEND).apply {
+                    type = "text/plain"
+                    putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share_position))
+                    putExtra(Intent.EXTRA_TEXT, "Find me here:\n${location?.latitude}, ${location?.longitude}")
+                }
+                startActivity(intent)
             }
             else -> super.onOptionsItemSelected(item)
         }

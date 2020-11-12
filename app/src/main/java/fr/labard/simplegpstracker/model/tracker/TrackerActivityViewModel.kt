@@ -10,6 +10,7 @@ class TrackerActivityViewModel(
     private val appRepository: IRepository
 ) : ViewModel() {
     val allRecords = appRepository.getRecords()
+    val allLocations = appRepository.getLocations()
     var activeRecordId = appRepository.getActiveRecordId()
 
     fun getRecordById(id: String)
