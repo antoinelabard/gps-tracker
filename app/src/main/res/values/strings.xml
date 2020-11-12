@@ -32,10 +32,10 @@
     <string name="clear_all">Clear all</string>
     <string name="confirmation">Are you sure ?</string>
     <string name="stats_total_distance">Total distance:</string>
-    <string name="stats_total_time">Total time:</string>
-    <string name="stats_recent_speed">Recent speed:</string>
-    <string name="stats_average_speed">Average speed:</string>
-    <string name="stats_min_speed">Min speed:</string>
-    <string name="stats_max_speed">Max speed:</string>
-    <string name="stats_nb_locations">Number of positions:</string>
+    <string name="stats_total_time">Total time: </string>
+    <string name="stats_recent_speed">Recent speed: </string>
+    <string name="stats_average_speed">Average speed: </string>
+    <string name="stats_min_speed">Min speed: </string>
+    <string name="stats_max_speed">Max speed: </string>
+    <string name="stats_nb_locations">Number of positions: </string>
 </resources>

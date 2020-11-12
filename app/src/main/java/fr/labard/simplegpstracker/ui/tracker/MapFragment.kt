@@ -66,7 +66,7 @@ class MapFragment : Fragment() {
         buildMapView()
 
         viewModel.allLocations.observe(viewLifecycleOwner, {
-            viewModel.setLocationsByRecordActiveId()
+            viewModel.setLocationsByActiveRecordId()
             updateMapView()
         })
 
