@@ -4,14 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import fr.labard.simplegpstracker.GPSApplication
 import fr.labard.simplegpstracker.R
 import fr.labard.simplegpstracker.model.tracker.MapFragmentViewModel
 import fr.labard.simplegpstracker.model.tracker.StatisticsFragmentViewModelFactory
 
-class StatisticsFragment : Fragment() {
+class StatisticsFragment : DialogFragment() {
 
     private val viewModel by viewModels<MapFragmentViewModel> {
         StatisticsFragmentViewModelFactory((requireContext().applicationContext as GPSApplication).appRepository)
@@ -21,7 +21,9 @@ class StatisticsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_statistics, container, false)
+        val view = inflater.inflate(R.layout.fragment_statistics, container, false)
+        dialog?.setTitle("Statistics")
+        return view
     }
 
     companion object {

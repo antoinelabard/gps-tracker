@@ -34,13 +34,15 @@ class TrackerActivity : AppCompatActivity() {
         setContentView(R.layout.activity_tracker)
         setSupportActionBar(findViewById(R.id.activity_tracker_toolbar))
 
-        requestPermissionsIfNecessary(arrayOf(
-            android.Manifest.permission.ACCESS_FINE_LOCATION,
-            android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            android.Manifest.permission.READ_EXTERNAL_STORAGE,
-            android.Manifest.permission.INTERNET,
-            android.Manifest.permission.ACCESS_NETWORK_STATE
-        ))
+        requestPermissionsIfNecessary(
+            arrayOf(
+                android.Manifest.permission.ACCESS_FINE_LOCATION,
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                android.Manifest.permission.READ_EXTERNAL_STORAGE,
+                android.Manifest.permission.INTERNET,
+                android.Manifest.permission.ACCESS_NETWORK_STATE
+            )
+        )
 
         if (findViewById<FrameLayout>(R.id.activity_tracker_fragment_container) != null) {
             if (savedInstanceState != null) return
@@ -50,9 +52,10 @@ class TrackerActivity : AppCompatActivity() {
         }
 
 
-        viewModel = ViewModelProvider(this, TrackerActivityViewModelFactory(
-            (applicationContext as GPSApplication).appRepository
-        )
+        viewModel = ViewModelProvider(
+            this, TrackerActivityViewModelFactory(
+                (applicationContext as GPSApplication).appRepository
+            )
         ).get(TrackerActivityViewModel::class.java)
 
         viewModel.setActiveRecordId(intent.getStringExtra(Constants.Intent.RECORD_ID_EXTRA)!!)
@@ -86,10 +89,8 @@ class TrackerActivity : AppCompatActivity() {
                 }
             }
             R.id.activity_tracker_action_stats -> {
-                supportFragmentManager.commit {
-                    replace<StatisticsFragment>(R.id.activity_tracker_fragment_container, null, bundleOf())
-                    addToBackStack(null)
-                }
+                val dialogFragment = StatisticsFragment()
+                dialogFragment.show(supportFragmentManager, "Stats Fragment")
             }
             R.id.activity_tracker_action_rename -> {
                 val dialog_rename = layoutInflater.inflate(R.layout.dialog_rename, null)

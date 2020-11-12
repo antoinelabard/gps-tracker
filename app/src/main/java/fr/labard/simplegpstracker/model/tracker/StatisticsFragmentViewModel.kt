@@ -7,8 +7,8 @@ import fr.labard.simplegpstracker.model.data.IRepository
 class StatisticsFragmentViewModel(
     private val appRepository: IRepository
 ) : ViewModel() {
-
-
+    val allRecords = appRepository.getRecords()
+    val allLocations = appRepository.getLocations()
 }
 
 @Suppress("UNCHECKED_CAST")
