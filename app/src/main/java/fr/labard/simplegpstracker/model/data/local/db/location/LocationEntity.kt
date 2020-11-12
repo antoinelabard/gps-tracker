@@ -40,6 +40,26 @@ data class LocationEntity (
     @ColumnInfo(name = Constants.Database.LOCATION_ENTITY_ID)
     var id = UUID.randomUUID().toString()
 
+    fun distanceTo(l: LocationEntity): Float {
+        val l1 = Location("").apply {
+            latitude = latitude
+            longitude = longitude
+        }
+        val l2 = Location("").apply {
+            latitude = l.latitude
+            longitude = l.longitude
+        }
+        return l1.distanceTo(l2)
+    }
+
+    fun distanceTo(l: Location): Float {
+        val l1 = Location("").apply {
+            latitude = latitude
+            longitude = longitude
+        }
+        return l1.distanceTo(l)
+    }
+
     fun toLocation() = Location("").apply {
         latitude = this@LocationEntity.latitude
         longitude = this@LocationEntity.longitude
