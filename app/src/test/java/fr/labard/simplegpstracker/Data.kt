@@ -22,25 +22,25 @@ class Data {
         val l1 = Location("").apply {
             latitude = 0.0
             longitude = 0.0
-            time = 944006400000 // 01/01/2000 00:00:00 in ms
+            time = 946681200000 // 01/01/2000 00:00:00 in ms
             speed = 0f
         }
         val l2 = Location("").apply {
             latitude = 1.0
             longitude = 1.0
-            time = 944006405000 // 01/01/2000 00:00:05 in ms
+            time = 946681205000 // 01/01/2000 00:00:05 in ms
             speed = 1f
         }
         val l3 = Location("").apply {
             latitude = -1.0
             longitude = 0.0
-            time = 944006415000 // 01/01/2000 00:00:15 in ms
+            time = 946681215000 // 01/01/2000 00:00:15 in ms
             speed = 2f
         }
         val l4 = Location("").apply {
             latitude = -2.0
             longitude = 0.0
-            time = 944006430000 // 01/01/2000 00:00:30 in ms
+            time = 946767905000 // 02/01/2000 00:05:05 in ms
             speed = 3f
         }
 
