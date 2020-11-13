@@ -131,7 +131,7 @@ class XmlParser {
         }
         return RecordTag(
                 id ?: UUID.randomUUID().toString(),
-                name ?: "Record: ${Date()}",
+                name ?: "Record: ${Date()}", //TODO
                 if (creationDate != null) Converters().timestampToDate(creationDate.toLong())!! else Date(),
                 if (lastModification != null) Converters().timestampToDate(lastModification.toLong())!! else Date(),
                 locations

@@ -45,7 +45,7 @@ class Data {
         }
 
         val le1 = LocationEntity(
-            "0",
+            r1.id,
             l1.time,
             l1.latitude,
             l1.longitude,
@@ -53,7 +53,7 @@ class Data {
         )
 
         val le2 = LocationEntity(
-            "0",
+            r1.id,
             l2.time,
             l2.latitude,
             l2.longitude,
@@ -61,7 +61,7 @@ class Data {
         )
 
         val le3 = LocationEntity(
-            "1",
+            r2.id,
             l3.time,
             l3.latitude,
             l3.longitude,
@@ -69,7 +69,7 @@ class Data {
         )
 
         val le4 = LocationEntity(
-            "2",
+            r3.id,
             l4.time,
             l4.latitude,
             l4.longitude,
