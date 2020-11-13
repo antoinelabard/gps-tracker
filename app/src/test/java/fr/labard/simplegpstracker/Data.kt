@@ -23,21 +23,25 @@ class Data {
             latitude = 0.0
             longitude = 0.0
             time = 944006400000 // 01/01/2000 00:00:00 in ms
+            speed = 0f
         }
         val l2 = Location("").apply {
             latitude = 1.0
             longitude = 1.0
             time = 944006405000 // 01/01/2000 00:00:05 in ms
+            speed = 1f
         }
         val l3 = Location("").apply {
             latitude = -1.0
             longitude = 0.0
             time = 944006415000 // 01/01/2000 00:00:15 in ms
+            speed = 2f
         }
         val l4 = Location("").apply {
             latitude = -2.0
             longitude = 0.0
             time = 944006430000 // 01/01/2000 00:00:30 in ms
+            speed = 3f
         }
 
         val le1 = LocationEntity(
@@ -54,6 +58,22 @@ class Data {
             l2.latitude,
             l2.longitude,
             l2.speed
+        )
+
+        val le3 = LocationEntity(
+            "1",
+            l3.time,
+            l3.latitude,
+            l3.longitude,
+            l3.speed
+        )
+
+        val le4 = LocationEntity(
+            "2",
+            l4.time,
+            l4.latitude,
+            l4.longitude,
+            l4.speed
         )
 
         val dl12 = l1.distanceTo(l2)

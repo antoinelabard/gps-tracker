@@ -33,6 +33,6 @@ class LocationOps {
                 = if (locations.isEmpty()) 0f else locations.maxOf { it.speed }
 
         fun getNbLocations(locations: List<LocationEntity>)
-                = locations.count()
+                = locations.size
     }
 }
