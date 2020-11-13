@@ -37,5 +37,8 @@ class StatisticsPresenter {
             val s = LocationOps.getMaxSpeed(locations)
             return "${s * 3.6}km/h"
         }
+
+        fun getNbLocationsPresented(locations: List<LocationEntity>): String
+            = LocationOps.getNbLocations(locations).toString()
     }
 }

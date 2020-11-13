@@ -31,5 +31,8 @@ class LocationOps {
 
         fun getMaxSpeed(locations: List<LocationEntity>) // In m/s
                 = if (locations.isEmpty()) 0f else locations.maxOf { it.speed }
+
+        fun getNbLocations(locations: List<LocationEntity>)
+                = locations.count()
     }
 }

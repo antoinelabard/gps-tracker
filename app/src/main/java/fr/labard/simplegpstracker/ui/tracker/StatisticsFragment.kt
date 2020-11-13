@@ -33,7 +33,7 @@ class StatisticsFragment : DialogFragment() {
             fragment_statistics_textview_average_speed.text = getString(R.string.stats_average_speed).format(StatisticsPresenter.getAverageSpeedFormatted(viewModel.locationsByRecordId))
             fragment_statistics_textview_min_speed.text = getString(R.string.stats_min_speed).format(StatisticsPresenter.getMinSpeedFormatted(viewModel.locationsByRecordId))
             fragment_statistics_textview_max_speed.text = getString(R.string.stats_max_speed).format(StatisticsPresenter.getMaxSpeedFormatted(viewModel.locationsByRecordId))
-            fragment_statistics_textview_nb_locations.text = getString(R.string.stats_nb_locations).format(viewModel.locationsByRecordId.size)
+            fragment_statistics_textview_nb_locations.text = getString(R.string.stats_nb_locations).format(StatisticsPresenter.getNbLocationsPresented(viewModel.locationsByRecordId))
         })
 
         return view
