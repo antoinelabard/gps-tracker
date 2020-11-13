@@ -21,7 +21,7 @@ class RecordListFragment : Fragment() {
     lateinit var adapter: RecordListAdapter
 
     private val viewModel by viewModels<RecordListFragmentViewModel> {
-        RecordListFragmentViewModelFactory((requireContext().applicationContext as GPSApplication).appRepository)
+        RecordListFragmentViewModelFactory(requireContext().applicationContext as GPSApplication, (requireContext().applicationContext as GPSApplication).appRepository)
     }
 
     override fun onCreateView(

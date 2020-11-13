@@ -92,18 +92,18 @@ class TrackerActivity : AppCompatActivity() {
             }
             R.id.activity_tracker_action_stats -> {
                 val dialogFragment = StatisticsFragment()
-                dialogFragment.show(supportFragmentManager, "Stats Fragment")
+                dialogFragment.show(supportFragmentManager, getString(R.string.stats_fragment_tag))
             }
             R.id.activity_tracker_action_rename -> {
-                val dialog_rename = layoutInflater.inflate(R.layout.dialog_rename, null)
+                val dialogRename = layoutInflater.inflate(R.layout.dialog_rename, null)
                 AlertDialog.Builder(this)
-                    .setView(dialog_rename)
+                    .setView(dialogRename)
                     .setTitle(R.string.rename)
                     .setMessage(R.string.rename_message)
                     .setIcon(R.drawable.ic_action_rename)
                     .setPositiveButton(R.string.ok) { _: DialogInterface, _: Int ->
-                        val rename_edittext = dialog_rename.findViewById<EditText>(R.id.rename_edittext)
-                        val name = rename_edittext.text.toString()
+                        val renameEdittext = dialogRename.findViewById<EditText>(R.id.rename_edittext)
+                        val name = renameEdittext.text.toString()
                         if (name.isEmpty()) {
                             Toast.makeText(this, R.string.empty_name_error, Toast.LENGTH_LONG).show()
                         } else {
@@ -136,7 +136,7 @@ class TrackerActivity : AppCompatActivity() {
                 val intent = Intent(Intent.ACTION_SEND).apply {
                     type = "text/plain"
                     putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share_position))
-                    putExtra(Intent.EXTRA_TEXT, "Find me here:\n${location?.latitude}, ${location?.longitude}")
+                    putExtra(Intent.EXTRA_TEXT, getString(R.string.find_me_here).format(location?.latitude, location?.longitude))
                 }
                 startActivity(intent)
             }

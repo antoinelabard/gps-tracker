@@ -59,7 +59,7 @@ class FollowFragment : Fragment() {
                 }
                 if (viewModel.locationsByRecordId.last().distanceTo(viewModel.currentLocation) < Constants.Location.MIN_RADIUS) {
                     viewModel.locationsByRecordId.removeLast()
-                    Toast.makeText(activity, "Checkpoint reached", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(activity, getString(R.string.checkpoint_reached), Toast.LENGTH_SHORT).show()
                 }
                 updateMapView()
             }

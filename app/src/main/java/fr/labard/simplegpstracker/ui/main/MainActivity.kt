@@ -82,8 +82,8 @@ class MainActivity : AppCompatActivity() {
     private fun exportData() {
         val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
             addCategory(Intent.CATEGORY_OPENABLE)
-            type = "*/*"
-            putExtra(Intent.EXTRA_TITLE, "backup : ${Date()}.xml")
+            type = "text/plain"
+            putExtra(Intent.EXTRA_TITLE, getString(R.string.backup_file_name).format(Date().toString()))
         }
         startActivityForResult(intent, Constants.Intent.CREATE_FILE_REQUEST_CODE)
     }

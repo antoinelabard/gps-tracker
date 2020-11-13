@@ -39,9 +39,9 @@ class RecordListAdapter (val context: Context?) :
             val record = mAllRecords!![position]
 
             holder.name.text = record.name
-            holder.creationDate.text = context?.getString(R.string.created) + record.creationDate
-            holder.nbLocations.text = mAllLocations?.filter { it.recordId == record.id }?.count().toString() +
-                    context?.getString(R.string.locations)
+            holder.creationDate.text = context?.getString(R.string.created)?.format(record.creationDate.toString())
+            holder.nbLocations.text = context?.getString(R.string.locations)
+                ?.format(mAllLocations?.filter { it.recordId == record.id }?.count().toString())
 
             holder.layout.setOnClickListener {
                 val intent = Intent(context, TrackerActivity::class.java)

@@ -12,7 +12,7 @@ class StatisticsFragmentViewModel(
     val allLocations = appRepository.getLocations()
     var locationsByRecordId = listOf<LocationEntity>()
 
-    fun setLocationqByRecordId() {
+    fun setLocationsByRecordId() {
         locationsByRecordId = allLocations.value!!.filter { it.recordId == activeRecordId.value!! }
     }
 }
