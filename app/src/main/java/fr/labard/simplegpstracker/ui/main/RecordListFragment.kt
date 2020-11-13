@@ -35,15 +35,18 @@ class RecordListFragment : Fragment() {
         adapter = RecordListAdapter(context)
         recyclerView.adapter = adapter
 
+        viewModel.allRecords.observe(viewLifecycleOwner, {
+            records -> adapter.setRecords(records ?: listOf())
+        })
+        viewModel.allLocations.observe(viewLifecycleOwner, {
+            locations -> adapter.setLocations(locations)
+        })
+
         return view
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
-        viewModel.recordsLiveData.observe(viewLifecycleOwner, {
-                records -> adapter.setRecords(records)
-        })
 
         activity_main_new_record_fab.setOnClickListener {
             viewModel.insertRecord()

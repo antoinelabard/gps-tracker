@@ -11,7 +11,8 @@ import java.util.*
 class RecordListFragmentViewModel(
     private val appRepository: IRepository
 ) : ViewModel() {
-    val recordsLiveData = appRepository.getRecords()
+    val allRecords = appRepository.getRecords()
+    val allLocations = appRepository.getLocations()
 
     fun insertRecord() = viewModelScope.launch {
         val date = Date()

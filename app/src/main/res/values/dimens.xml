@@ -1,4 +1,7 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="framgent_statistics_margin">16dp</dimen>
+    <dimen name="record_list_margin">5dp</dimen>
+    <dimen name="record_list_name_textsize">20sp</dimen>
+    <dimen name="record_list_details_textsize">12sp</dimen>
 </resources>
