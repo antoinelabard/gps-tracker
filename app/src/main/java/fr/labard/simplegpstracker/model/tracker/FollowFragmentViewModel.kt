@@ -8,7 +8,7 @@ import fr.labard.simplegpstracker.model.data.IRepository
 class FollowFragmentViewModel(
     private val appRepository: IRepository
 ) : ViewModel() {
-    var currentRecordId = appRepository.getActiveRecordId()
+    var activeRecordId = appRepository.activeRecordId
     var allLocations = appRepository.getLocations()
     var locationsByRecordId = mutableListOf<Location>()
     var currentLocation = Location("")

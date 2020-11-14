@@ -78,7 +78,7 @@ class MapFragment : Fragment() {
         )
 
         locationServiceIntent = Intent(activity?.applicationContext, GpsService::class.java)
-            .putExtra(Constants.Intent.RECORD_ID_EXTRA, viewModel.currentRecordId.value)
+            .putExtra(Constants.Intent.RECORD_ID_EXTRA, viewModel.activeRecordId.value)
             .putExtra(Constants.Intent.MODE, Constants.Service.MODE_RECORD)
             .setAction(Constants.Intent.ACTION_PLAY)
 

@@ -1,4 +1,4 @@
-package fr.labard.simplegpstracker
+package fr.labard.simplegpstracker.data
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -7,11 +7,10 @@ import fr.labard.simplegpstracker.model.data.local.db.location.LocationEntity
 import fr.labard.simplegpstracker.model.data.local.db.record.RecordEntity
 
 class FakeTestRepository: IRepository {
-    override fun getRecords(): LiveData<List<RecordEntity>> {
-        TODO("Not yet implemented")
-    }
 
-    override fun getRecord(id: String): LiveData<RecordEntity> {
+    override var activeRecordId = MutableLiveData("")
+
+    override fun getRecords(): LiveData<List<RecordEntity>> {
         TODO("Not yet implemented")
     }
 
@@ -35,19 +34,7 @@ class FakeTestRepository: IRepository {
         TODO("Not yet implemented")
     }
 
-    override fun getLocationsByRecordId(recordId: String): LiveData<List<LocationEntity>> {
-        TODO("Not yet implemented")
-    }
-
     override fun insertLocation(locationEntity: LocationEntity) {
-        TODO("Not yet implemented")
-    }
-
-    override fun getActiveRecordId(): MutableLiveData<String> {
-        TODO("Not yet implemented")
-    }
-
-    override fun setActiveRecordId(recordId: String) {
         TODO("Not yet implemented")
     }
 

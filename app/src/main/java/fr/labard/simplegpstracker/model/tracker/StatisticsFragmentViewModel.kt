@@ -8,7 +8,7 @@ import fr.labard.simplegpstracker.model.data.local.db.location.LocationEntity
 class StatisticsFragmentViewModel(
     private val appRepository: IRepository
 ) : ViewModel() {
-    val activeRecordId = appRepository.getActiveRecordId()
+    val activeRecordId = appRepository.activeRecordId
     val allLocations = appRepository.getLocations()
     var locationsByRecordId = listOf<LocationEntity>()
 

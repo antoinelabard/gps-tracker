@@ -8,14 +8,11 @@ import fr.labard.simplegpstracker.model.data.local.db.location.LocationDao
 import fr.labard.simplegpstracker.model.data.local.db.location.LocationEntity
 import fr.labard.simplegpstracker.model.data.local.db.record.RecordDao
 import fr.labard.simplegpstracker.model.data.local.db.record.RecordEntity
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import java.util.*
 
 class LocalDataSource(
     private val recordDao: RecordDao,
     private val locationDao: LocationDao,
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ): DataSource {
 
     override fun getRecords(): LiveData<List<RecordEntity>> =

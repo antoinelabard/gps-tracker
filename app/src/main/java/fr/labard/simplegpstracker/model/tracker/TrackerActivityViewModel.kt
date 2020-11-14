@@ -11,7 +11,7 @@ class TrackerActivityViewModel(
 ) : ViewModel() {
     val allRecords = appRepository.getRecords()
     val allLocations = appRepository.getLocations()
-    var activeRecordId = appRepository.getActiveRecordId()
+    var activeRecordId = appRepository.activeRecordId
 
     fun getRecordById(id: String)
             = allRecords.value?.find { it.id == id }
@@ -28,10 +28,10 @@ class TrackerActivityViewModel(
 
     fun deleteRecord(recordId: String) = appRepository.deleteRecord(recordId)
 
-    fun getActiveRecordId(): String = appRepository.getActiveRecordId().value!!
+    fun getActiveRecordId(): String = appRepository.activeRecordId.value!!
 
     fun setActiveRecordId(recordId: String) {
-        appRepository.setActiveRecordId(recordId)
+        appRepository.activeRecordId.value = recordId
     }
 }
 

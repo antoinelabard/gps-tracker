@@ -94,7 +94,7 @@ class FollowFragment : Fragment() {
         )
 
         locationServiceIntent = Intent(activity?.applicationContext, GpsService::class.java)
-            .putExtra(Constants.Intent.RECORD_ID_EXTRA, viewModel.currentRecordId.value)
+            .putExtra(Constants.Intent.RECORD_ID_EXTRA, viewModel.activeRecordId.value)
             .putExtra(Constants.Intent.MODE, Constants.Service.MODE_FOLLOW)
             .setAction(Constants.Intent.ACTION_PLAY)
 
