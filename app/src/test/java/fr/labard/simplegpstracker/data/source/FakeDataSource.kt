@@ -2,47 +2,52 @@ package fr.labard.simplegpstracker.data.source
 
 import android.os.AsyncTask
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import fr.labard.simplegpstracker.model.data.DataSource
-import fr.labard.simplegpstracker.model.data.local.db.location.LocationDao
 import fr.labard.simplegpstracker.model.data.local.db.location.LocationEntity
-import fr.labard.simplegpstracker.model.data.local.db.record.RecordDao
 import fr.labard.simplegpstracker.model.data.local.db.record.RecordEntity
+import java.util.*
 
 class FakeDataSource internal constructor(
-    private val recordDao: RecordDao,
-    private val locationDao: LocationDao,
+    records: MutableList<RecordEntity>,
+    locations: MutableList<LocationEntity>
 ): DataSource {
 
-    override fun getRecords(): LiveData<List<RecordEntity>> {
-        TODO("Not yet implemented")
-    }
+    private val allRecords = MutableLiveData(records)
+    private val allLocations = MutableLiveData(locations)
+
+    override fun getRecords(): LiveData<List<RecordEntity>> = allRecords as LiveData<List<RecordEntity>>
 
     override fun insertRecord(recordEntity: RecordEntity): AsyncTask<RecordEntity?, Void?, Void?>? {
-        TODO("Not yet implemented")
+        allRecords.value?.add(recordEntity)
+        return null
     }
 
     override fun updateRecordName(id: String, name: String): AsyncTask<Map<String, String>, Void?, Void?>? {
-        TODO("Not yet implemented")
+        allRecords.value?.find { it.id == id }?.name = name
+        return null
     }
 
     override fun updateLastRecordModification(id: String): AsyncTask<String, Void?, Void?>? {
-        TODO("Not yet implemented")
+        allRecords.value?.find { it.id == id }?.lastModification = Date()
+        return null
     }
 
     override fun deleteRecord(id: String): AsyncTask<String?, Void?, Void?>? {
-        TODO("Not yet implemented")
+        allRecords.value?.removeIf { it.id == id }
+        return null
     }
 
-    override fun getLocations(): LiveData<List<LocationEntity>> {
-        TODO("Not yet implemented")
-    }
+    override fun getLocations(): LiveData<List<LocationEntity>> = allLocations as LiveData<List<LocationEntity>>
 
     override fun insertLocation(locationEntity: LocationEntity): AsyncTask<LocationEntity?, Void?, Void?>? {
-        TODO("Not yet implemented")
+        allLocations.value?.add(locationEntity)
+        return null
     }
 
     override fun deleteAll(): AsyncTask<Void?, Void?, Void?>? {
-        TODO("Not yet implemented")
+        allRecords.value?.clear()
+        allRecords.value?.clear()
+        return null
     }
-
 }
