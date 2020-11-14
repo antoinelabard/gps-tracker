@@ -12,11 +12,8 @@ class FakeDataSource internal constructor(
     private val recordDao: RecordDao,
     private val locationDao: LocationDao,
 ): DataSource {
-    override fun getRecords(): LiveData<List<RecordEntity>> {
-        TODO("Not yet implemented")
-    }
 
-    override fun getRecord(id: String): LiveData<RecordEntity> {
+    override fun getRecords(): LiveData<List<RecordEntity>> {
         TODO("Not yet implemented")
     }
 
@@ -37,10 +34,6 @@ class FakeDataSource internal constructor(
     }
 
     override fun getLocations(): LiveData<List<LocationEntity>> {
-        TODO("Not yet implemented")
-    }
-
-    override fun getLocationsByRecordId(recordId: String): LiveData<List<LocationEntity>> {
         TODO("Not yet implemented")
     }
 
