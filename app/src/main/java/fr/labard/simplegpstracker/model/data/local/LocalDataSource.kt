@@ -18,9 +18,6 @@ class LocalDataSource(
     override fun getRecords(): LiveData<List<RecordEntity>> =
         recordDao.getRecords()
 
-    override fun getRecord(id: String): LiveData<RecordEntity> =
-        recordDao.getRecordById(id)
-
     override fun insertRecord(recordEntity: RecordEntity) =
         InsertRecordAsyncTask(recordDao).execute(recordEntity)
 
@@ -35,9 +32,6 @@ class LocalDataSource(
 
     override fun getLocations(): LiveData<List<LocationEntity>> =
         locationDao.getAll()
-
-    override fun getLocationsByRecordId(recordId: String): LiveData<List<LocationEntity>> =
-        locationDao.getLocationsByRecordId(recordId)
 
     override fun insertLocation(locationEntity: LocationEntity) =
         InsertLocationAsyncTask(locationDao).execute(locationEntity)
