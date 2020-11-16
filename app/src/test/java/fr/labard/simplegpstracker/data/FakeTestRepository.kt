@@ -2,44 +2,45 @@ package fr.labard.simplegpstracker.data
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import fr.labard.simplegpstracker.data.source.FakeDataSource
 import fr.labard.simplegpstracker.model.data.IRepository
 import fr.labard.simplegpstracker.model.data.local.db.location.LocationEntity
 import fr.labard.simplegpstracker.model.data.local.db.record.RecordEntity
 
-class FakeTestRepository: IRepository {
+class FakeTestRepository(
+    val fakeDataSource: FakeDataSource
+): IRepository {
 
     override var activeRecordId = MutableLiveData("")
 
-    override fun getRecords(): LiveData<List<RecordEntity>> {
-        TODO("Not yet implemented")
-    }
+    override fun getRecords(): LiveData<List<RecordEntity>> =
+        fakeDataSource.getRecords()
 
     override fun insertRecord(recordEntity: RecordEntity) {
-        TODO("Not yet implemented")
+        fakeDataSource.insertRecord(recordEntity)
     }
 
     override fun updateRecordName(id: String, name: String) {
-        TODO("Not yet implemented")
+        fakeDataSource.updateRecordName(id, name)
     }
 
     override fun updateLastRecordModification(id: String) {
-        TODO("Not yet implemented")
+        fakeDataSource.updateLastRecordModification(id)
     }
 
     override fun deleteRecord(id: String) {
-        TODO("Not yet implemented")
+        fakeDataSource.deleteRecord(id)
     }
 
-    override fun getLocations(): LiveData<List<LocationEntity>> {
-        TODO("Not yet implemented")
-    }
+    override fun getLocations(): LiveData<List<LocationEntity>> =
+        fakeDataSource.getLocations()
 
     override fun insertLocation(locationEntity: LocationEntity) {
-        TODO("Not yet implemented")
+        fakeDataSource.insertLocation(locationEntity)
     }
 
     override fun deleteAll() {
-        TODO("Not yet implemented")
+        fakeDataSource.deleteAll()
     }
 
 
