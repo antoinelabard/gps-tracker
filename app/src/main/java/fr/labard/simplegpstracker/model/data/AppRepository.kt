@@ -2,12 +2,11 @@ package fr.labard.simplegpstracker.model.data
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import fr.labard.simplegpstracker.model.data.local.LocalDataSource
 import fr.labard.simplegpstracker.model.data.local.db.location.LocationEntity
 import fr.labard.simplegpstracker.model.data.local.db.record.RecordEntity
 
 class AppRepository internal constructor(
-    private val localDataSource: LocalDataSource,
+    private val localDataSource: DataSource,
 ) : IRepository {
 
 

@@ -3,9 +3,12 @@ package fr.labard.simplegpstracker
 import android.location.Location
 import fr.labard.simplegpstracker.model.data.local.db.location.LocationEntity
 import fr.labard.simplegpstracker.model.data.local.db.record.RecordEntity
+import org.junit.runner.RunWith
+import org.mockito.junit.MockitoJUnitRunner
 import java.util.*
 import kotlin.math.pow
 
+@RunWith(MockitoJUnitRunner::class)
 class Data {
     companion object {
         val PRECISION = 10.0.pow(-2)

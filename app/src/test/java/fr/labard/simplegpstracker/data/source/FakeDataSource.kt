@@ -47,7 +47,7 @@ class FakeDataSource internal constructor(
 
     override fun deleteAll(): AsyncTask<Void?, Void?, Void?>? {
         allRecords.value?.clear()
-        allRecords.value?.clear()
+        allLocations.value?.clear()
         return null
     }
 }
