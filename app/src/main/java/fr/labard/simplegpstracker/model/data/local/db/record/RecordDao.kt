@@ -11,10 +11,7 @@ import java.util.*
 interface RecordDao {
 
     @Query("SELECT * FROM record_table ORDER BY last_modification desc")
-    fun getRecords(): LiveData<List<RecordEntity>>
-
-    @Query("SELECT * FROM record_table WHERE id = :id LIMIT 1")
-    fun getRecordById(id: String): LiveData<RecordEntity>
+    fun getAll(): LiveData<List<RecordEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertRecord(r: RecordEntity)

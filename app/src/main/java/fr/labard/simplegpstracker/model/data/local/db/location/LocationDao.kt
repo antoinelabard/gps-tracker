@@ -12,9 +12,6 @@ interface LocationDao {
     @Query("SELECT * FROM location_table")
     fun getAll(): LiveData<List<LocationEntity>>
 
-    @Query("SELECT * FROM location_table WHERE record_id = :recordId")
-    fun getLocationsByRecordId(recordId: String): LiveData<List<LocationEntity>>
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(r: LocationEntity)
 
