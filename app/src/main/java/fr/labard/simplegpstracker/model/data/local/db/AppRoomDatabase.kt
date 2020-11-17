@@ -8,9 +8,13 @@ import fr.labard.simplegpstracker.model.data.local.db.location.LocationEntity
 import fr.labard.simplegpstracker.model.data.local.db.record.RecordDao
 import fr.labard.simplegpstracker.model.data.local.db.record.RecordEntity
 
-@Database(entities = [RecordEntity::class, LocationEntity::class], version = 1, exportSchema = false)
+@Database(
+    entities = [RecordEntity::class, LocationEntity::class],
+    version = 1,
+    exportSchema = false
+)
 @TypeConverters(Converters::class)
 abstract class AppRoomDatabase : RoomDatabase() {
-    abstract fun recordDao(): RecordDao?
-    abstract fun locationDao(): LocationDao?
+    abstract fun recordDao(): RecordDao
+    abstract fun locationDao(): LocationDao
 }

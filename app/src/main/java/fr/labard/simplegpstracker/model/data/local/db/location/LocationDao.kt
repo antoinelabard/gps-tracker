@@ -9,7 +9,7 @@ import androidx.room.Query
 @Dao
 interface LocationDao {
 
-    @Query("SELECT * FROM location_table")
+    @Query("SELECT * FROM location_table ORDER BY time DESC")
     fun getAll(): LiveData<List<LocationEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

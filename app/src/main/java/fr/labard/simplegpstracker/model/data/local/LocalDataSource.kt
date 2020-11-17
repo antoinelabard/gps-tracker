@@ -16,7 +16,7 @@ class LocalDataSource(
 ): DataSource {
 
     override fun getRecords(): LiveData<List<RecordEntity>> =
-        recordDao.getRecords()
+        recordDao.getAll()
 
     override fun insertRecord(recordEntity: RecordEntity) =
         InsertRecordAsyncTask(recordDao).execute(recordEntity)

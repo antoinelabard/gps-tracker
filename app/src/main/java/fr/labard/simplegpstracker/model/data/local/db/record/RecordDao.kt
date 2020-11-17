@@ -10,7 +10,7 @@ import java.util.*
 @Dao
 interface RecordDao {
 
-    @Query("SELECT * FROM record_table ORDER BY last_modification desc")
+    @Query("SELECT * FROM record_table ORDER BY last_modification DESC")
     fun getAll(): LiveData<List<RecordEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
