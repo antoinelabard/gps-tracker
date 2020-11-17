@@ -6,7 +6,7 @@ import fr.labard.simplegpstracker.Data.Companion.dl123
 import fr.labard.simplegpstracker.Data.Companion.le1
 import fr.labard.simplegpstracker.Data.Companion.le2
 import fr.labard.simplegpstracker.Data.Companion.le3
-import fr.labard.simplegpstracker.model.util.LocationOps
+import fr.labard.simplegpstracker.util.LocationOps
 import junit.framework.Assert.assertEquals
 import junit.framework.Assert.assertTrue
 import org.junit.Test

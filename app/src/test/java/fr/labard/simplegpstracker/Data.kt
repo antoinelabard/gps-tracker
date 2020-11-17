@@ -1,8 +1,8 @@
 package fr.labard.simplegpstracker
 
 import android.location.Location
-import fr.labard.simplegpstracker.model.data.local.db.location.LocationEntity
-import fr.labard.simplegpstracker.model.data.local.db.record.RecordEntity
+import fr.labard.simplegpstracker.data.local.LocationEntity
+import fr.labard.simplegpstracker.data.local.RecordEntity
 import org.junit.runner.RunWith
 import org.mockito.junit.MockitoJUnitRunner
 import java.util.*

@@ -4,15 +4,10 @@ import android.content.Context
 import android.os.AsyncTask
 import androidx.annotation.VisibleForTesting
 import androidx.room.Room
-import fr.labard.simplegpstracker.model.data.AppRepository
-import fr.labard.simplegpstracker.model.data.IRepository
-import fr.labard.simplegpstracker.model.data.local.LocalDataSource
-import fr.labard.simplegpstracker.model.data.local.db.AppRoomDatabase
-import fr.labard.simplegpstracker.model.data.local.db.location.LocationDao
-import fr.labard.simplegpstracker.model.data.local.db.location.LocationEntity
-import fr.labard.simplegpstracker.model.data.local.db.record.RecordDao
-import fr.labard.simplegpstracker.model.data.local.db.record.RecordEntity
-import fr.labard.simplegpstracker.model.util.Constants
+import fr.labard.simplegpstracker.data.AppRepository
+import fr.labard.simplegpstracker.data.IRepository
+import fr.labard.simplegpstracker.data.local.*
+import fr.labard.simplegpstracker.util.Constants
 import java.util.*
 
 object ServiceLocator {
@@ -35,9 +30,9 @@ object ServiceLocator {
         return newRepo
     }
 
-    private fun createLocalDataSource(context: Context): LocalDataSource {
+    private fun createLocalDataSource(context: Context): LocalIDataSource {
         val database = database ?: createDataBase(context)
-        return LocalDataSource(database.recordDao(), database.locationDao())
+        return LocalIDataSource(database.recordDao(), database.locationDao())
     }
 
     private fun createDataBase(context: Context): AppRoomDatabase {

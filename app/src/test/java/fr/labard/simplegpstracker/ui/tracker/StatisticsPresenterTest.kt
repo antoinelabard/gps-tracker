@@ -4,7 +4,8 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import fr.labard.simplegpstracker.Data.Companion.le1
 import fr.labard.simplegpstracker.Data.Companion.le2
 import fr.labard.simplegpstracker.Data.Companion.le4
-import fr.labard.simplegpstracker.model.util.LocationOps
+import fr.labard.simplegpstracker.util.LocationOps
+import fr.labard.simplegpstracker.util.StatisticsPresenter
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith

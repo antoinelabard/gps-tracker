@@ -2,13 +2,12 @@ package fr.labard.simplegpstracker.data
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import fr.labard.simplegpstracker.data.source.FakeDataSource
-import fr.labard.simplegpstracker.model.data.IRepository
-import fr.labard.simplegpstracker.model.data.local.db.location.LocationEntity
-import fr.labard.simplegpstracker.model.data.local.db.record.RecordEntity
+import fr.labard.simplegpstracker.data.local.LocationEntity
+import fr.labard.simplegpstracker.data.local.RecordEntity
+import fr.labard.simplegpstracker.data.source.FakeIDataSource
 
 class FakeTestRepository(
-    val fakeDataSource: FakeDataSource
+    val fakeDataSource: FakeIDataSource
 ): IRepository {
 
     override var activeRecordId = MutableLiveData("")

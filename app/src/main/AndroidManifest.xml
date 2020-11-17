@@ -19,8 +19,8 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".ui.tracker.TrackerActivity"/>
-        <activity android:name=".ui.main.MainActivity">
+        <activity android:name=".tracker.TrackerActivity"/>
+        <activity android:name=".main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -28,7 +28,7 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".model.GpsService"/>
+        <service android:name=".tracker.GpsService"/>
 
         <uses-library
                 android:name="android.test.runner"

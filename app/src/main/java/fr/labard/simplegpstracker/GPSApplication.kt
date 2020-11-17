@@ -1,7 +1,7 @@
 package fr.labard.simplegpstracker
 
 import android.app.Application
-import fr.labard.simplegpstracker.model.data.IRepository
+import fr.labard.simplegpstracker.data.IRepository
 
 class GPSApplication : Application() {
 
