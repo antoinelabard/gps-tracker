@@ -37,7 +37,7 @@ object ServiceLocator {
 
     private fun createLocalDataSource(context: Context): LocalDataSource {
         val database = database ?: createDataBase(context)
-        return LocalDataSource(database.recordDao()!!, database.locationDao()!!)
+        return LocalDataSource(database.recordDao(), database.locationDao())
     }
 
     private fun createDataBase(context: Context): AppRoomDatabase {
@@ -51,10 +51,10 @@ object ServiceLocator {
     }
 
 
-    private class PopulateDbAsync internal constructor(db: AppRoomDatabase?) :
+    private class PopulateDbAsync constructor(db: AppRoomDatabase?) :
         AsyncTask<Void?, Void?, Void?>() {
-        private val mRecordDao: RecordDao? = db!!.recordDao()
-        private val mLocationDao: LocationDao? = db!!.locationDao()
+        private val mRecordDao: RecordDao = db!!.recordDao()
+        private val mLocationDao: LocationDao = db!!.locationDao()
         var records = arrayOf(
             RecordEntity("Record 1", Date(1577836800000), Date(1590969600000)),
             RecordEntity("Record 2", Date(1546300800000), Date(1559347200000)),
@@ -69,8 +69,7 @@ object ServiceLocator {
             LocationEntity("2", 944006425000, 6.0, 7.0, 0.0f)
         )
         override fun doInBackground(vararg params: Void?): Void? {
-            mRecordDao!!.deleteAll()
-            mLocationDao!!.deleteAll()
+            mRecordDao.deleteAll()
             for (element in records) {
                 mRecordDao.insertRecord(element)
             }
@@ -84,10 +83,6 @@ object ServiceLocator {
     @VisibleForTesting
     fun resetRepository() {
         synchronized(lock) {
-//            runBlocking { // Not needed for the moment
-//                RemoteDataSource().deleteAll()
-//            }
-            // Clear all data to avoid test pollution.
             database?.apply {
                 clearAllTables()
                 close()

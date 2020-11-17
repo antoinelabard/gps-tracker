@@ -179,18 +179,4 @@ class AppRoomDatabaseTest {
     fun insertLocationUnassignedRecordIdThrowsException() {
         locationDao.insertLocation(lUnassigned)
     }
-
-    @Test
-    @Throws(Exception::class)
-    fun deleteAllLocations() {
-        recordDao.insertRecord(r1)
-        locationDao.insertLocation(le1)
-        locationDao.insertLocation(le1)
-        locationDao.deleteAll()
-        val result = locationDao.getAll()
-        result.observeForever{}
-        assertThat(result.value, equalTo(listOf()))
-    }
-
-
 }
