@@ -16,7 +16,7 @@ class FakeDataSource internal constructor(
     private val allRecords = MutableLiveData(records)
     private val allLocations = MutableLiveData(locations)
 
-    override fun getRecords(): LiveData<List<RecordEntity>> = allRecords as LiveData<List<RecordEntity>>
+    override fun getRecords() = allRecords as LiveData<List<RecordEntity>>
 
     override fun insertRecord(recordEntity: RecordEntity): AsyncTask<RecordEntity?, Void?, Void?>? {
         allRecords.value?.add(recordEntity)
@@ -38,7 +38,7 @@ class FakeDataSource internal constructor(
         return null
     }
 
-    override fun getLocations(): LiveData<List<LocationEntity>> = allLocations as LiveData<List<LocationEntity>>
+    override fun getLocations() = allLocations as LiveData<List<LocationEntity>>
 
     override fun insertLocation(locationEntity: LocationEntity): AsyncTask<LocationEntity?, Void?, Void?>? {
         allLocations.value?.add(locationEntity)
