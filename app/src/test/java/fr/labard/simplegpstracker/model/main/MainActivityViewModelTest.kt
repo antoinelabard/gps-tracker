@@ -1,13 +1,17 @@
 package fr.labard.simplegpstracker.model.main
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import fr.labard.simplegpstracker.Data.Companion.le1
 import fr.labard.simplegpstracker.Data.Companion.le2
+import fr.labard.simplegpstracker.Data.Companion.le3
 import fr.labard.simplegpstracker.Data.Companion.r1
 import fr.labard.simplegpstracker.Data.Companion.r2
+import fr.labard.simplegpstracker.data.FakeTestRepository
+import fr.labard.simplegpstracker.data.source.FakeDataSource
 import fr.labard.simplegpstracker.getOrAwaitValue
+import fr.labard.simplegpstracker.model.data.local.db.location.LocationEntity
+import fr.labard.simplegpstracker.model.data.local.db.record.RecordEntity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.hamcrest.Matchers.`is`
 import org.junit.Assert.assertThat
@@ -20,38 +24,45 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class MainActivityViewModelTest {
 
-    private lateinit var mainActivityViewModel: MainActivityViewModel
+    private lateinit var fakeRepository: FakeTestRepository
+    private lateinit var viewModel: MainActivityViewModel
 
     @get:Rule
     var instantExecutorRule = InstantTaskExecutorRule()
 
     @Before
     fun setupViewModel() {
-        mainActivityViewModel = MainActivityViewModel(ApplicationProvider.getApplicationContext())
+        fakeRepository = FakeTestRepository(FakeDataSource(
+            mutableListOf(r1),
+            mutableListOf(le1, le2)
+        ))
+        viewModel = MainActivityViewModel(fakeRepository)
     }
 
     @Test
-    fun insertNewRecord() {
-        mainActivityViewModel.insertRecord(r1)
-
-        assertThat(mainActivityViewModel.allRecords.getOrAwaitValue().first(), `is`(r1))
+    fun insertRecord() {
+        val expected = listOf(r1, r2)
+            viewModel.insertRecord(r2)
+        val result = viewModel.allRecords.getOrAwaitValue()
+        assertThat(result, `is`(expected))
     }
 
     @Test
-    fun insertNewLocation() {
-        mainActivityViewModel.insertLocation(le1)
-
-        assertThat(mainActivityViewModel.allLocations.getOrAwaitValue().first(), `is`(le1))
+    fun insertLocation() {
+        val expected = listOf(le1, le2, le3)
+        viewModel.insertLocation(le3)
+        val result = viewModel.allLocations.getOrAwaitValue()
+        assertThat(result, `is`(expected))
     }
 
     @Test
     fun deleteAll() {
-        mainActivityViewModel.insertRecord(r1)
-        mainActivityViewModel.insertRecord(r2)
-        mainActivityViewModel.insertLocation(le1)
-        mainActivityViewModel.insertLocation(le2)
-
-        assertThat(mainActivityViewModel.allRecords.getOrAwaitValue(), `is`(listOf()))
-        assertThat(mainActivityViewModel.allLocations.getOrAwaitValue(), `is`(listOf()))
+        val expectedRecords = listOf<RecordEntity>()
+        val expectedLocations = listOf<LocationEntity>()
+        viewModel.deleteAll()
+        val resultRecords = viewModel.allRecords.getOrAwaitValue()
+        val resultLocations = viewModel.allLocations.getOrAwaitValue()
+        assertThat(resultRecords, `is`(expectedRecords))
+        assertThat(resultLocations, `is`(expectedLocations))
     }
 }
