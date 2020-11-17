@@ -1,31 +1,6 @@
-package fr.labard.simplegpstracker.data.local.db
+package fr.labard.simplegpstracker.data.local
 
-import android.content.Context
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.room.Room
-import androidx.test.core.app.ApplicationProvider
-import androidx.test.ext.junit.runners.AndroidJUnit4
-import fr.labard.simplegpstracker.Data.Companion.lUnassigned
-import fr.labard.simplegpstracker.Data.Companion.le1
-import fr.labard.simplegpstracker.Data.Companion.le2
-import fr.labard.simplegpstracker.Data.Companion.r1
-import fr.labard.simplegpstracker.Data.Companion.r2
-import fr.labard.simplegpstracker.Data.Companion.rConflict
-import fr.labard.simplegpstracker.Data.Companion.unassignedId
-import fr.labard.simplegpstracker.data.local.AppRoomDatabase
-import fr.labard.simplegpstracker.data.local.LocationDao
-import fr.labard.simplegpstracker.data.local.RecordDao
-import junit.framework.Assert.assertNotNull
-import org.hamcrest.CoreMatchers.equalTo
-import org.hamcrest.MatcherAssert.assertThat
-import org.junit.After
-import org.junit.Before
-import org.junit.Rule
-import org.junit.Test
-import org.junit.runner.RunWith
-import java.io.IOException
-import java.util.*
-
+/*
 
 @RunWith(AndroidJUnit4::class)
 class AppRoomDatabaseTest {
@@ -180,4 +155,4 @@ class AppRoomDatabaseTest {
     fun insertLocationUnassignedRecordIdThrowsException() {
         locationDao.insertLocation(lUnassigned)
     }
-}
+}*/

@@ -1,4 +1,4 @@
-package fr.labard.simplegpstracker.data.source
+package fr.labard.simplegpstracker.data.local
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
@@ -10,7 +10,6 @@ import fr.labard.simplegpstracker.AndroidData
 import fr.labard.simplegpstracker.AndroidData.Companion.r1
 import fr.labard.simplegpstracker.AndroidData.Companion.r2
 import fr.labard.simplegpstracker.androidGetOrAwaitValue
-import fr.labard.simplegpstracker.data.local.AppRoomDatabase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.hamcrest.CoreMatchers.`is`

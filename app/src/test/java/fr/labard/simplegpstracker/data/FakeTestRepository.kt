@@ -2,9 +2,9 @@ package fr.labard.simplegpstracker.data
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import fr.labard.simplegpstracker.data.local.FakeIDataSource
 import fr.labard.simplegpstracker.data.local.LocationEntity
 import fr.labard.simplegpstracker.data.local.RecordEntity
-import fr.labard.simplegpstracker.data.source.FakeIDataSource
 
 class FakeTestRepository(
     val fakeDataSource: FakeIDataSource

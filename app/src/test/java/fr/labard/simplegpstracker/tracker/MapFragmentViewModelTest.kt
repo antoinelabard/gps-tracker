@@ -8,7 +8,7 @@ import fr.labard.simplegpstracker.Data.Companion.le2
 import fr.labard.simplegpstracker.Data.Companion.le3
 import fr.labard.simplegpstracker.Data.Companion.r1
 import fr.labard.simplegpstracker.data.FakeTestRepository
-import fr.labard.simplegpstracker.data.source.FakeIDataSource
+import fr.labard.simplegpstracker.data.local.FakeIDataSource
 import fr.labard.simplegpstracker.getOrAwaitValue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.hamcrest.Matchers

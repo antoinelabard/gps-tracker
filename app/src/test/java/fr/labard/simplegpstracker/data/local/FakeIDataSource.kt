@@ -1,11 +1,9 @@
-package fr.labard.simplegpstracker.data.source
+package fr.labard.simplegpstracker.data.local
 
 import android.os.AsyncTask
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import fr.labard.simplegpstracker.data.IDataSource
-import fr.labard.simplegpstracker.data.local.LocationEntity
-import fr.labard.simplegpstracker.data.local.RecordEntity
 import java.util.*
 
 class FakeIDataSource internal constructor(

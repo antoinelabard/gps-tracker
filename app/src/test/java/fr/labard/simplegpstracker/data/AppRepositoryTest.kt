@@ -5,9 +5,9 @@ import fr.labard.simplegpstracker.Data.Companion.le1
 import fr.labard.simplegpstracker.Data.Companion.le2
 import fr.labard.simplegpstracker.Data.Companion.r1
 import fr.labard.simplegpstracker.Data.Companion.r2
+import fr.labard.simplegpstracker.data.local.FakeIDataSource
 import fr.labard.simplegpstracker.data.local.LocationEntity
 import fr.labard.simplegpstracker.data.local.RecordEntity
-import fr.labard.simplegpstracker.data.source.FakeIDataSource
 import org.hamcrest.Matchers.`is`
 import org.junit.Assert.assertThat
 import org.junit.Before

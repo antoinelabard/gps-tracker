@@ -1,14 +1,13 @@
 package fr.labard.simplegpstracker
 
 import android.location.Location
+import androidx.annotation.VisibleForTesting
 import fr.labard.simplegpstracker.data.local.LocationEntity
 import fr.labard.simplegpstracker.data.local.RecordEntity
-import org.junit.runner.RunWith
-import org.mockito.junit.MockitoJUnitRunner
 import java.util.*
 import kotlin.math.pow
 
-@RunWith(MockitoJUnitRunner::class)
+@VisibleForTesting
 class Data {
     companion object {
         val PRECISION = 10.0.pow(-2)
@@ -22,6 +21,7 @@ class Data {
 
         val lUnassigned = LocationEntity(unassignedId, 944006400000, 0.0, 0.0, 0.0f) // Here the recordId belongs to no record intentionally
 
+        @VisibleForTesting
         val l1 = Location("").apply {
             latitude = 0.0
             longitude = 0.0

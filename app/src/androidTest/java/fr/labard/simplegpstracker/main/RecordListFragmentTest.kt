@@ -1,4 +1,4 @@
-package fr.labard.simplegpstracker.ui.main
+package fr.labard.simplegpstracker.main
 
 import android.content.Context
 import androidx.fragment.app.testing.launchFragmentInContainer
@@ -10,11 +10,10 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.MediumTest
 import androidx.test.platform.app.InstrumentationRegistry
 import fr.labard.simplegpstracker.AndroidData.Companion.r1
+import fr.labard.simplegpstracker.FakeAndroidTestRepository
 import fr.labard.simplegpstracker.R
 import fr.labard.simplegpstracker.ServiceLocator
 import fr.labard.simplegpstracker.data.IRepository
-import fr.labard.simplegpstracker.data.source.FakeAndroidTestRepository
-import fr.labard.simplegpstracker.main.RecordListFragment
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.After

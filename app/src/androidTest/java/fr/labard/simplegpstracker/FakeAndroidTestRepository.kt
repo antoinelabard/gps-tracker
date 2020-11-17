@@ -1,4 +1,4 @@
-package fr.labard.simplegpstracker.data.source
+package fr.labard.simplegpstracker
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

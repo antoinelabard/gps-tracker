@@ -1,6 +1,5 @@
-package fr.labard.simplegpstracker.data.local.db
+package fr.labard.simplegpstracker.data.local
 
-import fr.labard.simplegpstracker.data.local.Converters
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat

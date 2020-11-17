@@ -8,9 +8,9 @@ import fr.labard.simplegpstracker.Data.Companion.le3
 import fr.labard.simplegpstracker.Data.Companion.r1
 import fr.labard.simplegpstracker.Data.Companion.r2
 import fr.labard.simplegpstracker.data.FakeTestRepository
+import fr.labard.simplegpstracker.data.local.FakeIDataSource
 import fr.labard.simplegpstracker.data.local.LocationEntity
 import fr.labard.simplegpstracker.data.local.RecordEntity
-import fr.labard.simplegpstracker.data.source.FakeIDataSource
 import fr.labard.simplegpstracker.getOrAwaitValue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.hamcrest.Matchers.`is`
@@ -32,10 +32,12 @@ class MainActivityViewModelTest {
 
     @Before
     fun setupViewModel() {
-        fakeRepository = FakeTestRepository(FakeIDataSource(
+        fakeRepository = FakeTestRepository(
+            FakeIDataSource(
             mutableListOf(r1),
             mutableListOf(le1, le2)
-        ))
+        )
+        )
         viewModel = MainActivityViewModel(fakeRepository)
     }
 

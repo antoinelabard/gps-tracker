@@ -1,4 +1,4 @@
-package fr.labard.simplegpstracker.model
+package fr.labard.simplegpstracker.util
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import fr.labard.simplegpstracker.Data.Companion.PRECISION
@@ -6,7 +6,6 @@ import fr.labard.simplegpstracker.Data.Companion.dl123
 import fr.labard.simplegpstracker.Data.Companion.le1
 import fr.labard.simplegpstracker.Data.Companion.le2
 import fr.labard.simplegpstracker.Data.Companion.le3
-import fr.labard.simplegpstracker.util.LocationOps
 import junit.framework.Assert.assertEquals
 import junit.framework.Assert.assertTrue
 import org.junit.Test
