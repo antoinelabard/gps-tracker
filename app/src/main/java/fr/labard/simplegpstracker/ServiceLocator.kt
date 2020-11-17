@@ -75,7 +75,7 @@ object ServiceLocator {
                 mRecordDao.insertRecord(element)
             }
             for (element in locations) {
-                mLocationDao.insert(element)
+                mLocationDao.insertLocation(element)
             }
             return null
         }

@@ -78,7 +78,7 @@ class LocalDataSource(
         AsyncTask<LocationEntity?, Void?, Void?>() {
         override fun doInBackground(vararg params: LocationEntity?): Void? {
             try {
-                params[0]?.let { dao!!.insert(it) }
+                params[0]?.let { dao!!.insertLocation(it) }
             } catch (e: Exception) {
                 Log.e("OrphanLocationException","Exception: This location belongs to no record.")
             }

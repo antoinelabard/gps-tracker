@@ -168,8 +168,8 @@ class AppRoomDatabaseTest {
             le2.copy().apply { id = "2" }
         )
         recordDao.insertRecord(r1)
-        locationDao.insert(le1)
-        locationDao.insert(le2)
+        locationDao.insertLocation(le1)
+        locationDao.insertLocation(le2)
         val result = locationDao.getAll()
         result.observeForever{}
         assertThat(result.value?.toSet(), equalTo(expect))
@@ -177,15 +177,15 @@ class AppRoomDatabaseTest {
 
     @Test(expected = android.database.sqlite.SQLiteConstraintException::class)
     fun insertLocationUnassignedRecordIdThrowsException() {
-        locationDao.insert(lUnassigned)
+        locationDao.insertLocation(lUnassigned)
     }
 
     @Test
     @Throws(Exception::class)
     fun deleteAllLocations() {
         recordDao.insertRecord(r1)
-        locationDao.insert(le1)
-        locationDao.insert(le1)
+        locationDao.insertLocation(le1)
+        locationDao.insertLocation(le1)
         locationDao.deleteAll()
         val result = locationDao.getAll()
         result.observeForever{}
