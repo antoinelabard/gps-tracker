@@ -14,8 +14,8 @@ class FakeAndroidTestRepository : IRepository {
 
     override var activeRecordId = MutableLiveData("0")
 
-    private val allRecords = MutableLiveData(mutableListOf(r1))
-    private val allLocations = MutableLiveData(mutableListOf(le1, le2))
+    val allRecords = MutableLiveData(mutableListOf(r1))
+    val allLocations = MutableLiveData(mutableListOf(le1, le2))
 
     override fun getRecords() = allRecords as LiveData<List<RecordEntity>>
 

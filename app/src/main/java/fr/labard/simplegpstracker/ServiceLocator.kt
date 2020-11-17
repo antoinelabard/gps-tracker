@@ -20,7 +20,7 @@ object ServiceLocator {
     private val lock = Any()
     private var database: AppRoomDatabase? = null
     @Volatile
-    var appRepository: AppRepository? = null
+    var appRepository: IRepository? = null
         @VisibleForTesting set
 
     fun provideAppRepository(context: Context): IRepository {
