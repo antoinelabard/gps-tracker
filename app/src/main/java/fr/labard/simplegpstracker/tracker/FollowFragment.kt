@@ -69,8 +69,8 @@ class FollowFragment : Fragment() {
     ): View? {
 
         Configuration.getInstance().load(activity, activity?.getPreferences(Context.MODE_PRIVATE))
-        val view = layoutInflater.inflate(R.layout.fragment_map, container, false)
-        mapView = view.findViewById(R.id.fragment_map_mapview)
+        val view = layoutInflater.inflate(R.layout.fragment_follow, container, false)
+        mapView = view.findViewById(R.id.fragment_follow_mapview)
         buildMapView()
 
         viewModel.allLocations.observe(viewLifecycleOwner, object: Observer<List<LocationEntity>> {
@@ -100,13 +100,13 @@ class FollowFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        activity_tracker_record_fab.setOnClickListener {
+        activity_tracker_follow_fab.setOnClickListener {
             if (viewModel.isRecording) {
                 activity?.stopService(locationServiceIntent)
-                activity_tracker_record_fab.setImageResource(R.drawable.ic_action_gps_active)
+                activity_tracker_follow_fab.setImageResource(R.drawable.ic_action_gps_active)
             } else {
                 activity?.startService(locationServiceIntent)
-                activity_tracker_record_fab.setImageResource(R.drawable.ic_action_gps_inactive)
+                activity_tracker_follow_fab.setImageResource(R.drawable.ic_action_gps_inactive)
             }
             viewModel.isRecording = !viewModel.isRecording
         }
