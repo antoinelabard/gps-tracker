@@ -6,6 +6,7 @@ import androidx.test.core.app.ApplicationProvider.getApplicationContext
 import androidx.test.espresso.matcher.ViewMatchers.assertThat
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
+import fr.labard.simplegpstracker.AndroidData
 import fr.labard.simplegpstracker.AndroidData.Companion.r1
 import fr.labard.simplegpstracker.AndroidData.Companion.r2
 import fr.labard.simplegpstracker.androidGetOrAwaitValue
@@ -81,5 +82,17 @@ class RecordDaoTest {
         database.recordDao().deleteAll()
         val result = database.recordDao().getAll().androidGetOrAwaitValue()
         assertThat(result, `is`(listOf()))
+    }
+
+    @Test
+    fun deleteRecord_deleteLocationOnCascade() {
+        database.recordDao().insertRecord(r1)
+        database.locationDao().insertLocation(AndroidData.le1)
+        database.locationDao().insertLocation(AndroidData.le2)
+        database.recordDao().deleteRecord(r1.id)
+        val resultRecords = database.recordDao().getAll().androidGetOrAwaitValue()
+        val resultLocations = database.locationDao().getAll().androidGetOrAwaitValue()
+        assertThat(resultRecords, `is`(listOf()))
+        assertThat(resultLocations, `is`(listOf()))
     }
 }
