@@ -65,6 +65,8 @@ class MapFragment : Fragment() {
         mapView = view.findViewById(R.id.fragment_map_mapview)
         buildMapView()
 
+        viewModel.activeRecordId.observe(viewLifecycleOwner, {})
+
         viewModel.allLocations.observe(viewLifecycleOwner, {
             viewModel.setLocationsByActiveRecordId()
             updateMapView()
@@ -101,16 +103,13 @@ class MapFragment : Fragment() {
     }
 
     private fun buildMapView() {
-
-
         mapView.setTileSource(TileSourceFactory.MAPNIK)
         mapView.setMultiTouchControls(true)
         mapController = mapView.controller
         mapController.setZoom(3.0)
         val mLocationOverlay = MyLocationNewOverlay(
             GpsMyLocationProvider(activity?.applicationContext),
-            mapView
-        )
+            mapView)
         mLocationOverlay.enableMyLocation()
         mapView.overlays.add(mLocationOverlay)
 

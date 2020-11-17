@@ -12,7 +12,7 @@ import java.util.*
 
 class FakeAndroidTestRepository : IRepository {
 
-    override var activeRecordId = MutableLiveData("0")
+    override var activeRecordId = MutableLiveData("")
 
     val allRecords = MutableLiveData(mutableListOf(r1))
     val allLocations = MutableLiveData(mutableListOf(le1, le2))
