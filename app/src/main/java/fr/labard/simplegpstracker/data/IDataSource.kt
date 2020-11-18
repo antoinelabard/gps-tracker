@@ -5,7 +5,11 @@ import androidx.lifecycle.LiveData
 import fr.labard.simplegpstracker.data.local.LocationEntity
 import fr.labard.simplegpstracker.data.local.RecordEntity
 
+/**
+ * Interface of the data sources used in the application.
+ */
 interface IDataSource {
+
     fun getRecords(): LiveData<List<RecordEntity>>
     fun insertRecord(recordEntity: RecordEntity): AsyncTask<RecordEntity?, Void?, Void?>?
     fun updateRecordName(id: String, name: String): AsyncTask<Map<String, String>, Void?, Void?>?
