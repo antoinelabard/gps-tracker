@@ -34,12 +34,12 @@ class MainActivity : AppCompatActivity() {
 
         viewModel = ViewModelProvider(this, MainActivityViewModelFactory(
             (applicationContext as GPSApplication).appRepository
-        )
-        ).get(MainActivityViewModel::class.java)
+        )).get(MainActivityViewModel::class.java)
 
         viewModel.allRecords.observe(this, {
             viewModel.records = viewModel.allRecords.value!!
         })
+
         viewModel.allLocations.observe(this, {
             viewModel.locations = viewModel.allLocations.value!!
         })
@@ -99,18 +99,18 @@ class MainActivity : AppCompatActivity() {
             when (requestCode) {
                 Constants.Intent.CREATE_FILE_REQUEST_CODE ->
                     data?.data?.also { uri ->
-                    alterDocument(
-                        uri,
-                        XmlParser().export(
-                            viewModel.allRecords.value!!,
-                            viewModel.allLocations.value!!
+                        alterDocument(
+                            uri,
+                            XmlParser().export(
+                                viewModel.allRecords.value!!,
+                                viewModel.allLocations.value!!
+                            )
                         )
-                    )
                 }
                 Constants.Intent.OPEN_FILE_REQUEST_CODE ->
                     data?.data?.also {uri ->
-                        val (r, l)
-                                = XmlParser().import(ByteArrayInputStream(readTextFromUri(uri).toByteArray()))
+                        val (r, l) = XmlParser().import(
+                            ByteArrayInputStream(readTextFromUri(uri).toByteArray()))
                         for (i in r) viewModel.insertRecord(i)
                         for (i in l) viewModel.insertLocation(i)
                     }
@@ -118,6 +118,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Reads the text stored in the file pointed uri.
+     * @param uri the URI of the file to read
+     * @return the content of the file as a string
+     */
     @Throws(IOException::class)
     private fun readTextFromUri(uri: Uri): String {
         val stringBuilder = StringBuilder()
@@ -133,6 +138,11 @@ class MainActivity : AppCompatActivity() {
         return stringBuilder.toString()
     }
 
+    /**
+     * Write in the text file pointed by uri the content of text.
+     * @param uri the uri of the file
+     * @param text the text to write in the file
+     */
     private fun alterDocument(uri: Uri, text: String) {
         val contentResolver = applicationContext.contentResolver
         try {
@@ -148,7 +158,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
+    /**
+     * Creates the notification channel used by the notification in GpsService.
+     */
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val importance = NotificationManager.IMPORTANCE_DEFAULT
