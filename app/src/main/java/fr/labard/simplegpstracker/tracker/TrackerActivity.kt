@@ -57,13 +57,14 @@ class TrackerActivity : AppCompatActivity() {
             )
         ).get(TrackerActivityViewModel::class.java)
 
-        viewModel.setActiveRecordId(intent.getStringExtra(Constants.Intent.RECORD_ID_EXTRA)!!)
+//        viewModel.setActiveRecordId(intent.getStringExtra(Constants.Intent.RECORD_ID_EXTRA)!!)
+        viewModel.activeRecordId.value = intent.getStringExtra(Constants.Intent.RECORD_ID_EXTRA)!!
 
-        MapFragment().arguments = bundleOf(Constants.Intent.RECORD_ID_EXTRA to viewModel.getActiveRecordId())
+        MapFragment().arguments = bundleOf(Constants.Intent.RECORD_ID_EXTRA to viewModel.activeRecordId)
 
         viewModel.allRecords.observe(this, {
             activity_tracker_toolbar.title = viewModel
-                .getRecordById(viewModel.getActiveRecordId()).name
+                .getRecordById(viewModel.activeRecordId.value!!).name
         })
         viewModel.allLocations.observe(this, {})
     }
@@ -117,7 +118,7 @@ class TrackerActivity : AppCompatActivity() {
                     .setTitle(R.string.delete)
                     .setMessage(R.string.delete_message)
                     .setPositiveButton(R.string.yes) { _: DialogInterface, _: Int ->
-                        viewModel.deleteRecord(viewModel.getActiveRecordId())
+                        viewModel.deleteRecord(viewModel.activeRecordId.value!!)
                         Toast.makeText(this, R.string.deletion_complete, Toast.LENGTH_LONG)
                         finish()
                     }
@@ -159,6 +160,6 @@ class TrackerActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        viewModel.setActiveRecordId("")
+        viewModel.activeRecordId.value = ""
     }
 }
