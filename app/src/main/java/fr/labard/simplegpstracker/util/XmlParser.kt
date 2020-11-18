@@ -20,8 +20,8 @@ class XmlParser {
             for (record in recordTags) {
                 s += "    <${Constants.Gpx.TRK} " +
                         "${Constants.Gpx.ID}=\"${record.id}\" " +
-                        "${Constants.Gpx.CREATIONDATE}=\"${Converters().dateToTimestamp(record.creationDate)}\" " +
-                        "${Constants.Gpx.LASTMODIFICATION}=\"${Converters().dateToTimestamp(record.lastModification)}\">\n" +
+                        "${Constants.Gpx.CREATION_DATE}=\"${Converters().dateToTimestamp(record.creationDate)}\" " +
+                        "${Constants.Gpx.LAST_MODIFICATION}=\"${Converters().dateToTimestamp(record.lastModification)}\">\n" +
                         "    <${Constants.Gpx.NAME}>${record.name}</${Constants.Gpx.NAME}>\n" +
                         "    <${Constants.Gpx.TRKSEG}>\n"
                 for (location in record.locations) {
@@ -116,8 +116,8 @@ class XmlParser {
 
         val id = parser.getAttributeValue(ns, Constants.Gpx.ID)
         var name: String? = null
-        val creationDate = parser.getAttributeValue(ns, Constants.Gpx.CREATIONDATE)
-        val lastModification = parser.getAttributeValue(ns, Constants.Gpx.LASTMODIFICATION)
+        val creationDate = parser.getAttributeValue(ns, Constants.Gpx.CREATION_DATE)
+        val lastModification = parser.getAttributeValue(ns, Constants.Gpx.LAST_MODIFICATION)
         val locations = mutableListOf<LocationTag>()
 
         while (parser.next() != XmlPullParser.END_TAG) {

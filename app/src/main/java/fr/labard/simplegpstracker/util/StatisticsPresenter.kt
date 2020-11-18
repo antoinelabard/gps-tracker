@@ -2,6 +2,9 @@ package fr.labard.simplegpstracker.util
 
 import fr.labard.simplegpstracker.data.local.LocationEntity
 
+/**
+ * Take the statistics data and return them with a better formatting for display.
+ */
 class StatisticsPresenter {
     companion object {
         fun getTotalDistanceFormatted(locations: List<LocationEntity>): String {
@@ -14,6 +17,7 @@ class StatisticsPresenter {
             val s = t % 60
             val m = t / 60 % 60
             val h = t / 3600
+            // the string looks like "00h00m00s"
             return (if (h != 0L) "${h}h" else "") + (if (m != 0L) "${m}m" else "") + "${s}s"
         }
 

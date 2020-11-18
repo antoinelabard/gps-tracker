@@ -3,9 +3,8 @@ package fr.labard.simplegpstracker.util
 class Constants {
     class Notification {
         companion object {
+            // for the notification channel
             const val CHANNEL_ID = "11"
-            const val ACTION_PLAY_PAUSE = 12
-            const val ACTION_STOP = 13
         }
     }
     class Intent {
@@ -69,8 +68,8 @@ class Constants {
             const val TRKPT = "trkpt" // equivalent to location
             const val ID = "id"
             const val NAME = "name"
-            const val CREATIONDATE = "creationdate"
-            const val LASTMODIFICATION = "lastmodification"
+            const val CREATION_DATE = "creationdate"
+            const val LAST_MODIFICATION = "lastmodification"
             const val TIME = "time"
             const val LATITUDE = "lat"
             const val LONGITUDE = "lon"
