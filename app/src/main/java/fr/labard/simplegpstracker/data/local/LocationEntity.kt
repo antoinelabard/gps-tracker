@@ -38,7 +38,7 @@ data class LocationEntity (
 
     ) {
 
-    // this field is not in the constructor because it is automatically generated
+    // id is not in the constructor because it is automatically generated
     @PrimaryKey
     @ColumnInfo(name = Constants.Database.LOCATION_ENTITY_ID)
     var id = UUID.randomUUID().toString()

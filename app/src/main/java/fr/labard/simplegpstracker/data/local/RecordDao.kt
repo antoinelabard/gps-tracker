@@ -7,6 +7,10 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import java.util.*
 
+/**
+ * RecordDao is used to give all the operations to access and modify the table responsible of the storage of the
+ * records.
+ */
 @Dao
 interface RecordDao {
 
