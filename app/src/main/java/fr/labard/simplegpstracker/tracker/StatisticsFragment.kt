@@ -11,6 +11,9 @@ import fr.labard.simplegpstracker.R
 import fr.labard.simplegpstracker.util.StatisticsPresenter
 import kotlinx.android.synthetic.main.fragment_statistics.*
 
+/**
+ * StatisticsFragment is used to display real time statistics about the active record.
+ */
 class StatisticsFragment : DialogFragment() {
 
     private val viewModel by viewModels<StatisticsFragmentViewModel> {
@@ -22,7 +25,7 @@ class StatisticsFragment : DialogFragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_statistics, container, false)
-        dialog?.setTitle("Statistics")
+        dialog?.setTitle(getString(R.string.statistics_title))
 
         viewModel.allLocations.observe(viewLifecycleOwner, {
             viewModel.setLocationsByRecordId()
@@ -39,14 +42,10 @@ class StatisticsFragment : DialogFragment() {
                 StatisticsPresenter.getAverageSpeedFormatted(viewModel.locationsByRecordId)
             )
             fragment_statistics_textview_min_speed.text = getString(R.string.stats_min_speed).format(
-                StatisticsPresenter.getMinSpeedFormatted(
-                    viewModel.locationsByRecordId
-                )
+                StatisticsPresenter.getMinSpeedFormatted(viewModel.locationsByRecordId)
             )
             fragment_statistics_textview_max_speed.text = getString(R.string.stats_max_speed).format(
-                StatisticsPresenter.getMaxSpeedFormatted(
-                    viewModel.locationsByRecordId
-                )
+                StatisticsPresenter.getMaxSpeedFormatted(viewModel.locationsByRecordId)
             )
             fragment_statistics_textview_nb_locations.text = getString(R.string.stats_nb_locations).format(
                 StatisticsPresenter.getNbLocationsPresented(viewModel.locationsByRecordId)

@@ -43,6 +43,7 @@ class TrackerActivity : AppCompatActivity() {
             )
         )
 
+        // load the map fragment in the fragment container
         if (findViewById<FrameLayout>(R.id.activity_tracker_fragment_container) != null) {
             if (savedInstanceState != null) return
             supportFragmentManager.commit {
@@ -77,13 +78,13 @@ class TrackerActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.activity_tracker_action_record -> {
+            R.id.activity_tracker_action_record_mode -> {
                 supportFragmentManager.commit {
                     replace<MapFragment>(R.id.activity_tracker_fragment_container, null, bundleOf())
                     addToBackStack(null)
                 }
             }
-            R.id.activity_tracker_action_follow -> {
+            R.id.activity_tracker_action_follow_mode -> {
                 supportFragmentManager.commit {
                     replace<FollowFragment>(R.id.activity_tracker_fragment_container, null, bundleOf())
                     addToBackStack(null)
@@ -114,6 +115,7 @@ class TrackerActivity : AppCompatActivity() {
                     .show()
             }
             R.id.activity_tracker_action_delete -> {
+                // display a confirmation message to delete the record
                 AlertDialog.Builder(this)
                     .setTitle(R.string.delete)
                     .setMessage(R.string.delete_message)
