@@ -60,14 +60,6 @@ data class LocationEntity (
         return l1.distanceTo(l2)
     }
 
-    fun distanceTo(l: Location): Float {
-        val l1 = Location("").apply {
-            latitude = latitude
-            longitude = longitude
-        }
-        return l1.distanceTo(l)
-    }
-
     /**
      * Convert this LocationEntity into an object of the android Location class.
      * @return the location with all the data of this LocationEntity except its recordId
