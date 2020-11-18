@@ -5,8 +5,12 @@ import androidx.lifecycle.MutableLiveData
 import fr.labard.simplegpstracker.data.local.LocationEntity
 import fr.labard.simplegpstracker.data.local.RecordEntity
 
+/**
+ * Interface of the repository used in the application.
+ */
 interface IRepository {
 
+    // used to keep in memory which record is being opened
     var activeRecordId: MutableLiveData<String>
 
     fun getRecords(): LiveData<List<RecordEntity>>

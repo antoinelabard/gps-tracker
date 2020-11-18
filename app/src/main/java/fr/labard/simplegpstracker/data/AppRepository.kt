@@ -6,10 +6,12 @@ import fr.labard.simplegpstracker.EspressoIdlingResource.wrapEspressoIdlingResou
 import fr.labard.simplegpstracker.data.local.LocationEntity
 import fr.labard.simplegpstracker.data.local.RecordEntity
 
+/**
+ * AppRepository provides all the operations to access, modify and delete the data of the application.
+ */
 class AppRepository internal constructor(
     private val localDataSource: IDataSource,
 ) : IRepository {
-
 
     override var activeRecordId = MutableLiveData("")
 
