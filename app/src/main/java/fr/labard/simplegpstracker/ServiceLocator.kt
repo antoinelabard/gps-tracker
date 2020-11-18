@@ -30,9 +30,9 @@ object ServiceLocator {
         return newRepo
     }
 
-    private fun createLocalDataSource(context: Context): LocalIDataSource {
+    private fun createLocalDataSource(context: Context): LocalDataSource {
         val database = database ?: createDataBase(context)
-        return LocalIDataSource(database.recordDao(), database.locationDao())
+        return LocalDataSource(database.recordDao(), database.locationDao())
     }
 
     private fun createDataBase(context: Context): AppRoomDatabase {

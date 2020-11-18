@@ -6,7 +6,10 @@ import androidx.lifecycle.LiveData
 import fr.labard.simplegpstracker.data.IDataSource
 import java.util.*
 
-class LocalIDataSource(
+/**
+ * This datasource provides a database access to the application repository.
+ */
+class LocalDataSource(
     private val recordDao: RecordDao,
     private val locationDao: LocationDao,
 ): IDataSource {
@@ -35,7 +38,7 @@ class LocalIDataSource(
     override fun deleteAll() =
         DeleteAllAsyncTask(recordDao).execute()
 
-
+    // this AsyncTask and the others are used because Room doesn't access the database on the main thread
     private class InsertRecordAsyncTask constructor(private val dao: RecordDao) :
         AsyncTask<RecordEntity?, Void?, Void?>() {
         override fun doInBackground(vararg params: RecordEntity?): Void? {
