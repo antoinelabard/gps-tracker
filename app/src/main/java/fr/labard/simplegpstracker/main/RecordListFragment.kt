@@ -12,13 +12,19 @@ import fr.labard.simplegpstracker.GPSApplication
 import fr.labard.simplegpstracker.R
 import kotlinx.android.synthetic.main.fragment_record_list.*
 
+/**
+ * RecordListFragment displays the list of all the record stored in the repository in MainActivity.
+ */
 class RecordListFragment : Fragment() {
 
     lateinit var recyclerView: RecyclerView
     lateinit var adapter: RecordListAdapter
 
     private val viewModel by viewModels<RecordListFragmentViewModel> {
-        RecordListFragmentViewModelFactory(requireContext().applicationContext as GPSApplication, (requireContext().applicationContext as GPSApplication).appRepository)
+        RecordListFragmentViewModelFactory(
+            requireContext().applicationContext as GPSApplication,
+            (requireContext().applicationContext as GPSApplication).appRepository
+        )
     }
 
     override fun onCreateView(

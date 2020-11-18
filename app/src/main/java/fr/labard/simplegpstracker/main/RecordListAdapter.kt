@@ -14,14 +14,18 @@ import fr.labard.simplegpstracker.data.local.RecordEntity
 import fr.labard.simplegpstracker.tracker.TrackerActivity
 import fr.labard.simplegpstracker.util.Constants
 
-
+/**
+ * Adapter used to manage the data shown in the recyclerview of RecordListFragment.
+ */
 class RecordListAdapter (val context: Context?) :
     RecyclerView.Adapter<RecordListAdapter.RecordViewHolder>() {
 
     private val mInflater: LayoutInflater = LayoutInflater.from(context)
-    private var mAllRecords: List<RecordEntity>? = null
-    private var mAllLocations: List<LocationEntity>? = null
 
+    private var records: List<RecordEntity>? = null
+    private var locations: List<LocationEntity>? = null
+
+    // contains all the fields which are displayed in the recyclerview item
     inner class RecordViewHolder (itemView: View) : RecyclerView.ViewHolder(itemView) {
         val layout: LinearLayout = itemView.findViewById(R.id.recyclerview_item_layout)
         val name: TextView = itemView.findViewById(R.id.recyclerview_item_name)
@@ -35,13 +39,13 @@ class RecordListAdapter (val context: Context?) :
     }
 
     override fun onBindViewHolder(holder: RecordViewHolder, position: Int) {
-        if (mAllRecords != null) {
-            val record = mAllRecords!![position]
+        if (records != null) {
+            val record = records!![position]
 
             holder.name.text = record.name
             holder.creationDate.text = context?.getString(R.string.created)?.format(record.creationDate.toString())
             holder.nbLocations.text = context?.getString(R.string.locations)
-                ?.format(mAllLocations?.filter { it.recordId == record.id }?.count().toString())
+                ?.format(locations?.filter { it.recordId == record.id }?.count().toString())
 
             holder.layout.setOnClickListener {
                 val intent = Intent(context, TrackerActivity::class.java)
@@ -54,16 +58,16 @@ class RecordListAdapter (val context: Context?) :
     }
 
     fun setRecords(records: List<RecordEntity>?) {
-        mAllRecords = records
+        this.records = records
         notifyDataSetChanged()
     }
 
     fun setLocations(locations: List<LocationEntity>?) {
-        mAllLocations = locations
+        this.locations = locations
         notifyDataSetChanged()
     }
 
     override fun getItemCount(): Int {
-        return if (mAllRecords != null) mAllRecords!!.size else 0
+        return if (records != null) records!!.size else 0
     }
 }
