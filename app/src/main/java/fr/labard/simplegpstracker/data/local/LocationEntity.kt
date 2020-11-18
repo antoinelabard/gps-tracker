@@ -8,15 +8,18 @@ import androidx.room.PrimaryKey
 import fr.labard.simplegpstracker.util.Constants
 import java.util.*
 
+/**
+ * LocationEntity provides all the columns for the table responsible of the storage of the locations.
+ * A foreign key from RecordEntity is used to link the records in the database with its locations using the RecordEntity
+ * id column.
+ */
 @Entity(
     tableName = Constants.Database.LOCATION_TABLE,
     foreignKeys = [ForeignKey(
         entity = RecordEntity::class,
         parentColumns = [Constants.Database.RECORD_ENTITY_ID],
         childColumns = [Constants.Database.LOCATION_ENTITY_RECORD_ID],
-        onDelete = ForeignKey.CASCADE
-    )]
-)
+        onDelete = ForeignKey.CASCADE)])
 data class LocationEntity (
     @ColumnInfo(name = Constants.Database.LOCATION_ENTITY_RECORD_ID)
     var recordId: String,
@@ -35,18 +38,24 @@ data class LocationEntity (
 
     ) {
 
+    // this field is not in the constructor because it is automatically generated
     @PrimaryKey
     @ColumnInfo(name = Constants.Database.LOCATION_ENTITY_ID)
     var id = UUID.randomUUID().toString()
 
-    fun distanceTo(l: LocationEntity): Float {
+    /**
+     * Gives the distance between this object and another LocationEntity.
+     * @param le the other location entity for which we want to know the distance to
+     * @return the distance between this le and this LocationEntity
+     */
+    fun distanceTo(le: LocationEntity): Float {
         val l1 = Location("").apply {
             latitude = this@LocationEntity.latitude
             longitude = this@LocationEntity.longitude
         }
         val l2 = Location("").apply {
-            latitude = l.latitude
-            longitude = l.longitude
+            latitude = le.latitude
+            longitude = le.longitude
         }
         return l1.distanceTo(l2)
     }
@@ -59,6 +68,10 @@ data class LocationEntity (
         return l1.distanceTo(l)
     }
 
+    /**
+     * Convert this LocationEntity into an object of the android Location class.
+     * @return the location with all the data of this LocationEntity except its recordId
+     */
     fun toLocation() = Location("").apply {
         latitude = this@LocationEntity.latitude
         longitude = this@LocationEntity.longitude

@@ -6,6 +6,10 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 
+/**
+ * LocationDao is used to give all the operations to access and modify the table responsible of the storage of the
+ * locations.
+ */
 @Dao
 interface LocationDao {
 
