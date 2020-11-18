@@ -62,7 +62,7 @@ class MapFragment : Fragment() {
         mapView = view.findViewById(R.id.fragment_map_mapview)
         buildMapView()
 
-        viewModel.activeRecordId.observe(viewLifecycleOwner, {})
+        viewModel.activeRecordId.observeForever{}
 
         viewModel.allLocations.observe(viewLifecycleOwner, {
             viewModel.setLocationsByActiveRecordId()
@@ -90,10 +90,10 @@ class MapFragment : Fragment() {
         activity_tracker_record_fab.setOnClickListener {
             if (viewModel.isRecording) {
                 activity?.stopService(locationServiceIntent)
-                activity_tracker_record_fab.setImageResource(R.drawable.ic_action_gps_active)
+                activity_tracker_record_fab.setImageResource(R.drawable.ic_baseline_fiber_manual_record_24)
             } else {
                 activity?.startService(locationServiceIntent)
-                activity_tracker_record_fab.setImageResource(R.drawable.ic_action_gps_inactive)
+                activity_tracker_record_fab.setImageResource(R.drawable.ic_baseline_stop_24)
             }
             viewModel.isRecording = !viewModel.isRecording
         }
@@ -103,7 +103,7 @@ class MapFragment : Fragment() {
         mapView.setTileSource(TileSourceFactory.MAPNIK)
         mapView.setMultiTouchControls(true)
         mapController = mapView.controller
-        mapController.setZoom(3.0)
+        mapController.setZoom(20.0)
         val mLocationOverlay = MyLocationNewOverlay(
             GpsMyLocationProvider(activity?.applicationContext),
             mapView)

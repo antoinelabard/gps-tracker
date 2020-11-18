@@ -16,7 +16,9 @@ class MapFragmentViewModel(
     var isRecording = false
 
     fun setLocationsByActiveRecordId() {
-        locationsByRecordId = allLocations.value!!.filter { it.recordId == activeRecordId.value }
+        locationsByRecordId = allLocations.value!!
+            .filter { it.recordId == activeRecordId.value }
+            .sortedBy { it.time }
     }
 
     fun insertLocation(location: Location) {

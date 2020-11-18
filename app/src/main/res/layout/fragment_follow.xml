@@ -26,6 +26,6 @@
             android:layout_margin="@dimen/fab_margin"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:src="@drawable/ic_action_gps_active"/>
+            android:src="@drawable/ic_baseline_play_arrow_24"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

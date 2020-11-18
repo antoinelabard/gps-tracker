@@ -62,7 +62,6 @@ class MainActivity : AppCompatActivity() {
                 AlertDialog.Builder(this)
                     .setTitle(R.string.clear_all)
                     .setMessage(getString(R.string.confirmation))
-                    .setIcon(R.drawable.ic_action_delete)
                     .setPositiveButton(R.string.yes) { _: DialogInterface, _: Int ->
                         viewModel.deleteAll()
                         Toast.makeText(this, R.string.deletion_complete, Toast.LENGTH_LONG)

@@ -34,12 +34,12 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 
 class FollowFragment : Fragment() {
 
-    lateinit var mapView: MapView
+    private lateinit var mapView: MapView
     private lateinit var mapController: IMapController
-    lateinit var locationServiceIntent: Intent
+    private lateinit var locationServiceIntent: Intent
 
-    lateinit var polyline: Polyline
-    lateinit var checkpoint: Marker
+    private lateinit var polyline: Polyline
+    private lateinit var checkpoint: Marker
 
     private val viewModel by viewModels<FollowFragmentViewModel> {
         FollowFragmentViewModelFactory((requireContext().applicationContext as GPSApplication).appRepository)
@@ -103,10 +103,10 @@ class FollowFragment : Fragment() {
         activity_tracker_follow_fab.setOnClickListener {
             if (viewModel.isRecording) {
                 activity?.stopService(locationServiceIntent)
-                activity_tracker_follow_fab.setImageResource(R.drawable.ic_action_gps_active)
+                activity_tracker_follow_fab.setImageResource(R.drawable.ic_baseline_play_arrow_24)
             } else {
                 activity?.startService(locationServiceIntent)
-                activity_tracker_follow_fab.setImageResource(R.drawable.ic_action_gps_inactive)
+                activity_tracker_follow_fab.setImageResource(R.drawable.ic_baseline_pause_24)
             }
             viewModel.isRecording = !viewModel.isRecording
         }
@@ -116,7 +116,7 @@ class FollowFragment : Fragment() {
         mapView.setTileSource(TileSourceFactory.MAPNIK)
         mapView.setMultiTouchControls(true)
         mapController = mapView.controller
-        mapController.setZoom(10.0)
+        mapController.setZoom(20.0)
         polyline = Polyline()
         checkpoint = Marker(mapView)
             val mLocationOverlay = MyLocationNewOverlay(
@@ -146,8 +146,10 @@ class FollowFragment : Fragment() {
         mapView.overlays.remove(polyline)
         polyline = Polyline()
         mapView.overlays.remove(checkpoint)
-        checkpoint = Marker(mapView)
-            .apply { icon = ContextCompat.getDrawable(activity?.applicationContext!!, R.drawable.ic_add_black_24dp) }
+        checkpoint = Marker(mapView).apply { icon = ContextCompat.getDrawable(
+                activity?.applicationContext!!,
+                R.drawable.ic_baseline_radio_button_unchecked_24
+            )}
         mapView.overlayManager.add(polyline.apply { setPoints(parkour) })
         mapView.overlayManager.add(checkpoint.apply {
             position = GeoPoint(
@@ -155,13 +157,13 @@ class FollowFragment : Fragment() {
                 viewModel.locationsByRecordId.last().longitude
             )
             if (viewModel.locationsByRecordId.size == 1) {
-                icon = ContextCompat.getDrawable(activity?.applicationContext!!, R.drawable.ic_action_delete)
+                icon = ContextCompat.getDrawable(
+                    activity?.applicationContext!!,
+                    R.drawable.ic_baseline_radio_button_checked_24
+                )
             }
         })
-        mapController.setCenter(GeoPoint(
-            viewModel.currentLocation.latitude,
-            viewModel.currentLocation.longitude,
-        ))
+        mapController.setCenter(parkour.last())
     }
 
     override fun onDestroy() {

@@ -77,6 +77,7 @@ class GpsService: Service(), LocationListener {
             setContentText(getString(R.string.gpstracker_notification_content))
             setSmallIcon(R.drawable.ic_launcher_foreground)
             setOngoing(true)
+            setNotificationSilent()
             priority = NotificationCompat.PRIORITY_HIGH
             setContentIntent(
                 PendingIntent.getActivity(

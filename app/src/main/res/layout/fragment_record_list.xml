@@ -12,7 +12,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/fab_margin"
-            app:srcCompat="@drawable/ic_add_black_24dp"
+            app:srcCompat="@drawable/ic_baseline_add_24"
             tools:ignore="VectorDrawableCompat"
             app:layout_constraintEnd_toEndOf="parent" app:layout_constraintBottom_toBottomOf="parent"/>
     <androidx.recyclerview.widget.RecyclerView

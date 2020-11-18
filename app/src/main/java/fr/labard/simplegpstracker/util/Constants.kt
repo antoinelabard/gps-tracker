@@ -15,16 +15,13 @@ class Constants {
             const val SPEED_EXTRA = "speed"
             const val TIME_EXTRA = "time"
             const val RECORD_ID_EXTRA = "recordId"
-            const val IS_RECORDING_EXTRA = "isRecording"
             const val ACTION_PAUSE = "pause"
             const val ACTION_PLAY = "record"
             const val ACTION_STOP = "stop"
-            const val REQUEST_RECORD_ID = "requestRecordId"
             const val MODE = "mode"
             const val REQUEST_CODE = 21
             const val CREATE_FILE_REQUEST_CODE = 22
             const val OPEN_FILE_REQUEST_CODE = 23
-            const val SAVE_FILE_REQUEST_CODE = 24
 
         }
     }
@@ -61,6 +58,7 @@ class Constants {
     class Location {
         companion object {
             const val MIN_RADIUS = 20.0 // in meters
+            const val MAP_ZOOM = 18.0
         }
     }
     class Gpx {

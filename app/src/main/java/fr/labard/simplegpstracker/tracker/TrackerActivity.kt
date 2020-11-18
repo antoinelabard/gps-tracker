@@ -98,7 +98,6 @@ class TrackerActivity : AppCompatActivity() {
                     .setView(dialogRename)
                     .setTitle(R.string.rename)
                     .setMessage(R.string.rename_message)
-                    .setIcon(R.drawable.ic_action_rename)
                     .setPositiveButton(R.string.ok) { _: DialogInterface, _: Int ->
                         val renameEdittext = dialogRename.findViewById<EditText>(R.id.rename_edittext)
                         val name = renameEdittext.text.toString()
@@ -117,7 +116,6 @@ class TrackerActivity : AppCompatActivity() {
                 AlertDialog.Builder(this)
                     .setTitle(R.string.delete)
                     .setMessage(R.string.delete_message)
-                    .setIcon(R.drawable.ic_action_delete)
                     .setPositiveButton(R.string.yes) { _: DialogInterface, _: Int ->
                         viewModel.deleteRecord(viewModel.getActiveRecordId())
                         Toast.makeText(this, R.string.deletion_complete, Toast.LENGTH_LONG)
