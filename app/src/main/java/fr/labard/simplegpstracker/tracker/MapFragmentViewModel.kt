@@ -15,6 +15,9 @@ class MapFragmentViewModel(
     var locationsByRecordId = listOf<LocationEntity>()
     var isRecording = false
 
+    /**
+     * @return a list of all the locations having activeRecordId as a recordId
+     */
     fun setLocationsByActiveRecordId() {
         locationsByRecordId = allLocations.value!!
             .filter { it.recordId == activeRecordId.value }

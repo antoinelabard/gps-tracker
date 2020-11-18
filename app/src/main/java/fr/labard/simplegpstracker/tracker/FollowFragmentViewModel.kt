@@ -8,6 +8,7 @@ import fr.labard.simplegpstracker.data.IRepository
 class FollowFragmentViewModel(
     appRepository: IRepository
 ) : ViewModel() {
+
     var activeRecordId = appRepository.activeRecordId
     var allLocations = appRepository.getLocations()
     var locationsByRecordId = mutableListOf<Location>()

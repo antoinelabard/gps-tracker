@@ -27,6 +27,9 @@ import org.osmdroid.views.overlay.compass.InternalCompassOrientationProvider
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 
+/**
+ * MapFragment displays the UI to show the path recorded in real time.
+ */
 class MapFragment : Fragment() {
 
     private lateinit var localBroadcastManager: LocalBroadcastManager
@@ -38,6 +41,7 @@ class MapFragment : Fragment() {
         MapFragmentViewModelFactory((requireContext().applicationContext as GPSApplication).appRepository)
     }
 
+    // used to receive the location updates from GpsService
     private val locationBroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent){
             if (intent.getStringExtra(Constants.Service.MODE) == Constants.Service.MODE_RECORD) {

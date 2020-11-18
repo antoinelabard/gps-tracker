@@ -32,6 +32,9 @@ import org.osmdroid.views.overlay.compass.InternalCompassOrientationProvider
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 
+/**
+ * FollowFragment displays the UI to follow a path previously recorded and stored or imported in the database.
+ */
 class FollowFragment : Fragment() {
 
     private lateinit var mapView: MapView
@@ -45,7 +48,7 @@ class FollowFragment : Fragment() {
         FollowFragmentViewModelFactory((requireContext().applicationContext as GPSApplication).appRepository)
     }
 
-
+    // used to receive the location updates from GpsService
     private val locationBroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent){
             if (intent.getStringExtra(Constants.Service.MODE) == Constants.Service.MODE_FOLLOW
@@ -67,10 +70,10 @@ class FollowFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         Configuration.getInstance().load(activity, activity?.getPreferences(Context.MODE_PRIVATE))
         val view = layoutInflater.inflate(R.layout.fragment_follow, container, false)
         mapView = view.findViewById(R.id.fragment_follow_mapview)
+
         buildMapView()
 
         viewModel.allLocations.observe(viewLifecycleOwner, object: Observer<List<LocationEntity>> {
@@ -100,6 +103,7 @@ class FollowFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         activity_tracker_follow_fab.setOnClickListener {
             if (viewModel.isRecording) {
                 activity?.stopService(locationServiceIntent)
@@ -156,6 +160,7 @@ class FollowFragment : Fragment() {
                 viewModel.locationsByRecordId.last().latitude,
                 viewModel.locationsByRecordId.last().longitude
             )
+            // particular behavior for the final checkpoint
             if (viewModel.locationsByRecordId.size == 1) {
                 icon = ContextCompat.getDrawable(
                     activity?.applicationContext!!,
