@@ -18,11 +18,16 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import fr.labard.simplegpstracker.R
 import fr.labard.simplegpstracker.util.Constants
 
+/**
+ * GpsService listens for location updates and sends them to the application.
+ * The service is started when the app is recording in whether record or follow mode.
+ */
 class GpsService: Service(), LocationListener {
 
     private lateinit var locationManager: LocationManager
     private var locationProvider: String? = null
     private var recordId = ""
+    // tells if the app is in record or follow mode
     private var mode: String = Constants.Service.MODE_RECORD
 
     override fun onCreate() {
@@ -34,6 +39,7 @@ class GpsService: Service(), LocationListener {
 
     override fun onLocationChanged(location: Location?) {
         if (location != null) {
+            // sends the location to the app as a broadcast
             LocalBroadcastManager.getInstance(this).sendBroadcast(
                 Intent(Constants.Service.LOCATION_BROADCAST).apply {
                     putExtra(Constants.Intent.MODE, mode)
@@ -108,12 +114,9 @@ class GpsService: Service(), LocationListener {
     }
 
     private fun enableLocationUpdates() {
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_COARSE_LOCATION
+                this, Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             stopSelf()
