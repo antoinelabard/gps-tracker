@@ -46,7 +46,7 @@ class FakeIDataSource internal constructor(
         return null
     }
 
-    override fun deleteAll(): AsyncTask<Void?, Void?, Void?>? {
+    override fun clearAll(): AsyncTask<Void?, Void?, Void?>? {
         allRecords.value?.clear()
         allLocations.value?.clear()
         return null

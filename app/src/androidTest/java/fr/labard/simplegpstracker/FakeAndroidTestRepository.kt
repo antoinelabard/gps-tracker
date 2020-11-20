@@ -41,7 +41,7 @@ class FakeAndroidTestRepository : IRepository {
         allLocations.value?.add(locationEntity)
     }
 
-    override fun deleteAll() {
+    override fun clearAll() {
         allRecords.value?.clear()
         allLocations.value?.clear()
     }

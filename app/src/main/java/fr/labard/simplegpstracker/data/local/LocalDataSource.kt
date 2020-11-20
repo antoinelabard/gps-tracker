@@ -15,7 +15,7 @@ class LocalDataSource(
 ): IDataSource {
 
     override fun getRecords(): LiveData<List<RecordEntity>> =
-        recordDao.getAll()
+        recordDao.getRecords()
 
     override fun insertRecord(recordEntity: RecordEntity) =
         InsertRecordAsyncTask(recordDao).execute(recordEntity)
@@ -30,12 +30,12 @@ class LocalDataSource(
         DeleteRecordAsyncTask(recordDao).execute(id)
 
     override fun getLocations(): LiveData<List<LocationEntity>> =
-        locationDao.getAll()
+        locationDao.getLocations()
 
     override fun insertLocation(locationEntity: LocationEntity) =
         InsertLocationAsyncTask(locationDao).execute(locationEntity)
 
-    override fun deleteAll() =
+    override fun clearAll() =
         DeleteAllAsyncTask(recordDao).execute()
 
     // this AsyncTask and the others are used because Room doesn't access the database on the main thread

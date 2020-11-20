@@ -44,7 +44,7 @@ class RecordDaoTest {
     @Test
     fun insertRecordAndGet() = runBlockingTest {
         database.recordDao().insertRecord(r1)
-        val result = database.recordDao().getAll().androidGetOrAwaitValue()
+        val result = database.recordDao().getRecords().androidGetOrAwaitValue()
         assertThat(result, `is`(listOf(r1)))
 
     }
@@ -53,7 +53,7 @@ class RecordDaoTest {
     fun updateRecordName() {
         database.recordDao().insertRecord(r1)
         database.recordDao().updateRecordName(r1.id, "newName")
-        val result = database.recordDao().getAll().androidGetOrAwaitValue()
+        val result = database.recordDao().getRecords().androidGetOrAwaitValue()
         assertThat(result, `is`(listOf(r1.copy().apply { name = "newName" })))
     }
 
@@ -62,7 +62,7 @@ class RecordDaoTest {
         val d = Date()
         database.recordDao().insertRecord(r1)
         database.recordDao().updateLastRecordModification(r1.id, d)
-        val result = database.recordDao().getAll().androidGetOrAwaitValue()
+        val result = database.recordDao().getRecords().androidGetOrAwaitValue()
         assertThat(result, `is`(listOf(r1.apply { lastModification = d })))
     }
 
@@ -70,7 +70,7 @@ class RecordDaoTest {
     fun deleteRecord() {
         database.recordDao().insertRecord(r1)
         database.recordDao().deleteRecord(r1.id)
-        val result = database.recordDao().getAll().androidGetOrAwaitValue()
+        val result = database.recordDao().getRecords().androidGetOrAwaitValue()
         assertThat(result, `is`(listOf()))
     }
 
@@ -79,7 +79,7 @@ class RecordDaoTest {
         database.recordDao().insertRecord(r1)
         database.recordDao().insertRecord(r2)
         database.recordDao().deleteAll()
-        val result = database.recordDao().getAll().androidGetOrAwaitValue()
+        val result = database.recordDao().getRecords().androidGetOrAwaitValue()
         assertThat(result, `is`(listOf()))
     }
 
@@ -89,8 +89,8 @@ class RecordDaoTest {
         database.locationDao().insertLocation(AndroidData.le1)
         database.locationDao().insertLocation(AndroidData.le2)
         database.recordDao().deleteRecord(r1.id)
-        val resultRecords = database.recordDao().getAll().androidGetOrAwaitValue()
-        val resultLocations = database.locationDao().getAll().androidGetOrAwaitValue()
+        val resultRecords = database.recordDao().getRecords().androidGetOrAwaitValue()
+        val resultLocations = database.locationDao().getLocations().androidGetOrAwaitValue()
         assertThat(resultRecords, `is`(listOf()))
         assertThat(resultLocations, `is`(listOf()))
     }

@@ -14,7 +14,7 @@ import androidx.room.Query
 interface LocationDao {
 
     @Query("SELECT * FROM location_table ORDER BY time DESC")
-    fun getAll(): LiveData<List<LocationEntity>>
+    fun getLocations(): LiveData<List<LocationEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertLocation(r: LocationEntity)

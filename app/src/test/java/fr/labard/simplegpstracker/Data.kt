@@ -1,7 +1,7 @@
 package fr.labard.simplegpstracker
 
 import android.location.Location
-import androidx.annotation.VisibleForTesting
+import fr.labard.simplegpstracker.data.local.Converters
 import fr.labard.simplegpstracker.data.local.LocationEntity
 import fr.labard.simplegpstracker.data.local.RecordEntity
 import java.util.*
@@ -10,23 +10,24 @@ import kotlin.math.pow
 /**
  * This class provides all necessary data for testing the application.
  */
-@VisibleForTesting
 class Data {
     companion object {
         val PRECISION = 10.0.pow(-2)
 
-        const val unassignedId = "unassignedId" // Default Id which belongs to no record nor location to test bad assignment behavior
+        // Default Id which belongs to no record nor location to test bad assignment behavior
+        const val unassignedId = "unassignedId"
 
         // the list of RecordEntity
         val r1 = RecordEntity("r1", Date(), Date())
         val r2 = RecordEntity("r2", Date(), Date())
         val r3 = RecordEntity("r3", Date(), Date())
-        val rConflict = RecordEntity("rConflict", Date(), Date()).apply {id = r1.id} // Has the same id as r1 intentionally
+        // Has the same id as r1 intentionally
+        val rConflict = RecordEntity("rConflict", Date(), Date()).apply {id = r1.id}
 
-        val lUnassigned = LocationEntity(unassignedId, 944006400000, 0.0, 0.0, 0.0f) // Here the recordId belongs to no record intentionally
+        // Here the recordId belongs to no record intentionally
+        val lUnassigned = LocationEntity(unassignedId, 944006400000, 0.0, 0.0, 0.0f)
 
-        // the list of Location
-        @VisibleForTesting
+
         val l1 = Location("").apply {
             latitude = 0.0
             longitude = 0.0
@@ -52,7 +53,6 @@ class Data {
             speed = 3f
         }
 
-        // the list of LocationEntity, based of the data of the list above
         val le1 = LocationEntity(
             r1.id,
             l1.time,
@@ -91,5 +91,18 @@ class Data {
         val tl12: Float = l2.time - l1.time * 1000f
         val tl13: Float = l3.time - l1.time * 1000f
         val tl14: Float = l4.time - l1.time * 1000f
+
+        // This is a GPX String storing the data of the RecordEntity r1 and the LocationEntities le1 and le2
+        val r1xmlText =
+            "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
+                    "<gpx>\n" +
+                    "    <trk id=\"${r1.id}\" creationdate=\"${Converters().dateToTimestamp(r1.creationDate)}\" lastmodification=\"${Converters().dateToTimestamp(r1.lastModification)}\">\n" +
+                    "    <name>${r1.name}</name>\n" +
+                    "    <trkseg>\n" +
+                    "        <trkpt id=\"${le1.id}\" lat=\"${le1.latitude}\" lon=\"${le1.longitude}\" speed=\"${le1.speed}\"><time>${le1.time}</time></trkpt>\n" +
+                    "        <trkpt id=\"${le2.id}\" lat=\"${le2.latitude}\" lon=\"${le2.longitude}\" speed=\"${le2.speed}\"><time>${le2.time}</time></trkpt>\n" +
+                    "    </trkseg>\n" +
+                    "    </trk>\n" +
+                    "</gpx>\n"
     }
 }

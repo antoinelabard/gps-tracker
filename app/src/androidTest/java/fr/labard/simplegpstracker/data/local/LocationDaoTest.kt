@@ -43,7 +43,7 @@ class LocationDaoTest {
     fun insertLocationAndGet() = runBlockingTest {
         database.recordDao().insertRecord(r1)
         database.locationDao().insertLocation(le1)
-        val result = database.locationDao().getAll().androidGetOrAwaitValue()
+        val result = database.locationDao().getLocations().androidGetOrAwaitValue()
         assertThat(result, `is`(listOf(le1)))
 
     }

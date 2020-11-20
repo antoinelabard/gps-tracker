@@ -61,8 +61,6 @@ class TrackerActivity : AppCompatActivity() {
 //        viewModel.setActiveRecordId(intent.getStringExtra(Constants.Intent.RECORD_ID_EXTRA)!!)
         viewModel.activeRecordId.value = intent.getStringExtra(Constants.Intent.RECORD_ID_EXTRA)!!
 
-        MapFragment().arguments = bundleOf(Constants.Intent.RECORD_ID_EXTRA to viewModel.activeRecordId)
-
         viewModel.allRecords.observe(this, {
             activity_tracker_toolbar.title = viewModel
                 .getRecordById(viewModel.activeRecordId.value!!).name

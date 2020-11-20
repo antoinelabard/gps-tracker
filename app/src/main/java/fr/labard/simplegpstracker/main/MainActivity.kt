@@ -118,11 +118,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    /**
-     * Reads the text stored in the file pointed uri.
-     * @param uri the URI of the file to read
-     * @return the content of the file as a string
-     */
     @Throws(IOException::class)
     private fun readTextFromUri(uri: Uri): String {
         val stringBuilder = StringBuilder()
@@ -158,9 +153,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    /**
-     * Creates the notification channel used by the notification in GpsService.
-     */
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val importance = NotificationManager.IMPORTANCE_DEFAULT

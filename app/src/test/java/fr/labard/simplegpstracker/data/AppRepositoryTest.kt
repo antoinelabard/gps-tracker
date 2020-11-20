@@ -85,7 +85,7 @@ class AppRepositoryTest {
     fun deleteAll() {
         val expectedRecords = listOf<RecordEntity>()
         val expectedLocations = listOf<LocationEntity>()
-        appRepository.deleteAll()
+        appRepository.clearAll()
         val resultRecords = appRepository.getRecords()
         val resultLocations = appRepository.getLocations()
         assertThat(resultRecords.value, `is`(expectedRecords))

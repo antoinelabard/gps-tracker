@@ -26,7 +26,7 @@ class GpsService: Service(), LocationListener {
 
     private lateinit var locationManager: LocationManager
     private var locationProvider: String? = null
-    private var recordId = ""
+    private var activeRecordId = ""
     // tells if the app is in record or follow mode
     private var mode: String = Constants.Service.MODE_RECORD
 
@@ -59,7 +59,7 @@ class GpsService: Service(), LocationListener {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
-        recordId = intent?.getStringExtra(Constants.Intent.RECORD_ID_EXTRA)!!
+        activeRecordId = intent?.getStringExtra(Constants.Intent.RECORD_ID_EXTRA)!!
         mode = intent.getStringExtra(Constants.Intent.MODE)!!
 
         val playIntent = Intent(this, GpsService::class.java).apply {
@@ -90,7 +90,7 @@ class GpsService: Service(), LocationListener {
                     applicationContext, 0, Intent(
                         applicationContext,
                         TrackerActivity::class.java
-                    ).putExtra(Constants.Intent.RECORD_ID_EXTRA, recordId), 0
+                    ).putExtra(Constants.Intent.RECORD_ID_EXTRA, activeRecordId), 0
                 )
             )
             setAutoCancel(true)

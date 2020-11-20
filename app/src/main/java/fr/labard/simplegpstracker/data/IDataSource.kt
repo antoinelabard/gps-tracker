@@ -19,5 +19,5 @@ interface IDataSource {
     fun getLocations(): LiveData<List<LocationEntity>>
     fun insertLocation(locationEntity: LocationEntity): AsyncTask<LocationEntity?, Void?, Void?>?
 
-    fun deleteAll(): AsyncTask<Void?, Void?, Void?>?
+    fun clearAll(): AsyncTask<Void?, Void?, Void?>?
 }

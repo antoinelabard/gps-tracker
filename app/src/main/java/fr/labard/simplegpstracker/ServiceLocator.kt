@@ -25,9 +25,9 @@ object ServiceLocator {
     }
 
     private fun createAppRepository(context: Context): IRepository {
-        val newRepo = AppRepository(createLocalDataSource(context))
-        appRepository = newRepo
-        return newRepo
+        val newRepository = AppRepository(createLocalDataSource(context))
+        appRepository = newRepository
+        return newRepository
     }
 
     private fun createLocalDataSource(context: Context): LocalDataSource {

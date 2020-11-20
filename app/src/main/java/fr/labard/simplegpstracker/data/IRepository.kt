@@ -10,7 +10,7 @@ import fr.labard.simplegpstracker.data.local.RecordEntity
  */
 interface IRepository {
 
-    // used to keep in memory which record is being opened
+    // used to keep in memory which record is being used
     var activeRecordId: MutableLiveData<String>
 
     fun getRecords(): LiveData<List<RecordEntity>>
@@ -22,5 +22,5 @@ interface IRepository {
     fun getLocations(): LiveData<List<LocationEntity>>
     fun insertLocation(locationEntity: LocationEntity)
 
-    fun deleteAll()
+    fun clearAll()
 }

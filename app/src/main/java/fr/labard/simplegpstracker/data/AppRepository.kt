@@ -57,9 +57,9 @@ class AppRepository internal constructor(
         }
     }
 
-    override fun deleteAll() {
+    override fun clearAll() {
         wrapEspressoIdlingResource {
-            localDataSource.deleteAll()
+            localDataSource.clearAll()
         }
     }
 }

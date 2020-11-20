@@ -60,7 +60,7 @@ class RecordListFragmentTest {
     @Test
     fun newRecord_displayedInUI() {
         launchFragmentInContainer<RecordListFragment>(themeResId = R.style.AppTheme)
-        repository.deleteAll()
+        repository.clearAll()
         onView(withId(R.id.activity_main_new_record_fab)).perform(click())
         onView(withId(R.id.recyclerview_item_layout)).check(matches(isDisplayed()))
     }

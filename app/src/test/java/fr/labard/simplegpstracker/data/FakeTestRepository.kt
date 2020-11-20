@@ -41,8 +41,8 @@ class FakeTestRepository(
         fakeDataSource.insertLocation(locationEntity)
     }
 
-    override fun deleteAll() {
-        fakeDataSource.deleteAll()
+    override fun clearAll() {
+        fakeDataSource.clearAll()
     }
 
 
