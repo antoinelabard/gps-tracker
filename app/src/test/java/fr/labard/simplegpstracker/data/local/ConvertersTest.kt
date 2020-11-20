@@ -8,7 +8,7 @@ import java.util.*
 
 class ConvertersTest {
 
-    val t = 946729800000 // date of 01/01/2000
+    val t = 946729800000 // date of 01/01/2000, 00h00
     val d = Date(t)
 
     @Test

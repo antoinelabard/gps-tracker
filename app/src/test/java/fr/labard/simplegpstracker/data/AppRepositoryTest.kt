@@ -24,7 +24,6 @@ class AppRepositoryTest {
     @Before
     fun createRepository() {
         fakeDataSource = FakeIDataSource(mutableListOf(r1), mutableListOf(le1, le2))
-
         appRepository = AppRepository(fakeDataSource)
     }
 

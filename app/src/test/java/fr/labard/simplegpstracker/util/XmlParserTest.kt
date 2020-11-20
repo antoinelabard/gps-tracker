@@ -12,6 +12,7 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class XmlParserTest {
 
+    // This is a GPX String storing the data of the RecordEntity r1 and the LocationEntities le1 and le2
     val r1xmlText =
             "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
             "<gpx>\n" +

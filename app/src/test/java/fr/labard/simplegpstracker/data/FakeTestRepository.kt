@@ -6,6 +6,9 @@ import fr.labard.simplegpstracker.data.local.FakeIDataSource
 import fr.labard.simplegpstracker.data.local.LocationEntity
 import fr.labard.simplegpstracker.data.local.RecordEntity
 
+/**
+ * This class provides an implementation of IDataSource for testing only, and is not suited for production.
+ */
 class FakeTestRepository(
     val fakeDataSource: FakeIDataSource
 ): IRepository {

@@ -8,6 +8,9 @@ import org.mockito.junit.MockitoJUnitRunner
 import java.util.*
 import kotlin.math.pow
 
+/**
+ * This class is a copy of Data from the test directory.
+ */
 @RunWith(MockitoJUnitRunner::class)
 class AndroidData {
     companion object {

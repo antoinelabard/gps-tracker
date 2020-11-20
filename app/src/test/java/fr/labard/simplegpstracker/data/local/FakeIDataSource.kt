@@ -6,6 +6,9 @@ import androidx.lifecycle.MutableLiveData
 import fr.labard.simplegpstracker.data.IDataSource
 import java.util.*
 
+/**
+ * This class provides an implementation of IDataSource for testing only, and is not suited for production.
+ */
 class FakeIDataSource internal constructor(
     records: MutableList<RecordEntity>,
     locations: MutableList<LocationEntity>
