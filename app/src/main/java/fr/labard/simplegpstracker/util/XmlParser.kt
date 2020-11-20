@@ -10,11 +10,26 @@ import java.io.IOException
 import java.io.InputStream
 import java.util.*
 
+/**
+ * XmlParser provides the features to import data from GPX file into the app repository, and to export the apprepository
+ * data to a GPX file.
+ */
 class XmlParser {
 
     private val ns: String? = null
 
+    /**
+     * Stores in a convenient way the records and their associated locations.
+     * @param recordTags a list of RecordTag
+     */
     data class RecordList(val recordTags: MutableList<RecordTag>) {
+
+        /**
+         * Convert the data stored in recordTags in a string matching the GPX file format. some fields have been added
+         * to the GPX encoding to keep the data relative to each record. Usually this modification is compatible with
+         * other GPX reader program as long as they manage unknown attributes by ignoring them and not fail.
+         * @return the GPX formatted string
+         */
         fun toGpx(): String {
             var s = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<${Constants.Gpx.GPX}>\n"
             for (record in recordTags) {
@@ -39,6 +54,10 @@ class XmlParser {
             return s
         }
 
+        /**
+         * In recordTags, convert each RecordTag in a RecordEntity, and each LocationTag in A LocationEntity.
+         * @return a pair of a list of RecordEntity and a list of LocationEntity
+         */
         fun toRecordsAndLocations(): Pair<MutableList<RecordEntity>, MutableList<LocationEntity>> {
             val r = mutableListOf<RecordEntity>()
             val l = mutableListOf<LocationEntity>()
@@ -53,6 +72,14 @@ class XmlParser {
         }
     }
 
+    /**
+     * This class is used ease the conversion between RecordEntity and GPX text format
+     * @param id the id of the RecordEntity
+     * @param name the name of the RecordEntity
+     * @param creationDate the creation date of the RecordEntity
+     * @param lastModification the date of the last modification of the RecordEntity
+     * @param locations the list of the locations linked to the RecordEntity
+     */
     data class RecordTag(
         val id: String,
         val name: String,
@@ -60,6 +87,11 @@ class XmlParser {
         val lastModification: Date,
         val locations: MutableList<LocationTag>
     ) {
+
+        /**
+         * Convert to a RecordEntity
+         * @return a RecordEntity storing the data provided by this RecordTag
+         */
         fun toRecordEntity() = RecordEntity(
             this@RecordTag.name,
             this@RecordTag.creationDate,
@@ -67,6 +99,14 @@ class XmlParser {
         ).apply { id = this@RecordTag.id }
     }
 
+    /**
+     * This class is used ease the conversion between LocationEntity and GPX text format
+     * @param id the id of the LocationEntity
+     * @param time the time of the LocationEntity
+     * @param latitude the latitude of the LocationEntity
+     * @param longitude the longitude of the LocationEntity
+     * @param speed the speed of the LocationEntity
+     */
     data class LocationTag(
         val id: String,
         val time: Long,
@@ -74,6 +114,11 @@ class XmlParser {
         val longitude: Double,
         val speed: Float
     ) {
+
+        /**
+         * Convert to a LocationEntity
+         * @return a LocationEntity storing the data provided by this LocationTag
+         */
         fun toLocationEntity(recordId: String) = LocationEntity(
             recordId,
             this@LocationTag.time,
@@ -83,6 +128,11 @@ class XmlParser {
         ).apply { id = this@LocationTag.id }
     }
 
+    /**
+     * Convert the GPX data stored in the stream into two lists of RecordEntity and LocationEntity.
+     * @param inputStream the stream from which the data is read
+     * @return a pair of two lists of RecordEntity and LocationEntity
+     */
     @Throws(XmlPullParserException::class, IOException::class)
     fun import(inputStream: InputStream): Pair<MutableList<RecordEntity>, MutableList<LocationEntity>> {
         inputStream.use { inputStream1 ->
@@ -94,6 +144,9 @@ class XmlParser {
         }
     }
 
+    /**
+     * Read the content of the GPX file
+     */
     @Throws(XmlPullParserException::class, IOException::class)
     private fun readFeed(parser: XmlPullParser): RecordList {
         val recordList = RecordList(mutableListOf())
@@ -110,6 +163,9 @@ class XmlParser {
         return recordList
     }
 
+    /**
+     * Read the content of the trk tags in the GPX file and convert them to a RecordTag.
+     */
     @Throws(XmlPullParserException::class, IOException::class)
     private fun readRecordTag(parser: XmlPullParser): RecordTag {
         parser.require(XmlPullParser.START_TAG, ns, Constants.Gpx.TRK)
@@ -138,6 +194,9 @@ class XmlParser {
         )
     }
 
+    /**
+     * Read the content of the trkpt tags in the GPX file and convert them to a LocationTag.
+     */
     @Throws(IOException::class, XmlPullParserException::class)
     private fun readLocationTag(parser: XmlPullParser): LocationTag {
         parser.require(XmlPullParser.START_TAG, ns, Constants.Gpx.TRKPT)
@@ -165,6 +224,9 @@ class XmlParser {
         )
     }
 
+    /**
+     * Read the content of the time tags in the GPX file.
+     */
     @Throws(XmlPullParserException::class, IOException::class)
     private fun readTime(parser: XmlPullParser): Long {
         parser.require(XmlPullParser.START_TAG, ns, Constants.Gpx.TIME)
@@ -173,6 +235,9 @@ class XmlParser {
         return title.toLong()
     }
 
+    /**
+     * Read the content of the time tags in the GPX file.
+     */
     @Throws(XmlPullParserException::class, IOException::class)
     private fun readName(parser: XmlPullParser): String {
         parser.require(XmlPullParser.START_TAG, ns, Constants.Gpx.NAME)
@@ -191,7 +256,9 @@ class XmlParser {
         return result
     }
 
-
+    /**
+     * Invoked to skip the unused tags in the GPX file.
+     */
     @Throws(XmlPullParserException::class, IOException::class)
     private fun skip(parser: XmlPullParser) {
         if (parser.eventType != XmlPullParser.START_TAG) {
@@ -206,6 +273,12 @@ class XmlParser {
         }
     }
 
+    /**
+     * RecordEntities and LocationEntities provided into a String in a GPX format.
+     * @param records the list of the records to convert
+     * @param locations the lists of the locations to convert
+     * @return a GPX formatted string
+     */
     fun export(records: List<RecordEntity>, locations: List<LocationEntity>): String {
         val recordList = RecordList(mutableListOf())
         for (record in records) {
