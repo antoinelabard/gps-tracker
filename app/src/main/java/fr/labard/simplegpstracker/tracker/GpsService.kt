@@ -30,7 +30,7 @@ class GpsService: Service(), LocationListener {
     private var locationProvider: String? = null
 
     var gpsMode = MutableLiveData(Constants.Service.MODE_STANDBY)
-    var activeRecordId: String? = null
+    var activeRecordId = MutableLiveData<String>()
     val lastLocation = MutableLiveData<Location>()
 
 
@@ -39,28 +39,15 @@ class GpsService: Service(), LocationListener {
     }
 
     override fun onBind(intent: Intent): IBinder {
-        return binder
-    }
-
-    override fun onCreate() {
-        super.onCreate()
-
-        locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        locationProvider = locationManager.getBestProvider(Criteria(), false)
-    }
-
-    override fun onLocationChanged(location: Location?) { location?.let {lastLocation.value = it} }
-
-    override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
-
-    override fun onProviderEnabled(provider: String?) {}
-
-    override fun onProviderDisabled(provider: String?) {}
-
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
         enableLocationUpdates()
 
+        buildNotification()
+
+        return binder
+    }
+
+    private fun buildNotification() {
         val notification = NotificationCompat.Builder(
             this, Constants.Notification.CHANNEL_ID).apply {
             setContentTitle(getString(R.string.gpstracker_notification_title))
@@ -84,9 +71,22 @@ class GpsService: Service(), LocationListener {
         }
 
         startForeground(1, notification.build())
-
-        return START_STICKY
     }
+
+    override fun onCreate() {
+        super.onCreate()
+
+        locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        locationProvider = locationManager.getBestProvider(Criteria(), false)
+    }
+
+    override fun onLocationChanged(location: Location?) { location?.let {lastLocation.value = it} }
+
+    override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
+
+    override fun onProviderEnabled(provider: String?) {}
+
+    override fun onProviderDisabled(provider: String?) {}
 
     private fun enableLocationUpdates() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION

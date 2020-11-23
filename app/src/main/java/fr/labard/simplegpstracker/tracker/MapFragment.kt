@@ -31,8 +31,12 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
  */
 class MapFragment : Fragment() {
 
+    lateinit var gpsProvider: GpsMyLocationProvider
     private lateinit var mapView: MapView
     private lateinit var mapController: IMapController
+
+    private lateinit var polyline: Polyline
+
     private val viewModel by viewModels<MapFragmentViewModel> {
         MapFragmentViewModelFactory((requireContext().applicationContext as GPSApplication).appRepository)
     }
@@ -44,13 +48,20 @@ class MapFragment : Fragment() {
             gpsService = binder.getService()
             viewModel.serviceIsBound = true
 
-            viewModel.activeRecordId = gpsService.activeRecordId
             gpsService.gpsMode.observe(viewLifecycleOwner, {mode ->
                 if (mode == Constants.Service.MODE_RECORD) {
                     activity_tracker_record_fab.setImageResource(R.drawable.ic_baseline_stop_24)
                 } else {
                     activity_tracker_record_fab.setImageResource(R.drawable.ic_baseline_fiber_manual_record_24)
                 }
+            })
+            gpsService.activeRecordId.observe(viewLifecycleOwner, { id ->
+                viewModel.activeRecordId = id
+                viewModel.setLocationsByActiveRecordId()
+                updateMapView()
+            })
+            gpsService.lastLocation.observe(viewLifecycleOwner, {location ->
+                viewModel.currentLocation = location
             })
         }
 
@@ -103,12 +114,24 @@ class MapFragment : Fragment() {
     }
 
     private fun buildMapView() {
+        gpsProvider = GpsMyLocationProvider(activity?.applicationContext)
         mapView.setTileSource(TileSourceFactory.MAPNIK)
         mapView.setMultiTouchControls(true)
-        mapController = mapView.controller
-        mapController.setZoom(20.0)
+        mapController = mapView.controller.apply {
+            setZoom(20.0)
+            gpsProvider.lastKnownLocation?.let {
+                setCenter(
+                    GeoPoint(
+                        gpsProvider.lastKnownLocation.latitude,
+                        gpsProvider.lastKnownLocation.longitude
+
+                    )
+                )
+            }
+        }
+        polyline = Polyline()
         val mLocationOverlay = MyLocationNewOverlay(
-            GpsMyLocationProvider(activity?.applicationContext),
+            gpsProvider,
             mapView)
         mLocationOverlay.enableMyLocation()
         mapView.overlays.add(mLocationOverlay)
@@ -130,8 +153,20 @@ class MapFragment : Fragment() {
     private fun updateMapView() {
         val parkour: List<GeoPoint>? = viewModel.locationsByRecordId.map { GeoPoint(it.latitude, it.longitude) }
         if (parkour!!.isEmpty()) return
-        mapView.overlayManager.add(Polyline().apply { setPoints(parkour) })
-        mapController.setCenter(parkour.last())
+        mapView.overlays.remove(polyline)
+        polyline = Polyline()
+        mapView.overlayManager.add(polyline.apply { setPoints(parkour) })
+        mapController.apply {
+            gpsProvider.lastKnownLocation?.let {
+                setCenter(
+                    GeoPoint(
+                        gpsProvider.lastKnownLocation.latitude,
+                        gpsProvider.lastKnownLocation.longitude
+
+                    )
+                )
+            }
+        }
     }
 
     override fun onPause() {

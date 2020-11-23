@@ -4,16 +4,22 @@ import android.location.Location
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import fr.labard.simplegpstracker.data.IRepository
+import fr.labard.simplegpstracker.data.local.LocationEntity
 
 class FollowFragmentViewModel(
     appRepository: IRepository
 ) : ViewModel() {
 
     var serviceIsBound = false
-    var activeRecordId = appRepository.activeRecordId
+    var activeRecordId: String? = null
     var allLocations = appRepository.getLocations()
-    var locationsByRecordId = mutableListOf<Location>()
+    var locationsByRecordId = listOf<LocationEntity>()
     var currentLocation = Location("")
+
+    fun setLocationsByActiveRecordId() {
+        activeRecordId?.let { id ->
+            locationsByRecordId = allLocations.value?.filter { it.recordId == id } ?: listOf() }
+    }
 }
 
 @Suppress("UNCHECKED_CAST")

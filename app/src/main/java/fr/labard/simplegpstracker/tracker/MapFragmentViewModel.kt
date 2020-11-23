@@ -1,22 +1,24 @@
 package fr.labard.simplegpstracker.tracker
 
+import android.location.Location
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import fr.labard.simplegpstracker.data.IRepository
 import fr.labard.simplegpstracker.data.local.LocationEntity
 
 class MapFragmentViewModel(
-    private val appRepository: IRepository
+    appRepository: IRepository
 ) : ViewModel() {
 
     var serviceIsBound = false
     var activeRecordId: String? = null
     var allLocations = appRepository.getLocations()
     var locationsByRecordId = listOf<LocationEntity>()
+    var currentLocation = Location("")
+
     fun setLocationsByActiveRecordId() {
-        locationsByRecordId = allLocations.value!!
-            .filter { it.recordId == activeRecordId }
-            .sortedBy { it.time }
+        activeRecordId?.let { id ->
+            locationsByRecordId = allLocations.value?.filter { it.recordId == id } ?: listOf() }
     }
 }
 

@@ -36,8 +36,8 @@ class TrackerActivity : AppCompatActivity() {
             gpsService = binder.getService()
             viewModel.serviceIsBound = true
 
-            gpsService.activeRecordId = intent.getStringExtra(Constants.Intent.RECORD_ID_EXTRA)!!
-            viewModel.activeRecordId = gpsService.activeRecordId
+            intent.getStringExtra(Constants.Intent.RECORD_ID_EXTRA)?.let { gpsService.activeRecordId.value = it }
+            viewModel.activeRecordId = gpsService.activeRecordId.value
             gpsService.lastLocation.observe(this@TrackerActivity, {location ->
                 if (gpsService.gpsMode.value == Constants.Service.MODE_RECORD) {
                     location?.let { viewModel.insertLocation(it) }
@@ -69,10 +69,6 @@ class TrackerActivity : AppCompatActivity() {
                 (applicationContext as GPSApplication).appRepository
             )).get(TrackerActivityViewModel::class.java)
 
-        Intent(this, GpsService::class.java).also { intent ->
-            bindService(intent, connection, Context.BIND_AUTO_CREATE)
-        }
-
         // load the map fragment in the fragment container
         if (findViewById<FrameLayout>(R.id.activity_tracker_fragment_container) != null) {
             if (savedInstanceState != null) return
@@ -92,6 +88,9 @@ class TrackerActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
+        Intent(this, GpsService::class.java).also { intent ->
+            bindService(intent, connection, Context.BIND_AUTO_CREATE)
+        }
     }
 
     override fun onStop() {
