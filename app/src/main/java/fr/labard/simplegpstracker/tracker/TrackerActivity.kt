@@ -35,6 +35,14 @@ class TrackerActivity : AppCompatActivity() {
             val binder = service as GpsService.LocalBinder
             gpsService = binder.getService()
             viewModel.serviceIsBound = true
+
+            gpsService.activeRecordId = intent.getStringExtra(Constants.Intent.RECORD_ID_EXTRA)!!
+            viewModel.activeRecordId = gpsService.activeRecordId
+            gpsService.lastLocation.observe(this@TrackerActivity, {location ->
+                if (gpsService.gpsMode.value == Constants.Service.MODE_RECORD) {
+                    location?.let { viewModel.insertLocation(it) }
+                }
+            })
         }
 
         override fun onServiceDisconnected(arg0: ComponentName) {
@@ -61,6 +69,10 @@ class TrackerActivity : AppCompatActivity() {
                 (applicationContext as GPSApplication).appRepository
             )).get(TrackerActivityViewModel::class.java)
 
+        Intent(this, GpsService::class.java).also { intent ->
+            bindService(intent, connection, Context.BIND_AUTO_CREATE)
+        }
+
         // load the map fragment in the fragment container
         if (findViewById<FrameLayout>(R.id.activity_tracker_fragment_container) != null) {
             if (savedInstanceState != null) return
@@ -69,28 +81,17 @@ class TrackerActivity : AppCompatActivity() {
             }
         }
 
-        gpsService.activeRecordId = intent.getStringExtra(Constants.Intent.RECORD_ID_EXTRA)!!
-
         viewModel.allRecords.observe(this, {
-            activity_tracker_toolbar.title = viewModel
-                .getRecordById(viewModel.activeRecordId.value!!).name
+            viewModel.activeRecordId?.let {
+                activity_tracker_toolbar.title = viewModel.getRecordById(it).name
+            }
         })
 
         viewModel.allLocations.observe(this, {})
-
-        gpsService.lastLocation.observe(this, {location ->
-            if (gpsService.gpsMode == Constants.Service.MODE_RECORD) {
-                location?.let { viewModel.insertLocation(it) }
-            }
-        })
     }
 
     override fun onStart() {
         super.onStart()
-        Intent(this, GpsService::class.java).also { intent ->
-            bindService(intent, connection, Context.BIND_AUTO_CREATE)
-        }
-
     }
 
     override fun onStop() {
@@ -150,7 +151,7 @@ class TrackerActivity : AppCompatActivity() {
                     .setTitle(R.string.delete)
                     .setMessage(R.string.delete_message)
                     .setPositiveButton(R.string.yes) { _: DialogInterface, _: Int ->
-                        viewModel.deleteRecord(viewModel.activeRecordId.value!!)
+                        viewModel.deleteRecord(viewModel.activeRecordId!!)
                         Toast.makeText(this, R.string.deletion_complete, Toast.LENGTH_LONG)
                         finish()
                     }

@@ -1,20 +1,19 @@
 package fr.labard.simplegpstracker.tracker
 
-import android.content.BroadcastReceiver
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
+import android.content.ServiceConnection
 import android.location.Location
 import android.os.Bundle
+import android.os.IBinder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import fr.labard.simplegpstracker.GPSApplication
 import fr.labard.simplegpstracker.R
 import fr.labard.simplegpstracker.data.local.LocationEntity
@@ -39,32 +38,37 @@ class FollowFragment : Fragment() {
 
     private lateinit var mapView: MapView
     private lateinit var mapController: IMapController
-    private lateinit var locationServiceIntent: Intent
-
-    private lateinit var polyline: Polyline
-    private lateinit var checkpoint: Marker
-
     private val viewModel by viewModels<FollowFragmentViewModel> {
         FollowFragmentViewModelFactory((requireContext().applicationContext as GPSApplication).appRepository)
     }
+    private lateinit var gpsService: GpsService
 
-    // used to receive the location updates from GpsService
-    private val locationBroadcastReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context, intent: Intent){
-            if (intent.getStringExtra(Constants.Service.GPS_MODE) == Constants.Service.MODE_FOLLOW
-                && viewModel.locationsByRecordId.isNotEmpty()) {
-                viewModel.currentLocation = Location("").apply {
-                    latitude = intent.getDoubleExtra(Constants.Intent.LATITUDE_EXTRA, 0.0)
-                    longitude = intent.getDoubleExtra(Constants.Intent.LONGITUDE_EXTRA, 0.0)
+    private val connection = object : ServiceConnection {
+        override fun onServiceConnected(className: ComponentName, service: IBinder) {
+            val binder = service as GpsService.LocalBinder
+            gpsService = binder.getService()
+            viewModel.serviceIsBound = true
+
+            gpsService.gpsMode.observe(viewLifecycleOwner, {mode ->
+                if (mode == Constants.Service.MODE_RECORD) {
+                    activity_tracker_follow_fab.setImageResource(R.drawable.ic_baseline_pause_24)
+                } else {
+                    activity_tracker_follow_fab.setImageResource(R.drawable.ic_baseline_play_arrow_24)
                 }
-                if (viewModel.locationsByRecordId.last().distanceTo(viewModel.currentLocation) < Constants.Location.MIN_RADIUS) {
-                    viewModel.locationsByRecordId.removeLast()
-                    Toast.makeText(activity, getString(R.string.checkpoint_reached), Toast.LENGTH_SHORT).show()
-                }
-                updateMapView()
-            }
+            })
+
+            gpsService.lastLocation.observe(viewLifecycleOwner, {location ->
+                viewModel.currentLocation = location
+            })
+        }
+
+        override fun onServiceDisconnected(arg0: ComponentName) {
+            viewModel.serviceIsBound = false
         }
     }
+
+    private lateinit var polyline: Polyline
+    private lateinit var checkpoint: Marker
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -88,15 +92,7 @@ class FollowFragment : Fragment() {
             }
         })
 
-        LocalBroadcastManager.getInstance(activity!!).registerReceiver(
-            locationBroadcastReceiver,
-            IntentFilter(Constants.Service.LOCATION_BROADCAST)
-        )
 
-        locationServiceIntent = Intent(activity?.applicationContext, GpsService::class.java)
-            .putExtra(Constants.Intent.RECORD_ID_EXTRA, viewModel.activeRecordId.value)
-            .putExtra(Constants.Intent.MODE, Constants.Service.MODE_FOLLOW)
-            .setAction(Constants.Intent.ACTION_PLAY)
 
         return view
     }
@@ -105,15 +101,24 @@ class FollowFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         activity_tracker_follow_fab.setOnClickListener {
-            if (viewModel.isFollowing) {
-                activity?.stopService(locationServiceIntent)
-                activity_tracker_follow_fab.setImageResource(R.drawable.ic_baseline_play_arrow_24)
-            } else {
-                activity?.startService(locationServiceIntent)
-                activity_tracker_follow_fab.setImageResource(R.drawable.ic_baseline_pause_24)
-            }
-            viewModel.isFollowing = !viewModel.isFollowing
+            if (gpsService.gpsMode.value == Constants.Service.MODE_FOLLOW) {
+                gpsService.gpsMode.value = Constants.Service.MODE_STANDBY
+            } else
+                gpsService.gpsMode.value = Constants.Service.MODE_FOLLOW
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Intent(activity, GpsService::class.java).also { intent ->
+            activity?.bindService(intent, connection, Context.BIND_AUTO_CREATE)
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        activity?.unbindService(connection)
+        viewModel.serviceIsBound = false
     }
 
     private fun buildMapView() {
@@ -157,8 +162,8 @@ class FollowFragment : Fragment() {
         mapView.overlayManager.add(polyline.apply { setPoints(parkour) })
         mapView.overlayManager.add(checkpoint.apply {
             position = GeoPoint(
-                viewModel.locationsByRecordId.last().latitude,
-                viewModel.locationsByRecordId.last().longitude
+                viewModel.currentLocation.latitude,
+                viewModel.currentLocation.longitude
             )
             // particular behavior for the final checkpoint
             if (viewModel.locationsByRecordId.size == 1) {
@@ -179,11 +184,5 @@ class FollowFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         mapView.onResume()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        activity?.stopService(locationServiceIntent)
-        LocalBroadcastManager.getInstance(activity!!).unregisterReceiver(locationBroadcastReceiver)
     }
 }

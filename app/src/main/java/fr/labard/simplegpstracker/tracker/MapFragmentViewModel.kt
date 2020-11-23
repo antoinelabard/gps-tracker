@@ -9,14 +9,13 @@ class MapFragmentViewModel(
     private val appRepository: IRepository
 ) : ViewModel() {
 
-    var activeRecordId = appRepository.activeRecordId
+    var serviceIsBound = false
+    var activeRecordId: String? = null
     var allLocations = appRepository.getLocations()
     var locationsByRecordId = listOf<LocationEntity>()
-    var isRecording = false
-
     fun setLocationsByActiveRecordId() {
         locationsByRecordId = allLocations.value!!
-            .filter { it.recordId == activeRecordId.value }
+            .filter { it.recordId == activeRecordId }
             .sortedBy { it.time }
     }
 }

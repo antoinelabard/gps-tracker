@@ -1,17 +1,16 @@
 package fr.labard.simplegpstracker.tracker
 
-import android.content.BroadcastReceiver
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
-import android.location.Location
+import android.content.ServiceConnection
 import android.os.Bundle
+import android.os.IBinder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import fr.labard.simplegpstracker.GPSApplication
 import fr.labard.simplegpstracker.R
 import fr.labard.simplegpstracker.util.Constants
@@ -32,27 +31,31 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
  */
 class MapFragment : Fragment() {
 
-    private lateinit var localBroadcastManager: LocalBroadcastManager
-    lateinit var locationServiceIntent: Intent
     private lateinit var mapView: MapView
     private lateinit var mapController: IMapController
-
     private val viewModel by viewModels<MapFragmentViewModel> {
         MapFragmentViewModelFactory((requireContext().applicationContext as GPSApplication).appRepository)
     }
+    private lateinit var gpsService: GpsService
 
-    // used to receive the location updates from GpsService
-    private val locationBroadcastReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context, intent: Intent){
-            if (intent.getStringExtra(Constants.Service.GPS_MODE) == Constants.Service.MODE_RECORD) {
-                val location = Location(Constants.Service.LOCATION_PROVIDER).apply {
-                    latitude = intent.getDoubleExtra(Constants.Intent.LATITUDE_EXTRA, 0.0)
-                    longitude = intent.getDoubleExtra(Constants.Intent.LONGITUDE_EXTRA, 0.0)
-                    speed = intent.getFloatExtra(Constants.Intent.SPEED_EXTRA, 0.0f)
-                    time = intent.getLongExtra(Constants.Intent.TIME_EXTRA, 0)
+    private val connection = object : ServiceConnection {
+        override fun onServiceConnected(className: ComponentName, service: IBinder) {
+            val binder = service as GpsService.LocalBinder
+            gpsService = binder.getService()
+            viewModel.serviceIsBound = true
+
+            viewModel.activeRecordId = gpsService.activeRecordId
+            gpsService.gpsMode.observe(viewLifecycleOwner, {mode ->
+                if (mode == Constants.Service.MODE_RECORD) {
+                    activity_tracker_record_fab.setImageResource(R.drawable.ic_baseline_stop_24)
+                } else {
+                    activity_tracker_record_fab.setImageResource(R.drawable.ic_baseline_fiber_manual_record_24)
                 }
-                viewModel.insertLocation(location)
-            }
+            })
+        }
+
+        override fun onServiceDisconnected(arg0: ComponentName) {
+            viewModel.serviceIsBound = false
         }
     }
 
@@ -66,24 +69,10 @@ class MapFragment : Fragment() {
         mapView = view.findViewById(R.id.fragment_map_mapview)
         buildMapView()
 
-        viewModel.activeRecordId.observeForever{}
-
         viewModel.allLocations.observe(viewLifecycleOwner, {
             viewModel.setLocationsByActiveRecordId()
             updateMapView()
         })
-
-        localBroadcastManager = LocalBroadcastManager.getInstance(activity!!.applicationContext)
-
-        LocalBroadcastManager.getInstance(activity!!).registerReceiver(
-            locationBroadcastReceiver,
-            IntentFilter(Constants.Service.LOCATION_BROADCAST)
-        )
-
-        locationServiceIntent = Intent(activity?.applicationContext, GpsService::class.java)
-            .putExtra(Constants.Intent.RECORD_ID_EXTRA, viewModel.activeRecordId.value)
-            .putExtra(Constants.Intent.MODE, Constants.Service.MODE_RECORD)
-            .setAction(Constants.Intent.ACTION_PLAY)
 
         return view
     }
@@ -92,15 +81,25 @@ class MapFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         activity_tracker_record_fab.setOnClickListener {
-            if (viewModel.isRecording) {
-                activity?.stopService(locationServiceIntent)
-                activity_tracker_record_fab.setImageResource(R.drawable.ic_baseline_fiber_manual_record_24)
+            if (gpsService.gpsMode.value == Constants.Service.MODE_RECORD) {
+                gpsService.gpsMode.value = Constants.Service.MODE_STANDBY
             } else {
-                activity?.startService(locationServiceIntent)
-                activity_tracker_record_fab.setImageResource(R.drawable.ic_baseline_stop_24)
+                gpsService.gpsMode.value = Constants.Service.MODE_RECORD
             }
-            viewModel.isRecording = !viewModel.isRecording
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Intent(activity, GpsService::class.java).also { intent ->
+            activity?.bindService(intent, connection, Context.BIND_AUTO_CREATE)
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        activity?.unbindService(connection)
+        viewModel.serviceIsBound = false
     }
 
     private fun buildMapView() {
@@ -143,11 +142,5 @@ class MapFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         mapView.onResume()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        activity?.stopService(locationServiceIntent)
-        LocalBroadcastManager.getInstance(activity!!).unregisterReceiver(locationBroadcastReceiver)
     }
 }

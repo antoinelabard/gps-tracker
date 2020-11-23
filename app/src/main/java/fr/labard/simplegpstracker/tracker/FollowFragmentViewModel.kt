@@ -9,11 +9,11 @@ class FollowFragmentViewModel(
     appRepository: IRepository
 ) : ViewModel() {
 
+    var serviceIsBound = false
     var activeRecordId = appRepository.activeRecordId
     var allLocations = appRepository.getLocations()
     var locationsByRecordId = mutableListOf<Location>()
     var currentLocation = Location("")
-    var isFollowing = false
 }
 
 @Suppress("UNCHECKED_CAST")

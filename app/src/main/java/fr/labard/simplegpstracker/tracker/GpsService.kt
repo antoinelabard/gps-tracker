@@ -29,7 +29,7 @@ class GpsService: Service(), LocationListener {
     private lateinit var locationManager: LocationManager
     private var locationProvider: String? = null
 
-    var gpsMode: String = Constants.Service.MODE_STANDBY
+    var gpsMode = MutableLiveData(Constants.Service.MODE_STANDBY)
     var activeRecordId: String? = null
     val lastLocation = MutableLiveData<Location>()
 

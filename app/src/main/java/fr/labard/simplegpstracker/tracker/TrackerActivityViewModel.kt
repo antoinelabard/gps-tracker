@@ -13,7 +13,7 @@ class TrackerActivityViewModel(
 ) : ViewModel() {
     val allRecords = appRepository.getRecords()
     val allLocations = appRepository.getLocations()
-    var activeRecordId = appRepository.activeRecordId
+    var activeRecordId: String? = null
     var serviceIsBound: Boolean = false
 
     fun getRecordById(id: String)
@@ -23,7 +23,7 @@ class TrackerActivityViewModel(
     fun insertLocation(location: Location) {
         appRepository.insertLocation(
             LocationEntity(
-                activeRecordId.value!!,
+                activeRecordId!!,
                 location.time,
                 location.latitude,
                 location.longitude,
@@ -33,12 +33,12 @@ class TrackerActivityViewModel(
     }
 
     fun updateRecordName(name: String) {
-        appRepository.updateRecordName(activeRecordId.value!!, name)
+        appRepository.updateRecordName(activeRecordId!!, name)
         updateLastRecordModification()
     }
 
     fun updateLastRecordModification() {
-        appRepository.updateLastRecordModification(activeRecordId.value!!)
+        appRepository.updateLastRecordModification(activeRecordId!!)
     }
 
     fun deleteRecord(recordId: String) = appRepository.deleteRecord(recordId)
