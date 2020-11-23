@@ -16,12 +16,13 @@ import android.os.IBinder
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.MutableLiveData
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import fr.labard.simplegpstracker.R
 import fr.labard.simplegpstracker.util.Constants
 
 /**
  * GpsService listens for location updates and sends them to the application.
- * The service is started when the app is recording in whether record or follow mode.
+ * The service is started when TrackerActivity is launched.
  */
 class GpsService: Service(), LocationListener {
 
@@ -36,6 +37,11 @@ class GpsService: Service(), LocationListener {
 
     inner class LocalBinder : Binder() {
         fun getService(): GpsService = this@GpsService
+    }
+
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+
+        return START_STICKY
     }
 
     override fun onBind(intent: Intent): IBinder {
@@ -80,7 +86,22 @@ class GpsService: Service(), LocationListener {
         locationProvider = locationManager.getBestProvider(Criteria(), false)
     }
 
-    override fun onLocationChanged(location: Location?) { location?.let {lastLocation.value = it} }
+    override fun onLocationChanged(location: Location?) {
+        location?.let {
+            lastLocation.value = it
+            // sends the location to the app as a broadcast
+            LocalBroadcastManager.getInstance(this).sendBroadcast(
+                Intent(Constants.Service.LOCATION_BROADCAST).apply {
+                    putExtra(Constants.Service.GPS_MODE, gpsMode.value)
+                    putExtra(Constants.Intent.RECORD_ID_EXTRA, activeRecordId.value)
+                    putExtra(Constants.Intent.LATITUDE_EXTRA, location.latitude)
+                    putExtra(Constants.Intent.LONGITUDE_EXTRA, location.longitude)
+                    putExtra(Constants.Intent.SPEED_EXTRA, location.speed)
+                    putExtra(Constants.Intent.TIME_EXTRA, location.time)
+                }
+            )
+        }
+    }
 
     override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
 

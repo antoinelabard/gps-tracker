@@ -1,6 +1,5 @@
 package fr.labard.simplegpstracker.tracker
 
-import android.location.Location
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import fr.labard.simplegpstracker.data.IRepository
@@ -20,15 +19,9 @@ class TrackerActivityViewModel(
             = allRecords.value?.find { it.id == id }
         ?: RecordEntity("", Date(), Date())
 
-    fun insertLocation(location: Location) {
+    fun insertLocation(location: LocationEntity) {
         appRepository.insertLocation(
-            LocationEntity(
-                activeRecordId!!,
-                location.time,
-                location.latitude,
-                location.longitude,
-                location.speed
-            )
+            location
         )
     }
 

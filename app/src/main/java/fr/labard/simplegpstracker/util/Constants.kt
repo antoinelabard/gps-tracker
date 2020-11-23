@@ -17,7 +17,6 @@ class Constants {
             const val ACTION_PAUSE = "action_pause"
             const val ACTION_PLAY = "action_play"
             const val ACTION_STOP = "action_stop"
-            const val MODE = "mode"
             const val REQUEST_CODE = 21
             const val CREATE_FILE_REQUEST_CODE = 22
             const val OPEN_FILE_REQUEST_CODE = 23

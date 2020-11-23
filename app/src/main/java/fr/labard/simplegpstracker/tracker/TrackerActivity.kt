@@ -19,15 +19,17 @@ import androidx.fragment.app.add
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import androidx.lifecycle.ViewModelProvider
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import fr.labard.simplegpstracker.GPSApplication
 import fr.labard.simplegpstracker.R
+import fr.labard.simplegpstracker.data.local.LocationEntity
 import fr.labard.simplegpstracker.util.Constants
 import kotlinx.android.synthetic.main.activity_tracker.*
 
 class TrackerActivity : AppCompatActivity() {
 
+    lateinit var gpsServiceIntent: Intent
     private lateinit var viewModel: TrackerActivityViewModel
-
     private lateinit var gpsService: GpsService
 
     private val connection = object : ServiceConnection {
@@ -38,11 +40,11 @@ class TrackerActivity : AppCompatActivity() {
 
             intent.getStringExtra(Constants.Intent.RECORD_ID_EXTRA)?.let { gpsService.activeRecordId.value = it }
             viewModel.activeRecordId = gpsService.activeRecordId.value
-            gpsService.lastLocation.observe(this@TrackerActivity, {location ->
-                if (gpsService.gpsMode.value == Constants.Service.MODE_RECORD) {
-                    location?.let { viewModel.insertLocation(it) }
-                }
-            })
+//            gpsService.lastLocation.observe(this@TrackerActivity, {location ->
+//                if (gpsService.gpsMode.value == Constants.Service.MODE_RECORD) {
+//                    location?.let { viewModel.insertLocation(it) }
+//                }
+//            })
         }
 
         override fun onServiceDisconnected(arg0: ComponentName) {
@@ -50,6 +52,20 @@ class TrackerActivity : AppCompatActivity() {
         }
     }
 
+    // used to receive the location updates from GpsService when the app is not shown at screen
+    private val locationBroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent){
+            if (intent.getStringExtra(Constants.Service.GPS_MODE) == Constants.Service.MODE_RECORD) {
+                viewModel.insertLocation(LocationEntity(
+                    intent.getStringExtra(Constants.Intent.RECORD_ID_EXTRA)!!,
+                    intent.getLongExtra(Constants.Intent.TIME_EXTRA, 0),
+                    intent.getDoubleExtra(Constants.Intent.LATITUDE_EXTRA, 0.0),
+                    intent.getDoubleExtra(Constants.Intent.LONGITUDE_EXTRA, 0.0),
+                    intent.getFloatExtra(Constants.Intent.SPEED_EXTRA, 0.0f)
+                ))
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,6 +100,13 @@ class TrackerActivity : AppCompatActivity() {
         })
 
         viewModel.allLocations.observe(this, {})
+
+        LocalBroadcastManager.getInstance(this).registerReceiver(
+            locationBroadcastReceiver,
+            IntentFilter(Constants.Service.LOCATION_BROADCAST)
+        )
+        gpsServiceIntent = Intent(applicationContext, GpsService::class.java)
+        startService(gpsServiceIntent)
     }
 
     override fun onStart() {
@@ -99,6 +122,10 @@ class TrackerActivity : AppCompatActivity() {
         viewModel.serviceIsBound = false
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        stopService(gpsServiceIntent)
+    }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater: MenuInflater = menuInflater
