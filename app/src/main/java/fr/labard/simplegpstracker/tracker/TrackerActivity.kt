@@ -40,11 +40,6 @@ class TrackerActivity : AppCompatActivity() {
 
             intent.getStringExtra(Constants.Intent.RECORD_ID_EXTRA)?.let { gpsService.activeRecordId.value = it }
             viewModel.activeRecordId = gpsService.activeRecordId.value
-//            gpsService.lastLocation.observe(this@TrackerActivity, {location ->
-//                if (gpsService.gpsMode.value == Constants.Service.MODE_RECORD) {
-//                    location?.let { viewModel.insertLocation(it) }
-//                }
-//            })
         }
 
         override fun onServiceDisconnected(arg0: ComponentName) {

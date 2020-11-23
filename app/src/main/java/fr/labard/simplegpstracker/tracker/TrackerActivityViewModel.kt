@@ -35,7 +35,6 @@ class TrackerActivityViewModel(
     }
 
     fun deleteRecord(recordId: String) = appRepository.deleteRecord(recordId)
-
 }
 
 @Suppress("UNCHECKED_CAST")
