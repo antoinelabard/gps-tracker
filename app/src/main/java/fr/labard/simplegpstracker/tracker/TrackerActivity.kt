@@ -1,9 +1,9 @@
 package fr.labard.simplegpstracker.tracker
 
-import android.content.DialogInterface
-import android.content.Intent
+import android.content.*
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.os.IBinder
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -28,20 +28,38 @@ class TrackerActivity : AppCompatActivity() {
 
     private lateinit var viewModel: TrackerActivityViewModel
 
+    private lateinit var gpsService: GpsService
+
+    private val connection = object : ServiceConnection {
+        override fun onServiceConnected(className: ComponentName, service: IBinder) {
+            val binder = service as GpsService.LocalBinder
+            gpsService = binder.getService()
+            viewModel.serviceIsBound = true
+        }
+
+        override fun onServiceDisconnected(arg0: ComponentName) {
+            viewModel.serviceIsBound = false
+        }
+    }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tracker)
         setSupportActionBar(findViewById(R.id.activity_tracker_toolbar))
 
-        requestPermissionsIfNecessary(
-            arrayOf(
+        requestPermissionsIfNecessary(arrayOf(
                 android.Manifest.permission.ACCESS_FINE_LOCATION,
                 android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 android.Manifest.permission.READ_EXTERNAL_STORAGE,
                 android.Manifest.permission.INTERNET,
                 android.Manifest.permission.ACCESS_NETWORK_STATE
-            )
-        )
+            ))
+
+        viewModel = ViewModelProvider(
+            this, TrackerActivityViewModelFactory(
+                (applicationContext as GPSApplication).appRepository
+            )).get(TrackerActivityViewModel::class.java)
 
         // load the map fragment in the fragment container
         if (findViewById<FrameLayout>(R.id.activity_tracker_fragment_container) != null) {
@@ -51,22 +69,36 @@ class TrackerActivity : AppCompatActivity() {
             }
         }
 
-
-        viewModel = ViewModelProvider(
-            this, TrackerActivityViewModelFactory(
-                (applicationContext as GPSApplication).appRepository
-            )
-        ).get(TrackerActivityViewModel::class.java)
-
-//        viewModel.setActiveRecordId(intent.getStringExtra(Constants.Intent.RECORD_ID_EXTRA)!!)
-        viewModel.activeRecordId.value = intent.getStringExtra(Constants.Intent.RECORD_ID_EXTRA)!!
+        gpsService.activeRecordId = intent.getStringExtra(Constants.Intent.RECORD_ID_EXTRA)!!
 
         viewModel.allRecords.observe(this, {
             activity_tracker_toolbar.title = viewModel
                 .getRecordById(viewModel.activeRecordId.value!!).name
         })
+
         viewModel.allLocations.observe(this, {})
+
+        gpsService.lastLocation.observe(this, {location ->
+            if (gpsService.gpsMode == Constants.Service.MODE_RECORD) {
+                location?.let { viewModel.insertLocation(it) }
+            }
+        })
     }
+
+    override fun onStart() {
+        super.onStart()
+        Intent(this, GpsService::class.java).also { intent ->
+            bindService(intent, connection, Context.BIND_AUTO_CREATE)
+        }
+
+    }
+
+    override fun onStop() {
+        super.onStop()
+        unbindService(connection)
+        viewModel.serviceIsBound = false
+    }
+
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater: MenuInflater = menuInflater
@@ -156,10 +188,5 @@ class TrackerActivity : AppCompatActivity() {
                 Constants.Intent.REQUEST_CODE
             )
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        viewModel.activeRecordId.value = ""
     }
 }
