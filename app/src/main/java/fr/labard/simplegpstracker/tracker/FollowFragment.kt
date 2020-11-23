@@ -51,7 +51,7 @@ class FollowFragment : Fragment() {
     // used to receive the location updates from GpsService
     private val locationBroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent){
-            if (intent.getStringExtra(Constants.Service.MODE) == Constants.Service.MODE_FOLLOW
+            if (intent.getStringExtra(Constants.Service.GPS_MODE) == Constants.Service.MODE_FOLLOW
                 && viewModel.locationsByRecordId.isNotEmpty()) {
                 viewModel.currentLocation = Location("").apply {
                     latitude = intent.getDoubleExtra(Constants.Intent.LATITUDE_EXTRA, 0.0)
@@ -105,14 +105,14 @@ class FollowFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         activity_tracker_follow_fab.setOnClickListener {
-            if (viewModel.isRecording) {
+            if (viewModel.isFollowing) {
                 activity?.stopService(locationServiceIntent)
                 activity_tracker_follow_fab.setImageResource(R.drawable.ic_baseline_play_arrow_24)
             } else {
                 activity?.startService(locationServiceIntent)
                 activity_tracker_follow_fab.setImageResource(R.drawable.ic_baseline_pause_24)
             }
-            viewModel.isRecording = !viewModel.isRecording
+            viewModel.isFollowing = !viewModel.isFollowing
         }
     }
 
@@ -171,8 +171,19 @@ class FollowFragment : Fragment() {
         mapController.setCenter(parkour.last())
     }
 
+    override fun onPause() {
+        super.onStop()
+        mapView.onPause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mapView.onResume()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         activity?.stopService(locationServiceIntent)
+        LocalBroadcastManager.getInstance(activity!!).unregisterReceiver(locationBroadcastReceiver)
     }
 }

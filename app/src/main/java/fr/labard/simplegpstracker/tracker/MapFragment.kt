@@ -44,7 +44,7 @@ class MapFragment : Fragment() {
     // used to receive the location updates from GpsService
     private val locationBroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent){
-            if (intent.getStringExtra(Constants.Service.MODE) == Constants.Service.MODE_RECORD) {
+            if (intent.getStringExtra(Constants.Service.GPS_MODE) == Constants.Service.MODE_RECORD) {
                 val location = Location(Constants.Service.LOCATION_PROVIDER).apply {
                     latitude = intent.getDoubleExtra(Constants.Intent.LATITUDE_EXTRA, 0.0)
                     longitude = intent.getDoubleExtra(Constants.Intent.LONGITUDE_EXTRA, 0.0)

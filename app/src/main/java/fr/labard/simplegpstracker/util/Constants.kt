@@ -14,9 +14,9 @@ class Constants {
             const val SPEED_EXTRA = "speed"
             const val TIME_EXTRA = "time"
             const val RECORD_ID_EXTRA = "recordId"
-            const val ACTION_PAUSE = "pause"
-            const val ACTION_PLAY = "record"
-            const val ACTION_STOP = "stop"
+            const val ACTION_PAUSE = "action_pause"
+            const val ACTION_PLAY = "action_play"
+            const val ACTION_STOP = "action_stop"
             const val MODE = "mode"
             const val REQUEST_CODE = 21
             const val CREATE_FILE_REQUEST_CODE = 22
@@ -32,7 +32,8 @@ class Constants {
             const val MIN_DISTANCE_REFRESH = 1.0f // in meters
             const val MODE_RECORD = "modeRecord"
             const val MODE_FOLLOW = "modeFollow"
-            const val MODE = "mode"
+            const val MODE_STANDBY = "modeStandby"
+            const val GPS_MODE = "GPSmode"
         }
     }
     class Database {

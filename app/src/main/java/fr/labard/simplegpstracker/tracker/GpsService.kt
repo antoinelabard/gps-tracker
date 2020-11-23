@@ -10,11 +10,12 @@ import android.location.Criteria
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
+import android.os.Binder
 import android.os.Bundle
 import android.os.IBinder
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import androidx.lifecycle.MutableLiveData
 import fr.labard.simplegpstracker.R
 import fr.labard.simplegpstracker.util.Constants
 
@@ -24,11 +25,22 @@ import fr.labard.simplegpstracker.util.Constants
  */
 class GpsService: Service(), LocationListener {
 
+    private val binder = LocalBinder()
     private lateinit var locationManager: LocationManager
     private var locationProvider: String? = null
-    private var activeRecordId = ""
-    // tells if the app is in record or follow mode
-    private var mode: String = Constants.Service.MODE_RECORD
+
+    var gpsMode: String = Constants.Service.MODE_STANDBY
+    var activeRecordId: String? = null
+    val lastLocation = MutableLiveData<Location>()
+
+
+    inner class LocalBinder : Binder() {
+        fun getService(): GpsService = this@GpsService
+    }
+
+    override fun onBind(intent: Intent): IBinder {
+        return binder
+    }
 
     override fun onCreate() {
         super.onCreate()
@@ -37,45 +49,17 @@ class GpsService: Service(), LocationListener {
         locationProvider = locationManager.getBestProvider(Criteria(), false)
     }
 
-    override fun onLocationChanged(location: Location?) {
-        if (location != null) {
-            // sends the location to the app as a broadcast
-            LocalBroadcastManager.getInstance(this).sendBroadcast(
-                Intent(Constants.Service.LOCATION_BROADCAST).apply {
-                    putExtra(Constants.Intent.MODE, mode)
-                    putExtra(Constants.Intent.LATITUDE_EXTRA, location.latitude)
-                    putExtra(Constants.Intent.LONGITUDE_EXTRA, location.longitude)
-                    putExtra(Constants.Intent.SPEED_EXTRA, location.speed)
-                    putExtra(Constants.Intent.TIME_EXTRA, location.time)
-                }
-            )
-        }
-    }
+    override fun onLocationChanged(location: Location?) { location?.let {lastLocation.value = it} }
 
     override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
+
     override fun onProviderEnabled(provider: String?) {}
+
     override fun onProviderDisabled(provider: String?) {}
-    override fun onBind(intent: Intent?): IBinder? = null
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
-        activeRecordId = intent?.getStringExtra(Constants.Intent.RECORD_ID_EXTRA)!!
-        mode = intent.getStringExtra(Constants.Intent.MODE)!!
-
-        val playIntent = Intent(this, GpsService::class.java).apply {
-            action = when (intent.action) {
-                Constants.Intent.ACTION_PAUSE -> Constants.Intent.ACTION_PLAY
-                else -> Constants.Intent.ACTION_PAUSE
-            }
-        }
-        val playPendingIntent = PendingIntent.getForegroundService(
-            this, 1, playIntent, 0)
-
-        val stopIntent = Intent(this, GpsService::class.java).apply {
-            action = Constants.Intent.ACTION_STOP
-        }
-        val stopPendingIntent = PendingIntent.getForegroundService(
-            this, 1, stopIntent, 0)
+        enableLocationUpdates()
 
         val notification = NotificationCompat.Builder(
             this, Constants.Notification.CHANNEL_ID).apply {
@@ -87,29 +71,20 @@ class GpsService: Service(), LocationListener {
             priority = NotificationCompat.PRIORITY_HIGH
             setContentIntent(
                 PendingIntent.getActivity(
-                    applicationContext, 0, Intent(
+                    applicationContext,
+                    Constants.Intent.REQUEST_CODE,
+                    Intent(
                         applicationContext,
                         TrackerActivity::class.java
-                    ).putExtra(Constants.Intent.RECORD_ID_EXTRA, activeRecordId), 0
+                    ),
+                    0
                 )
             )
             setAutoCancel(true)
-            addAction(R.drawable.ic_baseline_stop_24, getString(R.string.stop), stopPendingIntent)
-        }
-
-        when (intent.action) {
-            Constants.Intent.ACTION_STOP -> stopSelf()
-            Constants.Intent.ACTION_PAUSE -> {
-                notification.addAction(R.drawable.ic_baseline_play_arrow_24, getString(R.string.play), playPendingIntent)
-                disableLocationUpdates()
-            }
-            Constants.Intent.ACTION_PLAY -> {
-                notification.addAction(R.drawable.ic_baseline_pause_24, getString(R.string.pause), playPendingIntent)
-                enableLocationUpdates()
-            }
         }
 
         startForeground(1, notification.build())
+
         return START_STICKY
     }
 

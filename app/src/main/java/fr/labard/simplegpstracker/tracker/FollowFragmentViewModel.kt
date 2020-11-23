@@ -13,7 +13,7 @@ class FollowFragmentViewModel(
     var allLocations = appRepository.getLocations()
     var locationsByRecordId = mutableListOf<Location>()
     var currentLocation = Location("")
-    var isRecording = false
+    var isFollowing = false
 }
 
 @Suppress("UNCHECKED_CAST")
