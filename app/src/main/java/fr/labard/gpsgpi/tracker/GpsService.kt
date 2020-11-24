@@ -58,7 +58,7 @@ class GpsService: Service(), LocationListener {
             this, Constants.Notification.CHANNEL_ID).apply {
             setContentTitle(getString(R.string.gpstracker_notification_title))
             setContentText(getString(R.string.gpstracker_notification_content))
-            setSmallIcon(R.drawable.ic_launcher_foreground)
+            setSmallIcon(R.mipmap.ic_launcher)
             setOngoing(true)
             setNotificationSilent()
             priority = NotificationCompat.PRIORITY_HIGH
