@@ -8,12 +8,14 @@ import fr.labard.gpsgpx.data.local.LocationEntity
 class StatisticsFragmentViewModel(
     appRepository: IRepository
 ) : ViewModel() {
-    val activeRecordId = appRepository.activeRecordId
+    var activeRecordId: String? = null
     val allLocations = appRepository.getLocations()
     var locationsByRecordId = listOf<LocationEntity>()
+    var serviceIsBound = false
 
-    fun setLocationsByRecordId() {
-        locationsByRecordId = allLocations.value!!.filter { it.recordId == activeRecordId.value!! }
+    fun setLocationsByActiveRecordId() {
+        activeRecordId?.let { id ->
+            locationsByRecordId = allLocations.value?.filter { it.recordId == id } ?: listOf() }
     }
 }
 

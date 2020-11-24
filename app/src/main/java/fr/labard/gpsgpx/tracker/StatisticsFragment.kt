@@ -1,6 +1,11 @@
 package fr.labard.gpsgpx.tracker
 
+import android.content.ComponentName
+import android.content.Context
+import android.content.Intent
+import android.content.ServiceConnection
 import android.os.Bundle
+import android.os.IBinder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +24,24 @@ class StatisticsFragment : DialogFragment() {
     private val viewModel by viewModels<StatisticsFragmentViewModel> {
         StatisticsFragmentViewModelFactory((requireContext().applicationContext as GPSApplication).appRepository)
     }
+    private lateinit var gpsService: GpsService
+
+    private val connection = object : ServiceConnection {
+        override fun onServiceConnected(className: ComponentName, service: IBinder) {
+            val binder = service as GpsService.LocalBinder
+            gpsService = binder.getService()
+            viewModel.serviceIsBound = true
+
+            gpsService.activeRecordId.observe(viewLifecycleOwner, { id ->
+                viewModel.activeRecordId = id
+                viewModel.setLocationsByActiveRecordId()
+            })
+        }
+
+        override fun onServiceDisconnected(arg0: ComponentName) {
+            viewModel.serviceIsBound = false
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,11 +51,24 @@ class StatisticsFragment : DialogFragment() {
         dialog?.setTitle(getString(R.string.statistics_title))
 
         viewModel.allLocations.observe(viewLifecycleOwner, {
-            viewModel.setLocationsByRecordId()
+            viewModel.setLocationsByActiveRecordId()
             updateStatisticsDisplay()
         })
 
         return view
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Intent(activity, GpsService::class.java).also { intent ->
+            activity?.bindService(intent, connection, Context.BIND_AUTO_CREATE)
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        activity?.unbindService(connection)
+        viewModel.serviceIsBound = false
     }
 
     fun updateStatisticsDisplay() {
