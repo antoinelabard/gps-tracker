@@ -10,7 +10,7 @@ android {
     apply plugin: 'kotlin-kapt'
 
     defaultConfig {
-        applicationId "fr.labard.gpsgpi"
+        applicationId "fr.labard.gpsgpx"
         minSdkVersion 28
         targetSdkVersion 29
         versionCode 1
