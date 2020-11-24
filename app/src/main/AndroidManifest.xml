@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="fr.labard.simplegpstracker">
+          package="fr.labard.gpsgpi">
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
@@ -11,7 +11,7 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
 
     <application
-            android:name=".GPSApplication"
+            android:name="fr.labard.gpsgpi.GPSApplication"
             android:allowBackup="true"
             android:fullBackupContent="true"
             android:icon="@mipmap/ic_launcher"
@@ -19,8 +19,8 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".tracker.TrackerActivity"/>
-        <activity android:name=".main.MainActivity">
+        <activity android:name="fr.labard.gpsgpi.tracker.TrackerActivity"/>
+        <activity android:name="fr.labard.gpsgpi.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -28,7 +28,7 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".tracker.GpsService"/>
+        <service android:name="fr.labard.gpsgpi.tracker.GpsService"/>
 
         <uses-library
                 android:name="android.test.runner"
