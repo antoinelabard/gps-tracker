@@ -7,6 +7,7 @@ apply plugin: "kotlin-kapt"
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
+    apply plugin: 'kotlin-kapt'
 
     defaultConfig {
         applicationId "fr.labard.simplegpstracker"
@@ -44,6 +45,13 @@ android {
     buildFeatures {
         dataBinding true
     }
+    dataBinding {
+        enabled = true
+    }
+}
+
+kapt {
+    generateStubs = true
 }
 
 dependencies {
@@ -62,9 +70,9 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'com.google.android.material:material:1.2.1'
 
-
     implementation "androidx.room:room-runtime:$rootProject.roomVersion"
     kapt "androidx.room:room-compiler:$rootProject.roomVersion" // For Kotlin use kapt instead of annotationProcessor
+    kapt "com.android.databinding:compiler:3.1.4"
 
     // optional - Kotlin Extensions and Coroutines support for Room
     implementation "androidx.room:room-ktx:$rootProject.roomVersion"
@@ -78,7 +86,7 @@ dependencies {
     // Test helpers
     androidTestImplementation "androidx.room:room-testing:$rootProject.roomVersion"
     androidTestImplementation 'org.hamcrest:hamcrest-library:1.3'
-    testImplementation "android.arch.core:core-testing:1.1.1"
+    androidTestImplementation "android.arch.core:core-testing:1.1.1"
     androidTestImplementation 'androidx.test:runner:1.3.0'
     androidTestImplementation 'androidx.test:rules:1.3.0'
     androidTestImplementation 'androidx.test.ext:truth:1.3.0'
