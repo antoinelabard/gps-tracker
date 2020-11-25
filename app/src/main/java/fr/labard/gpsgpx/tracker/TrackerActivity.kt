@@ -1,7 +1,6 @@
 package fr.labard.gpsgpx.tracker
 
 import android.content.*
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.IBinder
 import android.view.Menu
@@ -12,8 +11,6 @@ import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
@@ -66,14 +63,6 @@ class TrackerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tracker)
         setSupportActionBar(findViewById(R.id.activity_tracker_toolbar))
-
-        requestPermissionsIfNecessary(arrayOf(
-                android.Manifest.permission.ACCESS_FINE_LOCATION,
-                android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                android.Manifest.permission.READ_EXTERNAL_STORAGE,
-                android.Manifest.permission.INTERNET,
-                android.Manifest.permission.ACCESS_NETWORK_STATE
-            ))
 
         viewModel = ViewModelProvider(
             this, TrackerActivityViewModelFactory(
@@ -194,21 +183,5 @@ class TrackerActivity : AppCompatActivity() {
             else -> super.onOptionsItemSelected(item)
         }
         return true
-    }
-
-    private fun requestPermissionsIfNecessary(permissions: Array<String>) {
-        val permissionsToRequest: ArrayList<String> = arrayListOf()
-        for (permission in permissions) {
-            if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
-                permissionsToRequest.add(permission)
-            }
-        }
-        if (permissionsToRequest.size > 0) {
-            ActivityCompat.requestPermissions(
-                this,
-                permissionsToRequest.toArray(arrayOf<String>()),
-                Constants.Intent.REQUEST_CODE
-            )
-        }
     }
 }
