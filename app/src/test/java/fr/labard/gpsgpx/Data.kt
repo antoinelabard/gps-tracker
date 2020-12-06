@@ -93,10 +93,22 @@ class Data {
         val tl14: Float = l4.time - l1.time * 1000f
 
         // This is a GPX String storing the data of the RecordEntity r1 and the LocationEntities le1 and le2
-        val r1xmlText =
+        val r1GpxText =
             "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
                     "<gpx>\n" +
                     "    <trk id=\"${r1.id}\" creationdate=\"${Converters().dateToTimestamp(r1.creationDate)}\" lastmodification=\"${Converters().dateToTimestamp(r1.lastModification)}\">\n" +
+                    "    <name>${r1.name}</name>\n" +
+                    "    <trkseg>\n" +
+                    "        <trkpt id=\"${le1.id}\" lat=\"${le1.latitude}\" lon=\"${le1.longitude}\" speed=\"${le1.speed}\"><time>${le1.time}</time></trkpt>\n" +
+                    "        <trkpt id=\"${le2.id}\" lat=\"${le2.latitude}\" lon=\"${le2.longitude}\" speed=\"${le2.speed}\"><time>${le2.time}</time></trkpt>\n" +
+                    "    </trkseg>\n" +
+                    "    </trk>\n" +
+                    "</gpx>\n"
+        // invalid version of r1GpxText
+        val r1GpxTextInvalid =
+            "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
+                    "<gpx>\n" +
+                    "    <trk-invalid id=\"${r1.id}\" creationdate=\"${Converters().dateToTimestamp(r1.creationDate)}\" lastmodification=\"${Converters().dateToTimestamp(r1.lastModification)}\">\n" +
                     "    <name>${r1.name}</name>\n" +
                     "    <trkseg>\n" +
                     "        <trkpt id=\"${le1.id}\" lat=\"${le1.latitude}\" lon=\"${le1.longitude}\" speed=\"${le1.speed}\"><time>${le1.time}</time></trkpt>\n" +

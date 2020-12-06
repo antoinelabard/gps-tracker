@@ -22,7 +22,7 @@ class XmlParser {
      * Stores in a convenient way the records and their associated locations.
      * @param recordTags a list of RecordTag
      */
-    data class RecordList(val recordTags: MutableList<RecordTag>) {
+    data class RecordList(val recordTags: MutableList<RecordTag> = mutableListOf()) {
 
         /**
          * Convert the data stored in recordTags in a string matching the GPX file format. some fields have been added
@@ -138,9 +138,13 @@ class XmlParser {
         inputStream.use { inputStream1 ->
             val parser: XmlPullParser = Xml.newPullParser()
             parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false)
-            parser.setInput(inputStream1, null)
-            parser.nextTag()
-            return readFeed(parser).toRecordsAndLocations()
+            return try {
+                parser.setInput(inputStream1, null)
+                parser.nextTag()
+                readFeed(parser).toRecordsAndLocations()
+            } catch (e: Exception) {
+                Pair(mutableListOf(), mutableListOf())
+            }
         }
     }
 
@@ -149,7 +153,7 @@ class XmlParser {
      */
     @Throws(XmlPullParserException::class, IOException::class)
     private fun readFeed(parser: XmlPullParser): RecordList {
-        val recordList = RecordList(mutableListOf())
+        val recordList = RecordList()
 
         parser.require(XmlPullParser.START_TAG, ns, Constants.Gpx.GPX)
         while (parser.next() != XmlPullParser.END_TAG) {
