@@ -15,7 +15,7 @@ import org.junit.runner.RunWith
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
-class MapFragmentViewModelTest {
+class RecordFragmentViewModelTest {
 
     private lateinit var fakeRepository: FakeTestRepository
     private lateinit var viewModel: MapFragmentViewModel

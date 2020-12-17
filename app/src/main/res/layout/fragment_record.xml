@@ -5,11 +5,11 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/fragment_map"
-        tools:context=".tracker.MapFragment">
+        android:id="@+id/fragment_record"
+        tools:context=".tracker.RecordFragment">
 
     <org.osmdroid.views.MapView
-            android:id="@+id/fragment_map_mapview"
+            android:id="@+id/fragment_record_mapview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -21,7 +21,7 @@
     </org.osmdroid.views.MapView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/activity_tracker_record_fab"
+            android:id="@+id/fragment_record_fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/fab_margin"

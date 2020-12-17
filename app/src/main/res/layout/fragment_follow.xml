@@ -21,7 +21,7 @@
     </org.osmdroid.views.MapView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/activity_tracker_follow_fab"
+            android:id="@+id/fragment_follow_fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/fab_margin"

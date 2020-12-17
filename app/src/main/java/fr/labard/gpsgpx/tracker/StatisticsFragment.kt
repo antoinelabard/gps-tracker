@@ -99,7 +99,7 @@ class StatisticsFragment : DialogFragment() {
         private const val ARG_SECTION_NUMBER = "section_number"
         @JvmStatic
         fun newInstance(sectionNumber: Int) =
-            MapFragment().apply {
+            RecordFragment().apply {
                 arguments = Bundle().apply {
                     putInt(ARG_SECTION_NUMBER, sectionNumber)
                 }

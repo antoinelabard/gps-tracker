@@ -49,12 +49,12 @@ class TrackerActivityTest {
         onView(withId(R.id.activity_tracker_appbar)).check(matches(isDisplayed()))
         onView(withId(R.id.activity_tracker_toolbar)).check(matches(isDisplayed()))
         onView(withId(R.id.activity_tracker_fragment_container)).check(matches(isDisplayed()))
-        onView(withId(R.id.fragment_map)).check(matches(isDisplayed()))
+        onView(withId(R.id.fragment_record)).check(matches(isDisplayed()))
     }
 
     @Test
     fun fromMapFragment_showFollowFragment(): Unit = runBlocking {
-        onView(withId(R.id.fragment_map)).check(matches(isDisplayed()))
+        onView(withId(R.id.fragment_record)).check(matches(isDisplayed()))
         onView(withId(R.id.activity_tracker_action_follow_mode)).perform(click())
         onView(withId(R.id.fragment_follow)).check(matches(isDisplayed()))
     }
@@ -64,6 +64,6 @@ class TrackerActivityTest {
         onView(withId(R.id.activity_tracker_action_follow_mode)).perform(click())
         onView(withId(R.id.fragment_follow)).check(matches(isDisplayed()))
         onView(withId(R.id.activity_tracker_action_record_mode)).perform(click())
-        onView(withId(R.id.fragment_map)).check(matches(isDisplayed()))
+        onView(withId(R.id.fragment_record)).check(matches(isDisplayed()))
     }
 }

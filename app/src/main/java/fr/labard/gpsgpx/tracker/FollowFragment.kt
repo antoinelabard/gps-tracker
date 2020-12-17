@@ -53,9 +53,9 @@ class FollowFragment : Fragment() {
 
             gpsService.gpsMode.observe(viewLifecycleOwner, {mode ->
                 if (mode == Constants.Service.MODE_FOLLOW) {
-                    activity_tracker_follow_fab.setImageResource(R.drawable.ic_baseline_pause_24)
+                    fragment_follow_fab.setImageResource(R.drawable.ic_baseline_pause_24)
                 } else {
-                    activity_tracker_follow_fab.setImageResource(R.drawable.ic_baseline_play_arrow_24)
+                    fragment_follow_fab.setImageResource(R.drawable.ic_baseline_play_arrow_24)
                 }
             })
             gpsService.activeRecordId.observe(viewLifecycleOwner, { id ->
@@ -94,7 +94,7 @@ class FollowFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        activity_tracker_follow_fab.setOnClickListener {
+        fragment_follow_fab.setOnClickListener {
             if (gpsService.gpsMode.value == Constants.Service.MODE_FOLLOW) {
                 gpsService.gpsMode.value = Constants.Service.MODE_STANDBY
             } else

@@ -14,7 +14,7 @@ import androidx.fragment.app.viewModels
 import fr.labard.gpsgpx.GPSApplication
 import fr.labard.gpsgpx.R
 import fr.labard.gpsgpx.util.Constants
-import kotlinx.android.synthetic.main.fragment_map.*
+import kotlinx.android.synthetic.main.fragment_record.*
 import org.osmdroid.api.IMapController
 import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
@@ -29,7 +29,7 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 /**
  * MapFragment displays the UI to show the path recorded in real time.
  */
-class MapFragment : Fragment() {
+class RecordFragment : Fragment() {
 
     private lateinit var gpsProvider: GpsMyLocationProvider
     private lateinit var mapView: MapView
@@ -50,9 +50,9 @@ class MapFragment : Fragment() {
 
             gpsService.gpsMode.observe(viewLifecycleOwner, {mode ->
                 if (mode == Constants.Service.MODE_RECORD) {
-                    activity_tracker_record_fab.setImageResource(R.drawable.ic_baseline_stop_24)
+                    fragment_record_fab.setImageResource(R.drawable.ic_baseline_stop_24)
                 } else {
-                    activity_tracker_record_fab.setImageResource(R.drawable.ic_baseline_fiber_manual_record_24)
+                    fragment_record_fab.setImageResource(R.drawable.ic_baseline_fiber_manual_record_24)
                 }
             })
             gpsService.activeRecordId.observe(viewLifecycleOwner, { id ->
@@ -76,8 +76,8 @@ class MapFragment : Fragment() {
     ): View? {
 
         Configuration.getInstance().load(activity, activity?.getPreferences(Context.MODE_PRIVATE))
-        val view = layoutInflater.inflate(R.layout.fragment_map, container, false)
-        mapView = view.findViewById(R.id.fragment_map_mapview)
+        val view = layoutInflater.inflate(R.layout.fragment_record, container, false)
+        mapView = view.findViewById(R.id.fragment_record_mapview)
         buildMapView()
 
         viewModel.allLocations.observe(viewLifecycleOwner, {
@@ -91,7 +91,7 @@ class MapFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        activity_tracker_record_fab.setOnClickListener {
+        fragment_record_fab.setOnClickListener {
             if (gpsService.gpsMode.value == Constants.Service.MODE_RECORD) {
                 gpsService.gpsMode.value = Constants.Service.MODE_STANDBY
             } else {

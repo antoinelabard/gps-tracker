@@ -73,7 +73,7 @@ class TrackerActivity : AppCompatActivity() {
         if (findViewById<FrameLayout>(R.id.activity_tracker_fragment_container) != null) {
             if (savedInstanceState != null) return
             supportFragmentManager.commit {
-                add<MapFragment>(R.id.activity_tracker_fragment_container, null, intent.extras)
+                add<RecordFragment>(R.id.activity_tracker_fragment_container, null, intent.extras)
             }
         }
 
@@ -121,7 +121,7 @@ class TrackerActivity : AppCompatActivity() {
         when (item.itemId) {
             R.id.activity_tracker_action_record_mode -> {
                 supportFragmentManager.commit {
-                    replace<MapFragment>(R.id.activity_tracker_fragment_container, null, bundleOf())
+                    replace<RecordFragment>(R.id.activity_tracker_fragment_container, null, bundleOf())
                     addToBackStack(null)
                 }
             }
