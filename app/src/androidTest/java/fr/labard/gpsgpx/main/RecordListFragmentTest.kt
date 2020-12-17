@@ -1,23 +1,26 @@
 package fr.labard.gpsgpx.main
 
 import android.content.Context
-import androidx.fragment.app.testing.launchFragmentInContainer
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.MediumTest
 import androidx.test.platform.app.InstrumentationRegistry
 import fr.labard.gpsgpx.AndroidData.Companion.r1
-import fr.labard.gpsgpx.FakeAndroidTestRepository
+import fr.labard.gpsgpx.EspressoIdlingResource
 import fr.labard.gpsgpx.R
 import fr.labard.gpsgpx.ServiceLocator
 import fr.labard.gpsgpx.data.IRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -29,39 +32,34 @@ class RecordListFragmentTest {
     private lateinit var repository: IRepository
     private lateinit var context: Context
 
+    @get:Rule
+    val activityRule = ActivityScenarioRule(MainActivity::class.java)
 
     @Before
-    fun initRepository() {
-        repository = FakeAndroidTestRepository()
+    fun init() {
+        repository = ServiceLocator.provideAppRepository(ApplicationProvider.getApplicationContext())
         context = InstrumentationRegistry.getInstrumentation().context
-        ServiceLocator.appRepository = repository
     }
 
     @After
-    fun cleanupDb() = runBlockingTest {
+    fun reset() {
         ServiceLocator.resetRepository()
     }
 
-    @Test
-    fun records_displayedInUI() {
-        launchFragmentInContainer<RecordListFragment>(themeResId = R.style.AppTheme)
-        onView(withId(R.id.recyclerview_item_layout)).check(matches(isDisplayed()))
-        onView(withId(R.id.recyclerview_item_name)).check(matches(isDisplayed()))
-        onView(withId(R.id.recyclerview_item_name)).check(matches(withText(r1.name)))
-        onView(withId(R.id.recyclerview_item_creationdate)).check(matches(isDisplayed()))
-        onView(withId(R.id.recyclerview_item_creationdate)).check(matches(withText(
-            "Created: %s".format(r1.creationDate.toString()))))
-        onView(withId(R.id.recyclerview_item_nblocations)).check(matches(isDisplayed()))
-        onView(withId(R.id.recyclerview_item_nblocations)).check(matches(withText(
-            "%s locations".format(repository.getLocations().value
-                ?.filter { it.recordId == r1.id }?.count().toString()))))
+    @Before
+    fun registerIdlingResource() {
+        IdlingRegistry.getInstance().register(EspressoIdlingResource.countingIdlingResource)
+    }
+
+    @After
+    fun unregisterIdlingResource() {
+        IdlingRegistry.getInstance().unregister(EspressoIdlingResource.countingIdlingResource)
     }
 
     @Test
-    fun newRecord_displayedInUI() {
-        launchFragmentInContainer<RecordListFragment>(themeResId = R.style.AppTheme)
-        repository.clearAll()
-        onView(withId(R.id.activity_main_new_record_fab)).perform(click())
+    fun insertRecord_displayedInUI(): Unit = runBlocking {
+        repository.insertRecord(r1)
         onView(withId(R.id.recyclerview_item_layout)).check(matches(isDisplayed()))
+        onView(withId(R.id.recyclerview_item_name)).check(matches(isDisplayed()))
     }
 }
