@@ -31,7 +31,7 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
  */
 class MapFragment : Fragment() {
 
-    lateinit var gpsProvider: GpsMyLocationProvider
+    private lateinit var gpsProvider: GpsMyLocationProvider
     private lateinit var mapView: MapView
     private lateinit var mapController: IMapController
 
@@ -151,8 +151,8 @@ class MapFragment : Fragment() {
     }
 
     private fun updateMapView() {
-        val parkour: List<GeoPoint>? = viewModel.locationsByRecordId.map { GeoPoint(it.latitude, it.longitude) }
-        if (parkour!!.isEmpty()) return
+        val parkour: List<GeoPoint> = viewModel.locationsByRecordId.map { GeoPoint(it.latitude, it.longitude) }
+        if (parkour.isEmpty()) return
         mapView.overlays.remove(polyline)
         polyline = Polyline()
         mapView.overlayManager.add(polyline.apply { setPoints(parkour) })
