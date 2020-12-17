@@ -5,7 +5,8 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".tracker.FollowFragment">
+        tools:context=".tracker.FollowFragment"
+        android:id="@+id/fragment_follow">
 
     <org.osmdroid.views.MapView
             android:id="@+id/fragment_follow_mapview"
