@@ -18,7 +18,7 @@ import org.junit.runner.RunWith
 class RecordFragmentViewModelTest {
 
     private lateinit var fakeRepository: FakeTestRepository
-    private lateinit var viewModel: MapFragmentViewModel
+    private lateinit var viewModel: RecordFragmentViewModel
 
     @get:Rule
     var instantExecutorRule = InstantTaskExecutorRule()
@@ -31,7 +31,7 @@ class RecordFragmentViewModelTest {
             mutableListOf(le1, le3)
         )
         )
-        viewModel = MapFragmentViewModel(fakeRepository)
+        viewModel = RecordFragmentViewModel(fakeRepository)
     }
 
     @Test

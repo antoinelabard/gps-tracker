@@ -1,16 +1,17 @@
-package fr.labard.gpsgpx.main
+package fr.labard.gpsgpx.tracker
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingRegistry
-import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.assertion.ViewAssertions
+import androidx.test.espresso.matcher.ViewMatchers
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.MediumTest
 import androidx.test.platform.app.InstrumentationRegistry
-import fr.labard.gpsgpx.AndroidData.Companion.r1
 import fr.labard.gpsgpx.EspressoIdlingResource
 import fr.labard.gpsgpx.R
 import fr.labard.gpsgpx.ServiceLocator
@@ -26,13 +27,13 @@ import org.junit.runner.RunWith
 @MediumTest
 @RunWith(AndroidJUnit4::class)
 @ExperimentalCoroutinesApi
-class RecordListFragmentTest {
+class FollowFragmentTest {
 
     private lateinit var repository: IRepository
     private lateinit var context: Context
 
     @get:Rule
-    val activityRule = ActivityScenarioRule(MainActivity::class.java)
+    val activityRule = ActivityScenarioRule(TrackerActivity::class.java)
 
     @Before
     fun init() {
@@ -56,10 +57,11 @@ class RecordListFragmentTest {
     }
 
     @Test
-    fun insertRecord_displayedInUI(): Unit = runBlocking {
-        repository.insertRecord(r1)
-        onView(withText(r1.name)).check(matches(isDisplayed()))
-        onView(withId(R.id.recyclerview_item_layout)).check(matches(isDisplayed()))
-        onView(withId(R.id.recyclerview_item_name)).check(matches(isDisplayed()))
+    fun elementsDisplayed(): Unit = runBlocking {
+        onView(withId(R.id.activity_tracker_action_follow_mode)).perform(click())
+        onView(withId(R.id.fragment_follow_mapview))
+            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        onView(withId(R.id.fragment_follow_fab))
+            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
 }

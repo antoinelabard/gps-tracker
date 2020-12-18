@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import fr.labard.gpsgpx.data.IRepository
 import fr.labard.gpsgpx.data.local.LocationEntity
 
-class MapFragmentViewModel(
+class RecordFragmentViewModel(
     appRepository: IRepository
 ) : ViewModel() {
 
@@ -27,5 +27,5 @@ class MapFragmentViewModelFactory (
     private val repository: IRepository
 ) : ViewModelProvider.NewInstanceFactory() {
     override fun <T : ViewModel> create(modelClass: Class<T>) =
-        (MapFragmentViewModel(repository) as T)
+        (RecordFragmentViewModel(repository) as T)
 }

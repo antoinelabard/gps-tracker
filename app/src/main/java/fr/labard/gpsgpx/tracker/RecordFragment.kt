@@ -27,7 +27,7 @@ import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 
 /**
- * MapFragment displays the UI to show the path recorded in real time.
+ * RecordFragment displays the UI to show the path recorded in real time.
  */
 class RecordFragment : Fragment() {
 
@@ -37,7 +37,7 @@ class RecordFragment : Fragment() {
 
     private lateinit var polyline: Polyline
 
-    private val viewModel by viewModels<MapFragmentViewModel> {
+    private val viewModel by viewModels<RecordFragmentViewModel> {
         MapFragmentViewModelFactory((requireContext().applicationContext as GPSApplication).appRepository)
     }
     private lateinit var gpsService: GpsService
