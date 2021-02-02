@@ -171,14 +171,21 @@ class TrackerActivity : AppCompatActivity() {
                     .show()
             }
             R.id.activity_tracker_action_share_position -> {
-                val location = viewModel.allLocations.value
-                    ?.last { l -> l.time == viewModel.allLocations.value?.maxOf { it.time }}
-                val intent = Intent(Intent.ACTION_SEND).apply {
-                    type = "text/plain"
-                    putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share_position))
-                    putExtra(Intent.EXTRA_TEXT, getString(R.string.find_me_here).format(location?.latitude, location?.longitude))
+                if (viewModel.allLocations.value?.isEmpty()!!) {
+                    Toast.makeText(this, getString(R.string.position_not_available), Toast.LENGTH_LONG).show()
+                } else {
+                    val location = viewModel.allLocations.value
+                        ?.last { l -> l.time == viewModel.allLocations.value?.maxOf { it.time } }
+                    val intent = Intent(Intent.ACTION_SEND).apply {
+                        type = "text/plain"
+                        putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share_position))
+                        putExtra(
+                            Intent.EXTRA_TEXT,
+                            getString(R.string.find_me_here).format(location?.latitude, location?.longitude)
+                        )
+                    }
+                    startActivity(intent)
                 }
-                startActivity(intent)
             }
             else -> super.onOptionsItemSelected(item)
         }
