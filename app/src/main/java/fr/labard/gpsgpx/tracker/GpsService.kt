@@ -86,7 +86,7 @@ class GpsService: Service(), LocationListener {
         locationProvider = locationManager.getBestProvider(Criteria(), false)
     }
 
-    override fun onLocationChanged(location: Location?) {
+    override fun onLocationChanged(location: Location) {
         location?.let {
             lastLocation.value = it
             // sends the location to the app as a broadcast
@@ -105,9 +105,9 @@ class GpsService: Service(), LocationListener {
 
     override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
 
-    override fun onProviderEnabled(provider: String?) {}
+    override fun onProviderEnabled(provider: String) {}
 
-    override fun onProviderDisabled(provider: String?) {}
+    override fun onProviderDisabled(provider: String) {}
 
     private fun enableLocationUpdates() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION
