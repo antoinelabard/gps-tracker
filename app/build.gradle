@@ -5,14 +5,14 @@ apply plugin: "kotlin-kapt"
 
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
     buildToolsVersion "29.0.3"
     apply plugin: 'kotlin-kapt'
 
     defaultConfig {
         applicationId "fr.labard.gpsgpx"
         minSdkVersion 23
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 2
         versionName "1.1"
 
@@ -25,6 +25,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -42,11 +43,8 @@ android {
         returnDefaultValues = true
     }
 
-    buildFeatures {
-        dataBinding true
-    }
     dataBinding {
-        enabled = true
+        enabled true
     }
 }
 
@@ -70,21 +68,21 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'com.google.android.material:material:1.2.1'
 
-    implementation "androidx.room:room-runtime:$rootProject.roomVersion"
-    kapt "androidx.room:room-compiler:$rootProject.roomVersion" // For Kotlin use kapt instead of annotationProcessor
-    kapt "com.android.databinding:compiler:3.1.4"
+    implementation "androidx.room:room-runtime:2.2.6"
+    kapt "androidx.room:room-compiler:2.2.6" // For Kotlin use kapt instead of annotationProcessor
+    kapt "com.android.databinding:compiler:4.0.2"
 
     // optional - Kotlin Extensions and Coroutines support for Room
-    implementation "androidx.room:room-ktx:$rootProject.roomVersion"
+    implementation "androidx.room:room-ktx:2.2.6"
 
     // optional - RxJava support for Room
-    implementation "androidx.room:room-rxjava2:$rootProject.roomVersion"
+    implementation "androidx.room:room-rxjava2:2.2.6"
 
     // optional - Guava support for Room, including Optional and ListenableFuture
-    implementation "androidx.room:room-guava:$rootProject.roomVersion"
+    implementation "androidx.room:room-guava:2.2.6"
 
     // Test helpers
-    androidTestImplementation "androidx.room:room-testing:$rootProject.roomVersion"
+    androidTestImplementation "androidx.room:room-testing:2.2.6"
     androidTestImplementation 'org.hamcrest:hamcrest-library:1.3'
     androidTestImplementation "android.arch.core:core-testing:1.1.1"
     androidTestImplementation 'androidx.test:runner:1.3.0'
@@ -99,8 +97,6 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso.idling:idling-concurrent:3.3.0'
     androidTestImplementation 'androidx.test.espresso:espresso-idling-resource:3.3.0'
 
-
-
     // Lifecycle components
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation "androidx.lifecycle:lifecycle-common-java8:2.2.0"
@@ -110,9 +106,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-location:17.1.0'
 
     //KTX
-    implementation "androidx.fragment:fragment-ktx:1.3.0-beta02"
-
-
+    implementation "androidx.fragment:fragment-ktx:1.3.0-rc02"
 
     // Dependencies for local unit tests
     testImplementation "junit:junit:4.12"
