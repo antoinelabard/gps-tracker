@@ -17,9 +17,11 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import fr.labard.gpsgpx.GPSApplication
 import fr.labard.gpsgpx.R
+import fr.labard.gpsgpx.databinding.ActivityMainBinding
 import fr.labard.gpsgpx.util.Constants
 import fr.labard.gpsgpx.util.XmlParser
 import java.io.*
@@ -31,7 +33,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.activity_main_toolbar))
         createNotificationChannel()
 
@@ -46,6 +47,11 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this, MainActivityViewModelFactory(
             (applicationContext as GPSApplication).appRepository
         )).get(MainActivityViewModel::class.java)
+
+        val binding: ActivityMainBinding =
+            DataBindingUtil.setContentView(this, R.layout.activity_main)
+        binding.lifecycleOwner = this
+        binding.viewmodel
 
         viewModel.allRecords.observe(this, {
             viewModel.records = viewModel.allRecords.value!!
