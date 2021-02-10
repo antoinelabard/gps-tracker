@@ -4,13 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import fr.labard.gpsgpx.GPSApplication
 import fr.labard.gpsgpx.R
-import kotlinx.android.synthetic.main.fragment_record_list.*
+import fr.labard.gpsgpx.databinding.FragmentRecordListBinding
 
 /**
  * RecordListFragment displays the list of all the record stored in the repository in MainActivity.
@@ -30,8 +31,12 @@ class RecordListFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val view = layoutInflater.inflate(R.layout.fragment_record_list, container, false)
+    ): View {
+        val binding: FragmentRecordListBinding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_record_list, container, false)
+        binding.lifecycleOwner = this
+        binding.viewmodel = viewModel
+        val view = binding.root
 
         recyclerView = view.findViewById(R.id.recyclerview_record_list)
         recyclerView.layoutManager = LinearLayoutManager(activity)
