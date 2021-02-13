@@ -32,6 +32,7 @@ class RecordListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
         val binding: FragmentRecordListBinding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_record_list, container, false)
         binding.lifecycleOwner = this
@@ -45,20 +46,13 @@ class RecordListFragment : Fragment() {
 
         viewModel.allRecords.observe(viewLifecycleOwner, {
             records -> adapter.setRecords(records ?: listOf())
+            adapter.notifyDataSetChanged()
         })
         viewModel.allLocations.observe(viewLifecycleOwner, {
             locations -> adapter.setLocations(locations)
+            adapter.notifyDataSetChanged()
         })
 
         return view
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-        activity_main_new_record_fab.setOnClickListener {
-            viewModel.insertRecord()
-            adapter.notifyDataSetChanged()
-        }
     }
 }
