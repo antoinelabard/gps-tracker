@@ -1,32 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/recyclerview_item_layout"
-        style="@style/text_view_style">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <TextView
-            android:id="@+id/recyclerview_item_name"
+    <data>
+        <variable
+                name="record"
+                type="fr.labard.gpsgpx.data.local.RecordEntity"/>
+        <variable
+                name="nbLocations"
+                type="Integer"/>
+    </data>
+
+    <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/record_list_name_textsize"
-            android:layout_margin="@dimen/record_list_margin"/>
+            android:id="@+id/recyclerview_item_layout"
+            style="@style/text_view_style">
 
-    <TextView
-            android:id="@+id/recyclerview_item_creationdate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/record_list_details_textsize"
-            android:layout_margin="@dimen/record_list_margin"/>
+        <TextView
+                android:id="@+id/recyclerview_item_name"
+                android:text="@{record.name}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/record_list_name_textsize"
+                android:layout_margin="@dimen/record_list_margin"/>
 
-    <TextView
-            android:id="@+id/recyclerview_item_nblocations"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/record_list_details_textsize"
-            android:layout_margin="@dimen/record_list_margin"/>
+        <TextView
+                android:id="@+id/recyclerview_item_creationdate"
+                android:text="@{record.creationDate.toString()}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/record_list_details_textsize"
+                android:layout_margin="@dimen/record_list_margin"/>
 
-</LinearLayout>
+        <TextView
+                android:id="@+id/recyclerview_item_nblocations"
+                android:text="@{nbLocations}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/record_list_details_textsize"
+                android:layout_margin="@dimen/record_list_margin"/>
+
+    </LinearLayout>
+</layout>
 

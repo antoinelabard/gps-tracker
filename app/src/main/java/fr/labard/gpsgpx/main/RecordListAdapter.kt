@@ -20,41 +20,41 @@ import fr.labard.gpsgpx.util.Constants
 class RecordListAdapter (val context: Context?) :
     RecyclerView.Adapter<RecordListAdapter.RecordViewHolder>() {
 
-    private val mInflater: LayoutInflater = LayoutInflater.from(context)
-
     private var records: List<RecordEntity>? = null
     private var locations: List<LocationEntity>? = null
 
     // contains all the fields which are displayed in the recyclerview item
-    inner class RecordViewHolder (itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val layout: LinearLayout = itemView.findViewById(R.id.recyclerview_item_layout)
-        val name: TextView = itemView.findViewById(R.id.recyclerview_item_name)
-        val creationDate: TextView = itemView.findViewById(R.id.recyclerview_item_creationdate)
-        val nbLocations: TextView = itemView.findViewById(R.id.recyclerview_item_nblocations)
+    inner class RecordViewHolder (adapterBinding: AdapterBinding) : RecyclerView.ViewHolder(adapterBinding.root) {
+        adapterBinding.recyclerview_item_layout.setOnClickListener {
+            val intent = Intent(context, TrackerActivity::class.java)
+            intent.putExtra(Constants.Intent.RECORD_ID_EXTRA, record.id)
+            context?.startActivity(intent)
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecordViewHolder {
-        val view = mInflater.inflate(R.layout.recyclerview_record_list_item, parent, false)
-        return RecordViewHolder(view)
+        val adapterBinding: AdapterBinding = AdapterBinding.inflate(
+        LayoutInflater.from(parent.context),
+        parent,
+        false
+        )
+        return RecordViewHolder(adapterBinding)
     }
 
     override fun onBindViewHolder(holder: RecordViewHolder, position: Int) {
-        if (records != null) {
-            val record = records!![position]
+        val record = records?.get(position)
+        holder.adapterBinding.setRecord(record)
+        holder.adapterBinding.setLocations(locations?.filter { it.recordId == record?.id }?.count().toString())
 
-            holder.name.text = record.name
-            holder.creationDate.text = context?.getString(R.string.created)?.format(record.creationDate.toString())
-            holder.nbLocations.text = context?.getString(R.string.locations)
-                ?.format(locations?.filter { it.recordId == record.id }?.count().toString())
+        holder.adapterBinding.executePendingBindings()
 
-            holder.layout.setOnClickListener {
-                val intent = Intent(context, TrackerActivity::class.java)
-                intent.putExtra(Constants.Intent.RECORD_ID_EXTRA, record.id)
-                context?.startActivity(intent)
-            }
-        } else {
-            holder.name.text = context?.getString(R.string.no_record)
-        }
+//                ?.format(locations?.filter { it.recordId == record.id }?.count().toString())
+
+//            holder.layout.setOnClickListener {
+//                val intent = Intent(context, TrackerActivity::class.java)
+//                intent.putExtra(Constants.Intent.RECORD_ID_EXTRA, record.id)
+//                context?.startActivity(intent)
+//            }
     }
 
     fun setRecords(records: List<RecordEntity>?) {
