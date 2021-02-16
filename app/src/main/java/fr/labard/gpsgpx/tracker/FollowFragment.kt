@@ -10,12 +10,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import fr.labard.gpsgpx.GPSApplication
 import fr.labard.gpsgpx.R
-import fr.labard.gpsgpx.util.Constants
-import kotlinx.android.synthetic.main.fragment_follow.*
+import fr.labard.gpsgpx.databinding.FragmentFollowBinding
 import org.osmdroid.api.IMapController
 import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
@@ -51,13 +51,14 @@ class FollowFragment : Fragment() {
             gpsService = binder.getService()
             viewModel.serviceIsBound = true
 
-            gpsService.gpsMode.observe(viewLifecycleOwner, {mode ->
-                if (mode == Constants.Service.MODE_FOLLOW) {
-                    fragment_follow_fab.setImageResource(R.drawable.ic_baseline_pause_24)
-                } else {
-                    fragment_follow_fab.setImageResource(R.drawable.ic_baseline_play_arrow_24)
-                }
-            })
+//            gpsService.gpsMode.observe(viewLifecycleOwner, {mode ->
+//                viewModel.mode = mode
+//                if (mode == Constants.Service.MODE_FOLLOW) {
+//                    fragment_follow_fab.setImageResource(R.drawable.ic_baseline_pause_24)
+//                } else {
+//                    fragment_follow_fab.setImageResource(R.drawable.ic_baseline_play_arrow_24)
+//                }
+//            })
             gpsService.activeRecordId.observe(viewLifecycleOwner, { id ->
                 viewModel.activeRecordId = id
                 viewModel.setLocationsByActiveRecordId()
@@ -76,9 +77,15 @@ class FollowFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
+
+        val binding: FragmentFollowBinding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_follow, container, false)
+        binding.lifecycleOwner = this
+        binding.viewmodel = viewModel
+        val view = binding.root
+
         Configuration.getInstance().load(activity, activity?.getPreferences(Context.MODE_PRIVATE))
-        val view = layoutInflater.inflate(R.layout.fragment_follow, container, false)
         mapView = view.findViewById(R.id.fragment_follow_mapview)
 
         buildMapView()
@@ -88,18 +95,11 @@ class FollowFragment : Fragment() {
             updateMapView()
         })
 
+        viewModel.mode.observe(viewLifecycleOwner, { mode ->
+            gpsService.gpsMode.value = mode
+        })
+
         return view
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        fragment_follow_fab.setOnClickListener {
-            if (gpsService.gpsMode.value == Constants.Service.MODE_FOLLOW) {
-                gpsService.gpsMode.value = Constants.Service.MODE_STANDBY
-            } else
-                gpsService.gpsMode.value = Constants.Service.MODE_FOLLOW
-        }
     }
 
     override fun onStart() {

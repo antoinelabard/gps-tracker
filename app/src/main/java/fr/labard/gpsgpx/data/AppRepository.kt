@@ -14,6 +14,7 @@ class AppRepository internal constructor(
 ) : IRepository {
 
     override var activeRecordId = MutableLiveData("")
+    override var recordingMode = MutableLiveData("")
 
     override fun getRecords(): LiveData<List<RecordEntity>> {
         wrapEspressoIdlingResource {

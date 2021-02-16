@@ -13,6 +13,9 @@ interface IRepository {
     // used to keep in memory which record is being used
     var activeRecordId: MutableLiveData<String>
 
+    // refers to either the application is in record, follow or standby mode
+    var recordingMode: MutableLiveData<String>
+
     fun getRecords(): LiveData<List<RecordEntity>>
     fun insertRecord(recordEntity: RecordEntity)
     fun updateRecordName(id: String, name: String)
