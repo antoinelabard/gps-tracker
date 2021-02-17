@@ -1,32 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/fragment_record"
-        tools:context=".tracker.RecordFragment">
+        xmlns:tools="http://schemas.android.com/tools">
 
-    <org.osmdroid.views.MapView
-            android:id="@+id/fragment_record_mapview"
+    <data>
+        <variable
+                name="viewmodel"
+                type="fr.labard.gpsgpx.tracker.RecordFragmentViewModel"/>
+        <variable
+                name="modes"
+                type="fr.labard.gpsgpx.util.Constants.Service"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintVertical_bias="1.0">
-    </org.osmdroid.views.MapView>
+            android:id="@+id/fragment_record"
+            tools:context=".tracker.RecordFragment">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fragment_record_fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/fab_margin"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:src="@drawable/ic_baseline_fiber_manual_record_24"/>
+        <org.osmdroid.views.MapView
+                android:id="@+id/fragment_record_mapview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintVertical_bias="1.0">
+        </org.osmdroid.views.MapView>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fragment_record_fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/fab_margin"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:onClick="@{() -> viewmodel.updateRecordingMode()}"
+                android:src="@{ viewmodel.mode == modes.MODE_RECORD ? @drawable/ic_baseline_stop_24 : @drawable/ic_baseline_fiber_manual_record_24"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
