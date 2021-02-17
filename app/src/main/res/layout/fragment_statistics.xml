@@ -1,83 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".tracker.StatisticsFragment">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-            android:id="@+id/fragment_statistics_textview_total_distance"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/framgent_statistics_margin"
-            android:text="@string/stats_total_distance"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/fragment_statistics_textview_total_time"
-            app:layout_constraintTop_toTopOf="parent"/>
+    <data>
+        <variable
+                name="viewmodel"
+                type="fr.labard.gpsgpx.tracker.RecordFragmentViewModel"/>
+    </data>
 
-    <TextView
-            android:id="@+id/fragment_statistics_textview_total_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/framgent_statistics_margin"
-            android:text="@string/stats_total_time"
-            app:layout_constraintTop_toBottomOf="@+id/fragment_statistics_textview_total_distance"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/fragment_statistics_textview_recent_speed"/>
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".tracker.StatisticsFragment">
+
+        <TextView
+                android:id="@+id/fragment_statistics_textview_total_distance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/framgent_statistics_margin"
+                android:text="@string/stats_total_distance"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/fragment_statistics_textview_total_time"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+                android:id="@+id/fragment_statistics_textview_total_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/framgent_statistics_margin"
+                android:text="@string/stats_total_time"
+                app:layout_constraintTop_toBottomOf="@+id/fragment_statistics_textview_total_distance"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/fragment_statistics_textview_recent_speed"/>
 
 
-    <TextView
-            android:id="@+id/fragment_statistics_textview_recent_speed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/framgent_statistics_margin"
-            android:text="@string/stats_recent_speed"
-            app:layout_constraintTop_toBottomOf="@+id/fragment_statistics_textview_total_time"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/fragment_statistics_textview_average_speed"/>
+        <TextView
+                android:id="@+id/fragment_statistics_textview_recent_speed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/framgent_statistics_margin"
+                android:text="@string/stats_recent_speed"
+                app:layout_constraintTop_toBottomOf="@+id/fragment_statistics_textview_total_time"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/fragment_statistics_textview_average_speed"/>
 
-    <TextView
-            android:id="@+id/fragment_statistics_textview_average_speed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/framgent_statistics_margin"
-            android:text="@string/stats_average_speed"
-            app:layout_constraintTop_toBottomOf="@+id/fragment_statistics_textview_recent_speed"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/fragment_statistics_textview_min_speed"
-    />
+        <TextView
+                android:id="@+id/fragment_statistics_textview_average_speed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/framgent_statistics_margin"
+                android:text="@string/stats_average_speed"
+                app:layout_constraintTop_toBottomOf="@+id/fragment_statistics_textview_recent_speed"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/fragment_statistics_textview_min_speed"
+                />
 
-    <TextView
-            android:id="@+id/fragment_statistics_textview_min_speed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/framgent_statistics_margin"
-            android:text="@string/stats_min_speed"
-            app:layout_constraintTop_toBottomOf="@+id/fragment_statistics_textview_average_speed"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/fragment_statistics_textview_max_speed"
-    />
+        <TextView
+                android:id="@+id/fragment_statistics_textview_min_speed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/framgent_statistics_margin"
+                android:text="@string/stats_min_speed"
+                app:layout_constraintTop_toBottomOf="@+id/fragment_statistics_textview_average_speed"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/fragment_statistics_textview_max_speed"
+                />
 
-    <TextView
-            android:id="@+id/fragment_statistics_textview_max_speed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/framgent_statistics_margin"
-            android:text="@string/stats_max_speed"
-            app:layout_constraintTop_toBottomOf="@+id/fragment_statistics_textview_min_speed"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/fragment_statistics_textview_nb_locations"/>
+        <TextView
+                android:id="@+id/fragment_statistics_textview_max_speed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/framgent_statistics_margin"
+                android:text="@string/stats_max_speed"
+                app:layout_constraintTop_toBottomOf="@+id/fragment_statistics_textview_min_speed"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/fragment_statistics_textview_nb_locations"/>
 
-    <TextView
-            android:id="@+id/fragment_statistics_textview_nb_locations"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/framgent_statistics_margin"
-            android:text="@string/stats_nb_locations"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fragment_statistics_textview_max_speed"
-    />
+        <TextView
+                android:id="@+id/fragment_statistics_textview_nb_locations"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/framgent_statistics_margin"
+                android:text="@string/stats_nb_locations"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/fragment_statistics_textview_max_speed"
+                />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
