@@ -5,7 +5,7 @@ apply plugin: "kotlin-kapt"
 
 android {
     compileSdkVersion 30
-    buildToolsVersion "29.0.3"
+    buildToolsVersion "30.0.3"
     apply plugin: 'kotlin-kapt'
 
     defaultConfig {
@@ -54,14 +54,14 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.3.2'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.0'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.4.2'
     androidTestImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation 'com.google.android.gms:play-services-location:17.1.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
-    implementation 'com.google.android.material:material:1.2.1'
+    implementation 'com.google.android.material:material:1.3.0'
 
     implementation "androidx.room:room-runtime:2.2.6"
     kapt "androidx.room:room-compiler:2.2.6" // For Kotlin use kapt instead of annotationProcessor
@@ -93,14 +93,14 @@ dependencies {
 
     // Lifecycle components
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-    implementation "androidx.lifecycle:lifecycle-common-java8:2.2.0"
+    implementation "androidx.lifecycle:lifecycle-common-java8:2.3.0"
 
     //Osmdroid
     implementation 'org.osmdroid:osmdroid-android:6.1.6'
     implementation 'com.google.android.gms:play-services-location:17.1.0'
 
     //KTX
-    implementation "androidx.fragment:fragment-ktx:1.3.0-rc02"
+    implementation "androidx.fragment:fragment-ktx:1.3.0"
 
     // Dependencies for local unit tests
     testImplementation "junit:junit:4.12"
@@ -119,7 +119,7 @@ dependencies {
     // Dependencies for Android instrumented unit tests
     androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.2.1"
 
-    debugImplementation "androidx.fragment:fragment-testing:1.2.5"
+    debugImplementation "androidx.fragment:fragment-testing:1.3.0"
     implementation "androidx.test:core:1.3.0"
 
     // Dependencies for Android instrumented unit tests
