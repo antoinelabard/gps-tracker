@@ -38,7 +38,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:onClick="@{() -> viewmodel.updateRecordingMode()}"
-                android:src="@{ viewmodel.mode == modes.MODE_RECORD ? @drawable/ic_baseline_stop_24 : @drawable/ic_baseline_fiber_manual_record_24"/>
+                android:src="@{viewmodel.mode == modes.MODE_RECORD ? @drawable/ic_baseline_stop_24 : @drawable/ic_baseline_fiber_manual_record_24}"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
