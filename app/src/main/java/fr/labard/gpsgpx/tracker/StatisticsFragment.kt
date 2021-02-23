@@ -17,7 +17,6 @@ import fr.labard.gpsgpx.R
 import fr.labard.gpsgpx.databinding.FragmentRecordBinding
 import fr.labard.gpsgpx.databinding.FragmentStatisticsBinding
 import fr.labard.gpsgpx.util.StatisticsPresenter
-import kotlinx.android.synthetic.main.fragment_statistics.*
 
 /**
  * StatisticsFragment is used to display real time statistics about the active record.
@@ -59,7 +58,6 @@ class StatisticsFragment : DialogFragment() {
 
         viewModel.allLocations.observe(viewLifecycleOwner, {
             viewModel.setLocationsByActiveRecordId()
-            updateStatisticsDisplay()
         })
 
         return view

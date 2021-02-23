@@ -35,7 +35,7 @@
 
         <TextView
                 android:id="@+id/recyclerview_item_nblocations"
-                android:text="@{nbLocations}"
+                android:text="@{nbLocations.toString()}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/record_list_details_textsize"
