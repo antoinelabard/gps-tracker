@@ -21,7 +21,6 @@ import fr.labard.gpsgpx.GPSApplication
 import fr.labard.gpsgpx.R
 import fr.labard.gpsgpx.data.local.LocationEntity
 import fr.labard.gpsgpx.util.Constants
-import kotlinx.android.synthetic.main.activity_tracker.*
 
 class TrackerActivity : AppCompatActivity() {
 
@@ -77,11 +76,7 @@ class TrackerActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.allRecords.observe(this, {
-            viewModel.activeRecordId?.let {
-                activity_tracker_toolbar.title = viewModel.getRecordById(it).name
-            }
-        })
+        viewModel.allRecords.observe(this, {})
 
         viewModel.allLocations.observe(this, {})
 
