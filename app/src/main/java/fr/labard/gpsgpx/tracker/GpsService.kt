@@ -87,7 +87,7 @@ class GpsService: Service(), LocationListener {
     }
 
     override fun onLocationChanged(location: Location) {
-        location?.let {
+        location.let {
             lastLocation.value = it
             // sends the location to the app as a broadcast
             LocalBroadcastManager.getInstance(this).sendBroadcast(

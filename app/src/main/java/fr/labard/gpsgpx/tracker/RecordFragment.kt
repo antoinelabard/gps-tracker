@@ -40,7 +40,7 @@ class RecordFragment : Fragment() {
     private val viewModel by viewModels<RecordFragmentViewModel> {
         MapFragmentViewModelFactory((requireContext().applicationContext as GPSApplication).appRepository)
     }
-    private lateinit var gpsService: GpsService
+    private  var gpsService: GpsService? = null
 
     private val connection = object : ServiceConnection {
         override fun onServiceConnected(className: ComponentName, service: IBinder) {
@@ -55,12 +55,12 @@ class RecordFragment : Fragment() {
 //                    fragment_record_fab.setImageResource(R.drawable.ic_baseline_fiber_manual_record_24)
 //                }
 //            })
-            gpsService.activeRecordId.observe(viewLifecycleOwner, { id ->
+            gpsService?.activeRecordId?.observe(viewLifecycleOwner, { id ->
                 viewModel.activeRecordId = id
                 viewModel.setLocationsByActiveRecordId()
                 updateMapView()
             })
-            gpsService.lastLocation.observe(viewLifecycleOwner, {location ->
+            gpsService?.lastLocation?.observe(viewLifecycleOwner, { location ->
                 viewModel.currentLocation = location
             })
         }
@@ -92,7 +92,9 @@ class RecordFragment : Fragment() {
         })
 
         viewModel.mode.observe(viewLifecycleOwner, { mode ->
-            gpsService.gpsMode.value = mode
+            if (gpsService == null) {
+                gpsService?.gpsMode?.value = mode
+            }
         })
 
         return view
@@ -111,10 +113,10 @@ class RecordFragment : Fragment() {
 //    }
 
     override fun onStart() {
-        super.onStart()
         Intent(activity, GpsService::class.java).also { intent ->
             activity?.bindService(intent, connection, Context.BIND_AUTO_CREATE)
         }
+        super.onStart()
     }
 
     override fun onStop() {
@@ -180,7 +182,7 @@ class RecordFragment : Fragment() {
     }
 
     override fun onPause() {
-        super.onStop()
+        super.onPause()
         mapView.onPause()
     }
 

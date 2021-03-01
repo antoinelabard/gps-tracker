@@ -89,16 +89,15 @@ class TrackerActivity : AppCompatActivity() {
     }
 
     override fun onStart() {
-        super.onStart()
         Intent(this, GpsService::class.java).also { intent ->
             bindService(intent, connection, Context.BIND_AUTO_CREATE)
         }
+        super.onStart()
     }
 
     override fun onStop() {
         super.onStop()
         unbindService(connection)
-        viewModel.serviceIsBound = false
     }
 
     override fun onDestroy() {
