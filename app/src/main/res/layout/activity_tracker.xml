@@ -33,7 +33,7 @@
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintVertical_bias="0.5"
-                    app:title="@{viewmodel.getRecordById(viewmodel.activeRecordId).name}"/>
+                    app:recordName="@{viewmodel.getRecordById(viewmodel.activeRecordId)}"/>
 
         </com.google.android.material.appbar.AppBarLayout>
 
