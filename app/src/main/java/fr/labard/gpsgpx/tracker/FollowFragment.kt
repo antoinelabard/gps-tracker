@@ -43,7 +43,7 @@ class FollowFragment : Fragment() {
     private val viewModel by viewModels<FollowFragmentViewModel> {
         FollowFragmentViewModelFactory((requireContext().applicationContext as GPSApplication).appRepository)
     }
-    private lateinit var gpsService: GpsService
+    private var gpsService: GpsService? = null
 
     private val connection = object : ServiceConnection {
         override fun onServiceConnected(className: ComponentName, service: IBinder) {
@@ -59,12 +59,12 @@ class FollowFragment : Fragment() {
 //                    fragment_follow_fab.setImageResource(R.drawable.ic_baseline_play_arrow_24)
 //                }
 //            })
-            gpsService.activeRecordId.observe(viewLifecycleOwner, { id ->
+            gpsService?.activeRecordId?.observe(viewLifecycleOwner, { id ->
                 viewModel.activeRecordId = id
                 viewModel.setLocationsByActiveRecordId()
                 updateMapView()
             })
-            gpsService.lastLocation.observe(viewLifecycleOwner, {location ->
+            gpsService?.lastLocation?.observe(viewLifecycleOwner, { location ->
                 viewModel.currentLocation = location
             })
         }
@@ -96,7 +96,7 @@ class FollowFragment : Fragment() {
         })
 
         viewModel.mode.observe(viewLifecycleOwner, { mode ->
-            gpsService.gpsMode.value = mode
+            gpsService?.gpsMode?.value = mode
         })
 
         return view
