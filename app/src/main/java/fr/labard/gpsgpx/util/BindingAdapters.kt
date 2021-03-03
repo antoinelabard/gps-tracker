@@ -23,4 +23,14 @@ object BindingAdapters {
             view.setImageDrawable(ContextCompat.getDrawable(view.context, R.drawable.ic_baseline_fiber_manual_record_24))
         }
     }
+
+    @BindingAdapter("app:followingDrawable")
+    @JvmStatic
+    fun followingDrawable(view: FloatingActionButton, state: String) {
+        if (state == Constants.Service.MODE_FOLLOW) {
+            view.setImageDrawable(ContextCompat.getDrawable(view.context, R.drawable.ic_baseline_pause_24))
+        } else {
+            view.setImageDrawable(ContextCompat.getDrawable(view.context, R.drawable.ic_baseline_play_arrow_24))
+        }
+    }
 }

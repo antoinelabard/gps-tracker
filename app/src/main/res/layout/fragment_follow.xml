@@ -38,7 +38,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:onClick="@{() -> viewmodel.updateRecordingMode()}"
-            android:src="@{ viewmodel.mode == modes.MODE_FOLLOW ? @drawable/ic_baseline_play_arrow_24 : @drawable/ic_baseline_pause_24}"/>
+            app:followingDrawable="@{viewmodel.mode}"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
