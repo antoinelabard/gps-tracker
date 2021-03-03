@@ -7,9 +7,6 @@
         <variable
                 name="viewmodel"
                 type="fr.labard.gpsgpx.tracker.RecordFragmentViewModel"/>
-        <variable
-                name="modes"
-                type="fr.labard.gpsgpx.util.Constants.Service"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -38,7 +35,6 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:onClick="@{() -> viewmodel.updateRecordingMode()}"
-                android:src="@{viewmodel.mode == modes.MODE_RECORD ? @drawable/ic_baseline_stop_24 : @drawable/ic_baseline_fiber_manual_record_24}"/>
-
+                app:recordingDrawable="@{viewmodel.mode}"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
