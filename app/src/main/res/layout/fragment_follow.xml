@@ -38,7 +38,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:onClick="@{() -> viewmodel.updateRecordingMode()}"
-            app:followingDrawable="@{viewmodel.mode}"/>
+            app:following_drawable="@{viewmodel.mode}"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

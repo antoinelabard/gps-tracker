@@ -11,13 +11,13 @@ import fr.labard.gpsgpx.data.local.LocationEntity
 import fr.labard.gpsgpx.data.local.RecordEntity
 
 object BindingAdapters {
-    @BindingAdapter("app:recordName")
+    @BindingAdapter("app:record_name")
     @JvmStatic
     fun recordName(view: Toolbar, recordEntity: RecordEntity) {
         view.title = recordEntity.name
     }
 
-    @BindingAdapter("app:recordingDrawable")
+    @BindingAdapter("app:recording_drawable")
     @JvmStatic
     fun recordingDrawable(view: FloatingActionButton, state: String) {
         if (state == Constants.Service.MODE_RECORD) {
@@ -27,7 +27,7 @@ object BindingAdapters {
         }
     }
 
-    @BindingAdapter("app:followingDrawable")
+    @BindingAdapter("app:following_drawable")
     @JvmStatic
     fun followingDrawable(view: FloatingActionButton, state: String) {
         if (state == Constants.Service.MODE_FOLLOW) {
@@ -37,14 +37,14 @@ object BindingAdapters {
         }
     }
 
-    @BindingAdapter(value = ["bind:statsTemplate", "bind:totalDistance"], requireAll = false)
+    @BindingAdapter(value = ["bind:stats_template", "bind:total_distance"], requireAll = false)
     @JvmStatic
     fun totalDistance(view: TextView, template: String, data: List<LocationEntity>) {
         val d = LocationOps.getTotalDistance(data)
         view.text = template.format("${d}m")
     }
 
-    @BindingAdapter(value = ["bind:statsTemplate", "bind:totalTime"], requireAll = false)
+    @BindingAdapter(value = ["bind:stats_template", "bind:total_time"], requireAll = false)
     @JvmStatic
     fun totalTime(view: TextView, template: String, data: List<LocationEntity>) {
         val t = LocationOps.getTotalTime(data) / 1000
@@ -55,35 +55,35 @@ object BindingAdapters {
         view.text =  template.format((if (h != 0L) "${h}h" else "") + (if (m != 0L) "${m}m" else "") + "${s}s")
     }
 
-    @BindingAdapter(value = ["bind:statsTemplate", "bind:recentSpeed"], requireAll = false)
+    @BindingAdapter(value = ["bind:stats_template", "bind:recent_speed"], requireAll = false)
     @JvmStatic
     fun recentSpeed(view: TextView, template: String, data: List<LocationEntity>) {
         val s = LocationOps.getRecentSPeed(data)
         view.text = template.format("${s * 3.6}km/h")
     }
 
-    @BindingAdapter(value = ["bind:statsTemplate", "bind:averageSpeed"], requireAll = false)
+    @BindingAdapter(value = ["bind:stats_template", "bind:average_speed"], requireAll = false)
     @JvmStatic
     fun averageSpeed(view: TextView, template: String, data: List<LocationEntity>) {
         val s = LocationOps.getAverageSpeed(data)
         view.text = template.format("${s * 3.6}km/h")
     }
 
-    @BindingAdapter(value = ["bind:statsTemplate", "bind:minSpeed"], requireAll = false)
+    @BindingAdapter(value = ["bind:stats_template", "bind:min_speed"], requireAll = false)
     @JvmStatic
     fun minSpeed(view: TextView, template: String, data: List<LocationEntity>) {
         val s = LocationOps.getMinSpeed(data)
         view.text = template.format("${s * 3.6}km/h")
     }
 
-    @BindingAdapter(value = ["bind:statsTemplate", "bind:maxSpeed"], requireAll = false)
+    @BindingAdapter(value = ["bind:stats_template", "bind:max_speed"], requireAll = false)
     @JvmStatic
     fun maxSpeed(view: TextView, template: String, data: List<LocationEntity>) {
         val s = LocationOps.getMaxSpeed(data)
         view.text = template.format("${s * 3.6}km/h")
     }
 
-    @BindingAdapter(value = ["bind:statsTemplate", "bind:nbLocations"], requireAll = false)
+    @BindingAdapter(value = ["bind:stats_template", "bind:nb_locations"], requireAll = false)
     @JvmStatic
     fun nbLocations(view: TextView, template: String, data: List<LocationEntity>) {
     view.text = template.format(LocationOps.getNbLocations(data))
