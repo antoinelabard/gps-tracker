@@ -1,10 +1,13 @@
 package fr.labard.gpsgpx.util
 
+import android.content.Context
+import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import fr.labard.gpsgpx.R
+import fr.labard.gpsgpx.data.local.LocationEntity
 import fr.labard.gpsgpx.data.local.RecordEntity
 
 object BindingAdapters {
@@ -32,5 +35,12 @@ object BindingAdapters {
         } else {
             view.setImageDrawable(ContextCompat.getDrawable(view.context, R.drawable.ic_baseline_play_arrow_24))
         }
+    }
+
+    @BindingAdapter(value = ["bind:statsTemplate", "bind:totalDistance"], requireAll = false)
+    @JvmStatic
+    fun totalDistance(view: TextView, template: String, data: List<LocationEntity>) {
+        val d = LocationOps.getTotalDistance(data)
+        view.text = template.format("${d}m")
     }
 }
